@@ -1,0 +1,33 @@
+.notFoundPage__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    margin-top: 50px;
+    padding: 40px;
+    border-radius: 10px;
+}
+
+.notFoundPage__img {
+    width: 80px;
+    height: 80px;
+}
+.notFoundPage__title {
+    font-weight: 700;
+    line-height: 130%;
+    color: #1a1a1a;
+}
+
+.notFoundPage__btn {
+    padding: 9px 16px;
+    border: 1px solid #cfd8dc;
+    border-radius: 87px;
+    background: coral;
+    transition: all 0.2s;
+}
+
+.notFoundPage__btn:hover {
+    cursor: pointer;
+    background: rgb(207, 73, 24);
+}
