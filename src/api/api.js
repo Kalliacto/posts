@@ -25,6 +25,25 @@ class Api {
             .then(onResponse)
             .catch((err) => console.log(err));
     }
+
+    addNewPost() {
+        return fetch(`${this.baseUrl}`, {
+            method: 'POST',
+            headers: this.headers,
+        }).then(onResponse);
+    }
+
+    searchPost(path) {
+        return fetch(`${this.baseUrl}/search/?query=${path}`, {
+            headers: this.headers,
+        }).then(onResponse);
+    }
+
+    getOnePost(id) {
+        return fetch(`${this.baseUrl}/${id}`, {
+            headers: this.headers,
+        }).then(onResponse);
+    }
 }
 
 export const api = new Api(config);
