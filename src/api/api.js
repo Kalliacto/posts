@@ -1,0 +1,30 @@
+const config = {
+    baseUrl: 'https://api.react-learning.ru/v2/group-12/posts',
+    headers: {
+        'Content-Type': 'application/json',
+        authorization:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDNmYjgyNDMyOTFkNzkwYjNmM2IzMDkiLCJncm91cCI6Imdyb3VwLTEyIiwiaWF0IjoxNjgyMDY0ODY3LCJleHAiOjE3MTM2MDA4Njd9.IpO04cd78A6d9Zdit3IkrPueQkJEfh2Xv573sf111Qw',
+    },
+};
+
+const onResponse = (data) => {
+    return data.ok ? data.json() : Promise.reject('Что-то пошло не так');
+};
+
+class Api {
+    constructor(data) {
+        this.baseUrl = data.baseUrl;
+        this.headers = data.headers;
+    }
+
+    getAllPosts() {
+        return fetch(`${this.baseUrl}`, {
+            method: 'GET',
+            headers: this.headers,
+        })
+            .then(onResponse)
+            .catch((err) => console.log(err));
+    }
+}
+
+export const api = new Api(config);
