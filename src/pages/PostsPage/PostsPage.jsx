@@ -1,8 +1,8 @@
 import React from 'react';
-import './postslist.css';
+import './postsPage.css';
 
-const PostsList = (props) => {
+const PostsPage = (props) => {
     return <div className="container">Тут будут все посты</div>;
 };
 
-export default PostsList;
+export default PostsPage;
