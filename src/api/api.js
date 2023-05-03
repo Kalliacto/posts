@@ -21,9 +21,7 @@ class Api {
         return fetch(`${this.baseUrl}`, {
             method: 'GET',
             headers: this.headers,
-        })
-            .then(onResponse)
-            .catch((err) => console.log(err));
+        }).then(onResponse);
     }
 
     addNewPost() {
