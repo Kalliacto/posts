@@ -1,0 +1,84 @@
+.post {
+    display: grid;
+    width: max-content;
+    grid-template-columns: 300px;
+    grid-template-rows: 50px 500px 25px 25px;
+    gap: 10px;
+    padding: 16px;
+    border-radius: 10px;
+    box-shadow: 0 0 1px 1px coral;
+
+}
+
+.post:hover {
+    box-shadow: 0 0 5px 5px goldenrod;
+}
+
+.post__header {
+    display: flex;
+    gap: 20px;
+}
+
+.post__autor-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.post__autor-info {
+    display: grid;
+}
+
+.post__link {
+    display: grid;
+    width: max-content;
+    grid-template-columns: 300px;
+    grid-template-rows: 30px 350px 100px;
+    text-decoration: none;
+    color: black;
+}
+
+.post__title {
+    margin: 0;
+}
+
+.post__image {
+    width: 300px;
+    border-radius: 10px;
+}
+
+.post__text {
+    margin: 0;
+    text-align: justify;
+    height: 100px;
+}
+
+.post__tags {
+    display: flex;
+    gap: 10px;
+}
+
+.post__tag {
+    padding: 3px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: coral;
+}
+
+.post__footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.post__buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.post__button {
+    padding: 3px 5px;
+    border: 1px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: coral;
+}
