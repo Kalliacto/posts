@@ -8,7 +8,7 @@ const Main = () => {
     return (
         <main className="main">
             <Routes>
-                <Route path="/" element={<PostsPage />}></Route>
+                <Route index element={<PostsPage />}></Route>
                 {/* <Route
                     path="/:id"
                     element={
