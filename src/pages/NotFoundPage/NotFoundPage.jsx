@@ -3,7 +3,7 @@ import svg from './NotFound.svg';
 import './notfoundpage.css';
 import { Link } from 'react-router-dom';
 
-const NotFoundPage = (props) => {
+const NotFoundPage = ({ title }) => {
     return (
         <>
             <div className="container">
@@ -13,9 +13,7 @@ const NotFoundPage = (props) => {
                         src={svg}
                         alt="sad smile"
                     />
-                    <h2 className="notFoundPage__title">
-                        Простите, данная страница не найдена.
-                    </h2>
+                    <h2 className="notFoundPage__title">{title}</h2>
                     <Link to={'/'}>
                         <button className="notFoundPage__btn">
                             На главную

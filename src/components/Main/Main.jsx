@@ -15,7 +15,14 @@ const Main = () => {
                         <div>Тут будет переход на просмотр одного поста</div>
                     }
                 ></Route> */}
-                <Route path="*" element={<NotFoundPage />}></Route>
+                <Route
+                    path="*"
+                    element={
+                        <NotFoundPage
+                            title={'Простите, данная страница не найдена.'}
+                        />
+                    }
+                ></Route>
             </Routes>
         </main>
     );
