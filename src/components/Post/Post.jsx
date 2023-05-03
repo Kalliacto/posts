@@ -1,9 +1,10 @@
 import React from 'react';
 import './post.css';
 import { Chat, Heart } from 'react-bootstrap-icons';
+import { Link } from 'react-router-dom';
 
 const Post = ({ post }) => {
-    const { author, image, title, text, tags, likes, created_at } = post;
+    const { author, image, title, text, tags, likes, created_at, _id } = post;
 
     // console.log(new Date('2023-05-02T11:43:04.921Z'));
     return (
@@ -21,11 +22,11 @@ const Post = ({ post }) => {
                     <span className="post__autor-about">{author.about}</span>
                 </div>
             </div>
-            <a href="/" className="post__link">
+            <Link to={`/${_id}`} className="post__link">
                 <h3 className="post__title">{title}</h3>
                 <img src={image} alt="post" className="post__image" />
                 <p className="post__text">{text}</p>
-            </a>
+            </Link>
             <div className="post__tags">
                 {!!tags.length &&
                     tags.map((tag) => <span className="post__tag">{tag}</span>)}

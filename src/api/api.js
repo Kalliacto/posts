@@ -42,6 +42,14 @@ class Api {
             headers: this.headers,
         }).then(onResponse);
     }
+
+    addNewPost(post) {
+        return fetch(`${this.baseUrl}`, {
+            method: 'POST',
+            headers: this.headers,
+            body: JSON.stringify(post),
+        }).then(onResponse);
+    }
 }
 
 export const api = new Api(config);
