@@ -6,9 +6,11 @@ const PostsList = ({ posts }) => {
     return (
         <>
             <div className="posts__wrapper">
-                {posts.map((post) => {
-                    return <Post key={post._id} post={post} />;
-                })}
+                <div className="posts__container">
+                    {posts.map((post) => {
+                        return <Post key={post._id} post={post} />;
+                    })}
+                </div>
             </div>
         </>
     );

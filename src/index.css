@@ -6,8 +6,9 @@ body {
 }
 
 .container {
-    max-width: 920px;
+    max-width: 1070px;
     margin: 0 auto;
+    padding: 15px;
 }
 
 a {
