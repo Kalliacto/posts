@@ -73,9 +73,11 @@
 }
 
 .post__button {
-    padding: 3px 5px;
+    padding: 5px;
     border: 1px solid black;
     border-radius: 10px;
     cursor: pointer;
     background-color: coral;
+    display: flex;
+    gap: 3px;
 }

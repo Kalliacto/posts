@@ -1,5 +1,6 @@
 const config = {
-    baseUrl: 'https://api.react-learning.ru/v2/group-12/posts',
+    basePostsUrl: 'https://api.react-learning.ru/v2/group-12/posts',
+    baseUsersUrl: `https://api.react-learning.ru/users`,
     headers: {
         'Content-Type': 'application/json',
         authorization:
@@ -13,38 +14,32 @@ const onResponse = (data) => {
 
 class Api {
     constructor(data) {
-        this.baseUrl = data.baseUrl;
+        this.basePostsUrl = data.basePostsUrl;
+        this.baseUsersUrl = data.baseUsersUrl;
         this.headers = data.headers;
     }
 
     getAllPosts() {
-        return fetch(`${this.baseUrl}`, {
+        return fetch(`${this.basePostsUrl}`, {
             method: 'GET',
             headers: this.headers,
         }).then(onResponse);
     }
 
-    addNewPost() {
-        return fetch(`${this.baseUrl}`, {
-            method: 'POST',
-            headers: this.headers,
-        }).then(onResponse);
-    }
-
     searchPost(path) {
-        return fetch(`${this.baseUrl}/search/?query=${path}`, {
+        return fetch(`${this.basePostsUrl}/search/?query=${path}`, {
             headers: this.headers,
         }).then(onResponse);
     }
 
     getOnePost(id) {
-        return fetch(`${this.baseUrl}/${id}`, {
+        return fetch(`${this.basePostsUrl}/${id}`, {
             headers: this.headers,
         }).then(onResponse);
     }
 
     addNewPost(post) {
-        return fetch(`${this.baseUrl}`, {
+        return fetch(`${this.basePostsUrl}`, {
             method: 'POST',
             headers: this.headers,
             body: JSON.stringify(post),
@@ -52,9 +47,16 @@ class Api {
     }
 
     changePostLike(postId, isLiked) {
-        return fetch(`${this.baseUrl}/likes/${postId}`, {
+        return fetch(`${this.basePostsUrl}/likes/${postId}`, {
             headers: this.headers,
             method: isLiked ? 'DELETE' : 'PUT',
+        }).then(onResponse);
+    }
+
+    getUserInfo() {
+        return fetch(`${this.baseUsersUrl}/me`, {
+            method: 'GET',
+            headers: this.headers,
         }).then(onResponse);
     }
 }
