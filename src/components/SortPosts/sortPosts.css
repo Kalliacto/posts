@@ -19,6 +19,10 @@
     color: #7b8e98;
     cursor: pointer;
 }
+.sort__posts_text:hover {
+    cursor: pointer;
+    color: coral;
+}
 
 .sort__posts_text_active {
     color: #1a1a1a;
