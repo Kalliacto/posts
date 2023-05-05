@@ -50,14 +50,16 @@ class Api {
             body: JSON.stringify(post),
         }).then(onResponse);
     }
+
+    changePostLike(postId, isLiked){
+        return fetch(`${this.baseUrl} /likes/${postId}`,{
+            headers: this.headers,
+            method: isLiked ?"DELETE": 'PUT'
+        }).then(onResponse);
+    }
 }
 
-changePostLike(postId, isLiked){
-    return fetch(`${this.baseUrl} /likes/${postId}`,{
-        headers: this.headers,
-        method: isLiked ?"DELETE": 'PUT'
-    }).then(onResponse)
-}
+
 
 
 export const api = new Api(config);
