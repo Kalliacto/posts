@@ -51,15 +51,12 @@ class Api {
         }).then(onResponse);
     }
 
-    changePostLike(postId, isLiked){
-        return fetch(`${this.baseUrl} /likes/${postId}`,{
+    changePostLike(postId, isLiked) {
+        return fetch(`${this.baseUrl}/likes/${postId}`, {
             headers: this.headers,
-            method: isLiked ?"DELETE": 'PUT'
+            method: isLiked ? 'DELETE' : 'PUT',
         }).then(onResponse);
     }
 }
-
-
-
 
 export const api = new Api(config);

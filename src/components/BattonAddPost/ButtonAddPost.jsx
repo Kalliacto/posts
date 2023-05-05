@@ -1,7 +1,8 @@
 import React from 'react';
 import './buttonaddpost.css';
 
-const ButtonAddPost = (props) => {
+const ButtonAddPost = ({ ...props }) => {
+    const { title } = props;
     return (
         <>
             <button
@@ -10,7 +11,7 @@ const ButtonAddPost = (props) => {
                     console.log('есть контакт!');
                 }}
             >
-                Создать новый пост
+                {title}
             </button>
         </>
     );

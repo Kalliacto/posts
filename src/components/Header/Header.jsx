@@ -9,7 +9,7 @@ const Header = (props) => {
                 <div className="header__wrapper">
                     <div>I am Logo</div>
                     <div>I am Search</div>
-                    <ButtonAddPost />
+                    <ButtonAddPost title={'Изменить профиль'} />
                 </div>
             </div>
         </header>

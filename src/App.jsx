@@ -13,7 +13,39 @@ function App() {
         api.getAllPosts().then((data) => setPosts(data));
     }, []);
 
-    const valueContext = { posts };
+    const onSortPosts = (sortId) => {
+        if (sortId === 'all') {
+            const newPosts = posts;
+            setPosts([...newPosts]);
+            console.log('all');
+        }
+
+        if (sortId === 'popular') {
+            const newPosts = posts.sort(
+                (a, b) => b.likes.length - a.likes.length
+            );
+            setPosts([...newPosts]);
+            console.log('popular');
+        }
+
+        if (sortId === 'new') {
+            const newPosts = posts.sort(
+                (a, b) => new Date(b.created_at) - new Date(a.created_at)
+            );
+            setPosts([...newPosts]);
+            console.log('new');
+        }
+
+        if (sortId === 'old') {
+            const newPosts = posts.sort(
+                (a, b) => new Date(a.created_at) - new Date(b.created_at)
+            );
+            setPosts([...newPosts]);
+            console.log('old');
+        }
+    };
+
+    const valueContext = { posts, onSortPosts };
     return (
         <div className="App">
             <Context.Provider value={valueContext}>
