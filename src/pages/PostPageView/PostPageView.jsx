@@ -12,6 +12,7 @@ const PostPageView = () => {
         api.getOnePost(id).then((data) => setPostInfo(data));
     }, [id]);
 
+    console.log({ postInfo });
     return (
         <>
             <div>
