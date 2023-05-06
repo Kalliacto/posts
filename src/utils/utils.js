@@ -48,3 +48,38 @@ export const onSortPosts = (posts, method, setPosts, users) => {
         setPosts([...newPosts]);
     }
 };
+
+export const likeToogleDetailsPage = (
+    postId,
+    wasLiked,
+    setPosts,
+    setPostInfo
+) => {
+    api.changePostLike(postId, wasLiked)
+        .then((postData) => {
+            setPostInfo(postData);
+            setPosts((state) => {
+                return state.map((post) => {
+                    return post._id === postId ? postData : post;
+                });
+            });
+        })
+        .catch((error) => console.error('Ошибка при установке лайка', error));
+};
+
+export const preloadObj = {
+    image: '',
+    likes: [],
+    comments: [],
+    tags: [],
+    _id: '',
+    title: '',
+    author: {
+        name: '',
+        about: '',
+        avatar: '',
+        _id: '',
+    },
+    text: '',
+    created_at: '',
+};
