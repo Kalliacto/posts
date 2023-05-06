@@ -11,7 +11,6 @@ const PostPageView = () => {
     useEffect(() => {
         api.getOnePost(id).then((data) => setPostInfo(data));
     }, [id]);
-
     return (
         <>
             <div>
