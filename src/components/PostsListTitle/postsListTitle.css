@@ -1,0 +1,13 @@
+.posts__title {
+    margin-bottom: 30px;
+    margin-top: 30px;
+    padding: 20px 30px;
+    border: 2px solid coral;
+    border-radius: 10px;
+}
+
+.wrapper__for_functional {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

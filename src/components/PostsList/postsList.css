@@ -1,0 +1,17 @@
+.posts__wrapper {
+    width: 100%;
+    height: auto;
+    margin-bottom: 50px;
+}
+
+.posts__container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px 30px;
+}
+
+@media (max-width: 1080px) {
+    .posts__container {
+        grid-template-columns: repeat(2, 2fr);
+    }
+}
