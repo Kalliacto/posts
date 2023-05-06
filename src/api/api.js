@@ -59,6 +59,12 @@ class Api {
             headers: this.headers,
         }).then(onResponse);
     }
+    getUserInfoById(id) {
+        return fetch(`${this.baseUsersUrl}/${id}`, {
+            method: 'GET',
+            headers: this.headers,
+        }).then(onResponse);
+    }
 }
 
 export const api = new Api(config);

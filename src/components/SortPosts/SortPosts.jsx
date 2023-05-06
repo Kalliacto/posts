@@ -7,10 +7,11 @@ import React, { useContext } from 'react';
 const SortPosts = () => {
     const { posts, setPosts } = useContext(Context);
     const sortItem = [
-        { id: 'all', title: 'Все посты' },
+        { id: 'alphabet', title: 'По алфавиту' },
         { id: 'popular', title: 'Популярные' },
         { id: 'new', title: 'Новые' },
         { id: 'old', title: 'Древние' },
+        { id: 'comments', title: 'Наиболее обсуждаемые' },
     ];
     return (
         <div className="sort__posts_wrapper">
@@ -19,7 +20,9 @@ const SortPosts = () => {
                     return (
                         <span
                             key={item.id}
-                            onClick={() => onSortPosts(posts, item.id, setPosts)}
+                            onClick={() =>
+                                onSortPosts(posts, item.id, setPosts)
+                            }
                             className="sort__posts_text"
                         >
                             {item.title}
