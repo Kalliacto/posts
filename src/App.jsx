@@ -9,16 +9,27 @@ import { api } from './api/api';
 function App() {
     const [user, setUser] = useState({});
     const [posts, setPosts] = useState([]);
-    
+    const [search, setSearch] = useState(undefined);
+
     useEffect(() => {
-        Promise.all([api.getAllPosts(), api.getUserInfo()])
-        .then(([postData, userData]) => {
-            setPosts(postData);
-            setUser(userData);
-        });
+        Promise.all([api.getAllPosts(), api.getUserInfo()]).then(
+            ([postData, userData]) => {
+                setPosts(postData);
+                setUser(userData);
+            }
+        );
     }, []);
 
-    const valueContext = { posts, user, setPosts };
+    useEffect(() => {
+        if (search === undefined) return;
+        api.searchPost(search)
+            .then((data) => setPosts(data))
+            .catch((error) => console.log(error));
+    }, [search]);
+
+    // console.log({ search });
+
+    const valueContext = { posts, user, setPosts, search, setSearch };
     return (
         <div className="App">
             <Context.Provider value={valueContext}>
