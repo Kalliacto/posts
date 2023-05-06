@@ -15,7 +15,7 @@ function App() {
         .then(([postData, userData]) => {
             setPosts(postData);
             setUser(userData);
-        });
+        }).catch(error => console.error('Ошибка при загрузке данных постов или пользователя', error))
     }, []);
 
     const valueContext = { posts, user, setPosts };
