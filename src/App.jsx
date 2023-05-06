@@ -27,8 +27,6 @@ function App() {
             .catch((error) => console.log(error));
     }, [search]);
 
-    // console.log({ search });
-
     const valueContext = { posts, user, setPosts, search, setSearch };
     return (
         <div className="App">
