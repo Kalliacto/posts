@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import './post.css';
 import { Chat, Heart, HeartFill } from 'react-bootstrap-icons';
-import { Link } from 'react-router-dom';
 import { Context } from '../../context/Context';
 import { likeToogle } from '../../utils/utils';
 
@@ -24,11 +23,11 @@ const Post = ({ post }) => {
                     <span className='post__autor-about'>{author.about}</span>
                 </div>
             </div>
-            <Link to={`/${_id}`} className='post__link'>
+            <div className='post__link'>
                 <h3 className='post__title'>{title}</h3>
                 <img src={image} alt='post' className='post__image' />
                 <p className='post__text'>{text}</p>
-            </Link>
+            </div>
             <div className='post__tags'>
                 {!!tags.length && tags.map((tag, i) => <span key={`${tag}+${i}`} className='post__tag'>{tag}</span>)}
             </div>
