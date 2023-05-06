@@ -11,11 +11,9 @@ const PostPageView = () => {
     const { user, setPosts } = useContext(Context);
     const [postInfo, setPostInfo] = useState(preloadObj);
     const { id } = useParams();
-
     useEffect(() => {
         api.getOnePost(id).then((data) => setPostInfo(data));
     }, [id]);
-    
     const { author, image, title, text, tags, likes, created_at } = postInfo;
     const wasLiked = likes.includes(user._id);
     return (
