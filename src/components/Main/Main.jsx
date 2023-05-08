@@ -8,12 +8,12 @@ import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 
 const Main = () => {
     return (
-        <main className="main">
+        <main className='main'>
             <Routes>
                 <Route index element={<PostsPage />}></Route>
                 <Route path="/:id" element={<PostPageView />}></Route>
                 <Route
-                    path="*"
+                    path='*'
                     element={
                         <NotFoundPage
                             title={'Простите, данная страница не найдена.'}
