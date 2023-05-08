@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import './search.css';
 import { Search as SearchIcon } from 'react-bootstrap-icons';
 

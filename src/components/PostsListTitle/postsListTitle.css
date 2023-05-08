@@ -16,13 +16,9 @@
 }
 
 .posts__title-h3 {
-    position: relative;
+    display: flex;
 }
 .posts__title-arrow {
-    position: absolute;
+    position: relative;
     top: 10px;
-}
-
-h3 {
-    padding-left: 25px;
 }
