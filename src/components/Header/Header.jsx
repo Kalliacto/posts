@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import './header.css';
-import ButtonAddPost from '../BattonAddPost/ButtonAddPost';
 import Logo from '../Logo/Logo';
 import { Link } from 'react-router-dom';
 import Search from '../Search/Search';

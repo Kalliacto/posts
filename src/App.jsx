@@ -5,13 +5,11 @@ import Header from './components/Header/Header';
 import Main from './components/Main/Main';
 import Footer from './components/Footer/Footer';
 import { api } from './api/api';
-import Modal from './components/Modal/Modal';
 
 function App() {
     const [user, setUser] = useState({});
     const [posts, setPosts] = useState([]);
     const [search, setSearch] = useState(undefined);
-    const [activeModal, setActiveModal] = useState(false);
 
     useEffect(() => {
         Promise.all([api.getAllPosts(), api.getUserInfo()])
@@ -20,10 +18,7 @@ function App() {
                 setUser(userData);
             })
             .catch((error) =>
-                console.error(
-                    'Ошибка при загрузке данных постов или пользователя',
-                    error
-                )
+                console.error('Ошибка при загрузке данных постов или пользователя', error)
             );
     }, []);
 
@@ -31,7 +26,7 @@ function App() {
         if (search === undefined) return;
         api.searchPost(search)
             .then((data) => setPosts(data))
-            .catch((error) => console.log(error));
+            .catch((error) => console.log('Ошибка при поиске постов', error));
     }, [search]);
 
     const valueContext = {
@@ -40,8 +35,6 @@ function App() {
         setPosts,
         search,
         setSearch,
-        activeModal,
-        setActiveModal,
     };
 
     return (
@@ -49,7 +42,6 @@ function App() {
             <Context.Provider value={valueContext}>
                 <Header />
                 <Main />
-                <Modal />
                 <Footer />
             </Context.Provider>
         </div>
