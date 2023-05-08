@@ -83,3 +83,11 @@ export const preloadObj = {
     text: '',
     created_at: '',
 };
+
+export const preloadUser = {
+    name: '',
+    about: '',
+    avatar: '',
+    _id: '',
+    email: '',
+};

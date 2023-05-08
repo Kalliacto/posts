@@ -4,6 +4,7 @@ import './main.css';
 import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage';
 import PostsPage from '../../pages/PostsPage/PostsPage';
 import PostPageView from '../../pages/PostPageView/PostPageView';
+import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 
 const Main = () => {
     return (
@@ -19,6 +20,7 @@ const Main = () => {
                         />
                     }
                 ></Route>
+                <Route path="/profile/:userId" element={<ProfilePage />}></Route>
             </Routes>
         </main>
     );
