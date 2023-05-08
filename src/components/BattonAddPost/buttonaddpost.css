@@ -1,5 +1,14 @@
 .button__add {
     padding: 15px;
-    background-color: bisque;
+    background-color: coral;
+    border: none;
     border-radius: 10px;
+    color: rgba(255, 228, 196, 0.6);
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.button__add:hover {
+    cursor: pointer;
+    color: rgba(255, 228, 196, 1);
 }

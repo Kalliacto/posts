@@ -9,3 +9,14 @@
     padding: 5px;
     gap: 100px;
 }
+
+.button__profile {
+    padding: 15px;
+    background-color: bisque;
+    border-radius: 10px;
+    border: none;
+}
+.button__profile:hover {
+    background-color: bisque;
+    border-radius: 10px;
+}

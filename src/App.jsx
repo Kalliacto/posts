@@ -11,7 +11,7 @@ function App() {
     const [user, setUser] = useState({});
     const [posts, setPosts] = useState([]);
     const [search, setSearch] = useState(undefined);
-    const [activeModal, setActiveModal] = useState(true);
+    const [activeModal, setActiveModal] = useState(false);
 
     useEffect(() => {
         Promise.all([api.getAllPosts(), api.getUserInfo()])
