@@ -9,16 +9,34 @@ import { api } from './api/api';
 function App() {
     const [user, setUser] = useState({});
     const [posts, setPosts] = useState([]);
-    
+    const [search, setSearch] = useState(undefined);
+
     useEffect(() => {
         Promise.all([api.getAllPosts(), api.getUserInfo()])
-        .then(([postData, userData]) => {
-            setPosts(postData);
-            setUser(userData);
-        }).catch(error => console.error('Ошибка при загрузке данных постов или пользователя', error))
+            .then(([postData, userData]) => {
+                setPosts(postData);
+                setUser(userData);
+            })
+            .catch((error) =>
+                console.error('Ошибка при загрузке данных постов или пользователя', error)
+            );
     }, []);
 
-    const valueContext = { posts, user, setPosts };
+    useEffect(() => {
+        if (search === undefined) return;
+        api.searchPost(search)
+            .then((data) => setPosts(data))
+            .catch((error) => console.log('Ошибка при поиске постов', error));
+    }, [search]);
+
+    const valueContext = {
+        posts,
+        user,
+        setPosts,
+        search,
+        setSearch,
+    };
+
     return (
         <div className="App">
             <Context.Provider value={valueContext}>

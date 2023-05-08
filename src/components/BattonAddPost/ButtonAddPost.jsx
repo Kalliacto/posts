@@ -7,9 +7,7 @@ const ButtonAddPost = ({ ...props }) => {
         <>
             <button
                 className="button__add"
-                onClick={() => {
-                    console.log('есть контакт!');
-                }}
+                onClick={() => console.log('есть контакт!')}
             >
                 {title}
             </button>

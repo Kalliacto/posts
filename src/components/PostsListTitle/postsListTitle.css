@@ -1,13 +1,24 @@
 .posts__title {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 30px;
     margin-top: 30px;
-    padding: 20px 30px;
-    border: 2px solid coral;
+    padding: 15px 20px;
+    border: 1px solid coral;
     border-radius: 10px;
+    gap: 20px;
 }
 
 .wrapper__for_functional {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.posts__title-h3 {
+    display: flex;
+}
+.posts__title-arrow {
+    position: relative;
+    top: 10px;
 }
