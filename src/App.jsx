@@ -5,18 +5,26 @@ import Header from './components/Header/Header';
 import Main from './components/Main/Main';
 import Footer from './components/Footer/Footer';
 import { api } from './api/api';
+import Modal from './components/Modal/Modal';
 
 function App() {
     const [user, setUser] = useState({});
     const [posts, setPosts] = useState([]);
     const [search, setSearch] = useState(undefined);
+    const [activeModal, setActiveModal] = useState(true);
 
     useEffect(() => {
-        Promise.all([api.getAllPosts(), api.getUserInfo()]).then(
-            ([postData, userData]) => {
+        Promise.all([api.getAllPosts(), api.getUserInfo()])
+            .then(([postData, userData]) => {
                 setPosts(postData);
                 setUser(userData);
-            }).catch(error => console.error('Ошибка при загрузке данных постов или пользователя', error))
+            })
+            .catch((error) =>
+                console.error(
+                    'Ошибка при загрузке данных постов или пользователя',
+                    error
+                )
+            );
     }, []);
 
     useEffect(() => {
@@ -26,12 +34,22 @@ function App() {
             .catch((error) => console.log(error));
     }, [search]);
 
-    const valueContext = { posts, user, setPosts, search, setSearch };
+    const valueContext = {
+        posts,
+        user,
+        setPosts,
+        search,
+        setSearch,
+        activeModal,
+        setActiveModal,
+    };
+
     return (
         <div className="App">
             <Context.Provider value={valueContext}>
                 <Header />
                 <Main />
+                <Modal />
                 <Footer />
             </Context.Provider>
         </div>
