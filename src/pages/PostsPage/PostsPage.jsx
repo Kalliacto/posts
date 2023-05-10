@@ -7,10 +7,10 @@ import PostsListTitle from '../../components/PostsListTitle/PostsListTitle';
 const PostsPage = () => {
     const { posts } = useContext(Context);
     return (
-        <div className="container">
+        <>
             <PostsListTitle />
             <PostsList posts={posts} />
-        </div>
+        </>
     );
 };
 

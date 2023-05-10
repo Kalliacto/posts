@@ -8,7 +8,7 @@ const Modal = () => {
         <div className={!!activeModal ? 'modal modal_active' : 'modal'}>
             <div className="modal__content">
                 <button
-                    class="close__modal"
+                    className="close__modal"
                     onClick={() => {
                         setActiveModal(!activeModal);
                     }}
