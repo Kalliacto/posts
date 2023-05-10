@@ -12,7 +12,7 @@ const Main = () => {
             <div className="container">
                 <Routes>
                     <Route index element={<PostsPage />}></Route>
-                    <Route path="/:id" element={<PostPageView />}></Route>
+                    <Route path="/post/:id" element={<PostPageView />}></Route>
                     <Route
                         path="/profile/:userId"
                         element={<ProfilePage />}
