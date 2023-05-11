@@ -13,15 +13,15 @@ const Header = () => {
     };
 
     return (
-        <header className="header">
-            <div className="container">
-                <div className="header__wrapper">
+        <header className='header'>
+            <div className='container'>
+                <div className='header__wrapper'>
                     <Link to={'/'}>
-                        <Logo className="header__logo" />
+                        <Logo className='header__logo' />
                     </Link>
                     <Search setSearch={setSearchQuery} />
                     <Link to={`/profile/${user._id}`}>
-                        <button className="button__profile">Профиль</button>
+                        <button className='button__profile'>Профиль</button>
                     </Link>
                 </div>
             </div>

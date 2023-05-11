@@ -8,22 +8,15 @@ import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 
 const Main = () => {
     return (
-        <main className="main">
-            <div className="container">
+        <main className='main'>
+            <div className='container'>
                 <Routes>
                     <Route index element={<PostsPage />}></Route>
-                    <Route path="/post/:id" element={<PostPageView />}></Route>
+                    <Route path='/post/:id' element={<PostPageView />}></Route>
+                    <Route path='/profile/:userId' element={<ProfilePage />}></Route>
                     <Route
-                        path="/profile/:userId"
-                        element={<ProfilePage />}
-                    ></Route>
-                    <Route
-                        path="*"
-                        element={
-                            <NotFoundPage
-                                title={'Простите, данная страница не найдена.'}
-                            />
-                        }
+                        path='*'
+                        element={<NotFoundPage title={'Простите, данная страница не найдена.'} />}
                     ></Route>
                 </Routes>
             </div>

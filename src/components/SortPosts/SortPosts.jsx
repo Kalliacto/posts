@@ -14,16 +14,14 @@ const SortPosts = () => {
         { id: 'comments', title: 'Наиболее обсуждаемые' },
     ];
     return (
-        <div className="sort__posts_wrapper">
-            <div className="sort__posts">
+        <div className='sort__posts_wrapper'>
+            <div className='sort__posts'>
                 {sortItem.map((item) => {
                     return (
                         <span
                             key={item.id}
-                            onClick={() =>
-                                onSortPosts(posts, item.id, setPosts)
-                            }
-                            className="sort__posts_text"
+                            onClick={() => onSortPosts(posts, item.id, setPosts)}
+                            className='sort__posts_text'
                         >
                             {item.title}
                         </span>
