@@ -37,7 +37,7 @@ const ProfilePage = () => {
     }, [userId, posts]);
     const myProfile = user._id === userId;
     return (
-        <div className="profilePage container">
+        <div className="profilePage">
             <GoBackBtn />
             <div className="profile">
                 <div className="profile__avatar-wrapper">
