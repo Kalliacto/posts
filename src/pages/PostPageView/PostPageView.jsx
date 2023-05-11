@@ -17,61 +17,45 @@ const PostPageView = () => {
     const { author, image, title, text, tags, likes, created_at } = postInfo;
     const wasLiked = likes.includes(user._id);
     return (
-        <div className="detailsPost">
+        <div className='detailsPost'>
             <GoBackBtn />
-            <div className="detailsPost__main">
-                <div className="detailsPost__image-wrapper">
-                    <img
-                        src={image}
-                        alt="post"
-                        className="detailsPost__image"
-                    />
+            <div className='detailsPost__main'>
+                <div className='detailsPost__image-wrapper'>
+                    <img src={image} alt='post' className='detailsPost__image' />
                 </div>
-                <div className="detailsPost__info-wrapper">
+                <div className='detailsPost__info-wrapper'>
                     <Link to={`/profile/${author._id}`}>
-                        <div className="detailsPostInfo__header">
+                        <div className='detailsPostInfo__header'>
                             <img
                                 src={author.avatar}
-                                alt="avatar"
-                                className="detailsPost__autor-avatar"
+                                alt='avatar'
+                                className='detailsPost__autor-avatar'
                             />
-                            <div className="detailsPost__autor-info">
+                            <div className='detailsPost__autor-info'>
                                 <b>{author.name}</b>
                                 <span>{author.about}</span>
                             </div>
                         </div>
                     </Link>
-                    <h3 className="detailsPost__title">{title}</h3>
-                    <p className="detailsPost__text">{text}</p>
-                    <div className="detailsPost__tags">
+                    <h3 className='detailsPost__title'>{title}</h3>
+                    <p className='detailsPost__text'>{text}</p>
+                    <div className='detailsPost__tags'>
                         {!!tags.length &&
                             tags.map((tag, i) => (
-                                <span
-                                    key={`${tag}+${i}`}
-                                    className="detailsPost__tag"
-                                >
+                                <span key={`${tag}+${i}`} className='detailsPost__tag'>
                                     {tag}
                                 </span>
                             ))}
                     </div>
-                    <div className="detailsPostInfo__footer">
-                        <div className="detailsPostInfo__buttons">
+                    <div className='detailsPostInfo__footer'>
+                        <div className='detailsPostInfo__buttons'>
                             <button
-                                className="detailsPostInfo__button"
+                                className='detailsPostInfo__button'
                                 onClick={() => {
-                                    likeToogleDetailsPage(
-                                        id,
-                                        wasLiked,
-                                        setPosts,
-                                        setPostInfo
-                                    );
+                                    likeToogleDetailsPage(id, wasLiked, setPosts, setPostInfo);
                                 }}
                             >
-                                {wasLiked ? (
-                                    <HeartFill fill="red" />
-                                ) : (
-                                    <Heart />
-                                )}{' '}
+                                {wasLiked ? <HeartFill fill='red' /> : <Heart />}{' '}
                                 <span>{!!likes.length && likes.length}</span>
                             </button>
                         </div>

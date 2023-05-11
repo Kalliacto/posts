@@ -4,13 +4,13 @@ import { Search as SearchIcon } from 'react-bootstrap-icons';
 
 const Search = ({ setSearch }) => {
     return (
-        <div className="search">
+        <div className='search'>
             <input
-                className="search__input"
-                placeholder="Поиск постов на любой вкус..."
+                className='search__input'
+                placeholder='Поиск постов на любой вкус...'
                 onChange={(e) => setSearch(e.target.value)}
             />
-            <SearchIcon className="search__icon" />
+            <SearchIcon className='search__icon' />
         </div>
     );
 };

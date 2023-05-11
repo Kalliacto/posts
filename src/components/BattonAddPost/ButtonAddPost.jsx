@@ -8,7 +8,7 @@ const ButtonAddPost = ({ ...props }) => {
     return (
         <>
             <button
-                className="button__add"
+                className='button__add'
                 onClick={() => {
                     console.log('есть контакт!');
                     setActiveModal(true);

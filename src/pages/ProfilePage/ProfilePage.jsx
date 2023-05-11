@@ -19,37 +19,26 @@ const ProfilePage = () => {
         api.getUserInfoById(userId)
             .then((userData) => {
                 setUserInfo(userData);
-                const filter = posts.filter(
-                    (post) => post.author._id === userId
-                );
+                const filter = posts.filter((post) => post.author._id === userId);
                 setUserPosts(filter);
-                const favFilter = posts.filter((post) =>
-                    post.likes.includes(userId)
-                );
+                const favFilter = posts.filter((post) => post.likes.includes(userId));
                 setUserFavPosts(favFilter);
             })
             .catch((error) =>
-                console.error(
-                    'Ошибка при запросе данных пользователя в профиле',
-                    error
-                )
+                console.error('Ошибка при запросе данных пользователя в профиле', error)
             );
     }, [userId, posts]);
     const myProfile = user._id === userId;
     return (
-        <div className="profilePage">
+        <div className='profilePage'>
             <GoBackBtn />
-            <div className="profile">
-                <div className="profile__avatar-wrapper">
-                    <img
-                        className="profile__avatar"
-                        src={avatar}
-                        alt="avatar"
-                    />
-                    {myProfile && <PencilSquare className="editProfile" />}
+            <div className='profile'>
+                <div className='profile__avatar-wrapper'>
+                    <img className='profile__avatar' src={avatar} alt='avatar' />
+                    {myProfile && <PencilSquare className='editProfile' />}
                 </div>
-                <div className="profile__info-wrapper">
-                    <div className="profile__info">
+                <div className='profile__info-wrapper'>
+                    <div className='profile__info'>
                         <h2>Имя:</h2>
                         <span>{name}</span>
                         <h2>email:</h2>
@@ -57,18 +46,18 @@ const ProfilePage = () => {
                         <h2>О себе:</h2>
                         <span>{about}</span>
                     </div>
-                    {myProfile && <PencilSquare className="editProfile" />}
+                    {myProfile && <PencilSquare className='editProfile' />}
                 </div>
             </div>
             {myProfile ? <h2>Мои посты</h2> : <h2>Все посты пользователя</h2>}
-            <div className="userPosts">
+            <div className='userPosts'>
                 <PostsList posts={userPosts} />
             </div>
             <h2>Понравившиеся посты</h2>
             {!userFavPosts.length ? (
                 'Нет понравившихся постов'
             ) : (
-                <div className="userFavPosts">
+                <div className='userFavPosts'>
                     <PostsList posts={userFavPosts} />
                 </div>
             )}

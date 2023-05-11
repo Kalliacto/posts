@@ -20,10 +20,7 @@ function App() {
                 setUser(userData);
             })
             .catch((error) =>
-                console.error(
-                    'Ошибка при загрузке данных постов или пользователя',
-                    error
-                )
+                console.error('Ошибка при загрузке данных постов или пользователя', error)
             );
     }, []);
 
@@ -45,7 +42,7 @@ function App() {
     };
 
     return (
-        <div className="App">
+        <div className='App'>
             <Context.Provider value={valueContext}>
                 <Header />
                 <Main />
