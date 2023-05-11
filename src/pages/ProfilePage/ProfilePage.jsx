@@ -49,15 +49,21 @@ const ProfilePage = () => {
                     {myProfile && <PencilSquare className='editProfile' />}
                 </div>
             </div>
-            {myProfile ? <h2>Мои посты</h2> : <h2>Все посты пользователя</h2>}
+
             <div className='userPosts'>
+                {myProfile ? (
+                    <h2 className='profilePage__title'>Мои посты</h2>
+                ) : (
+                    <h2 className='profilePage__title'>Все посты пользователя</h2>
+                )}
                 <PostsList posts={userPosts} />
             </div>
-            <h2>Понравившиеся посты</h2>
+
             {!userFavPosts.length ? (
                 'Нет понравившихся постов'
             ) : (
                 <div className='userFavPosts'>
+                    <h2 className='profilePage__title'>Понравившиеся посты</h2>
                     <PostsList posts={userFavPosts} />
                 </div>
             )}
