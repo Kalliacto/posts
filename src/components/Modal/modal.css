@@ -27,7 +27,9 @@
     background-color: transparent;
     border: none;
 }
-
+.close__modal:hover {
+    cursor: pointer;
+}
 .modal_active {
     transform: scale(1);
 }
