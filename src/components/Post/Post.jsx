@@ -15,11 +15,7 @@ const Post = ({ post }) => {
     const deletePost = async (id) => {
         return await api
             .deletePostById(id)
-            .then(() => {
-                return setPosts((state) => {
-                    return state.filter((post) => post._id !== id);
-                });
-            })
+            .then(() => setPosts((state) => state.filter((post) => post._id !== id)))
             .catch((error) => console.log(error));
     };
 

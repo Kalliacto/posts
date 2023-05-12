@@ -5,18 +5,15 @@ import { api } from '../../api/api';
 import { Context } from '../../context/Context';
 
 const AddInputPost = () => {
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, reset } = useForm({});
     const { setPosts, setActiveModal } = useContext(Context);
 
     const sendPost = async (post) => {
         return await api
             .addNewPost(post)
-            .then((post) => {
-                return setPosts((state) => {
-                    return [post, ...state];
-                });
-            })
+            .then((post) => setPosts((state) => [post, ...state]))
             .then(setActiveModal((state) => !state))
+            .then(reset())
             .catch((error) => console.log(error));
     };
 
