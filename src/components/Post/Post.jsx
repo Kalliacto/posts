@@ -13,11 +13,15 @@ const Post = ({ post }) => {
     const wasLiked = likes.includes(user._id);
 
     const deletePost = (id, setPosts) => {
-        api.deletePostById(id).then((post) =>
-            setPosts((state) => state.filter((post) => post._id !== id))
-        );
+        api.deletePostById(id)
+            .then((post) => {
+                return setPosts((state) => {
+                    return state.filter((post) => post._id !== id);
+                });
+            })
+            .catch((error) => console.log(error));
     };
-    console.log(user._id, author._id);
+
     return (
         <div className='post'>
             {user._id === author._id && (

@@ -9,10 +9,13 @@ const AddInputPost = () => {
     const { setPosts, setActiveModal } = useContext(Context);
 
     const sendPost = async (post) => {
-        console.log({ post });
         return await api
             .addNewPost(post)
-            .then((post) => setPosts((state) => [...state, post]))
+            .then((post) => {
+                return setPosts((state) => {
+                    return [post, ...state];
+                });
+            })
             .then(setActiveModal((state) => !state))
             .catch((error) => console.log(error));
     };
