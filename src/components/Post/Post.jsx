@@ -12,9 +12,10 @@ const Post = ({ post }) => {
     const { author, image, title, text, tags, likes, created_at, _id, comments } = post;
     const wasLiked = likes.includes(user._id);
 
-    const deletePost = (id, setPosts) => {
-        api.deletePostById(id)
-            .then((post) => {
+    const deletePost = async (id) => {
+        return await api
+            .deletePostById(id)
+            .then(() => {
                 return setPosts((state) => {
                     return state.filter((post) => post._id !== id);
                 });
