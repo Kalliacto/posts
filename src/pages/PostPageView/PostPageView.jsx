@@ -6,6 +6,7 @@ import GoBackBtn from '../../components/GoBackBtn/GoBackBtn';
 import { Heart, HeartFill } from 'react-bootstrap-icons';
 import { Context } from '../../context/Context';
 import { likeToogleDetailsPage, preloadObj } from '../../utils/utils';
+import Comment from '../../components/Comment/Comment';
 
 const PostPageView = () => {
     const { user, setPosts } = useContext(Context);
@@ -14,7 +15,7 @@ const PostPageView = () => {
     useEffect(() => {
         api.getOnePost(id).then((data) => setPostInfo(data));
     }, [id]);
-    const { author, image, title, text, tags, likes, created_at } = postInfo;
+    const { author, image, title, text, tags, likes, created_at, comments } = postInfo;
     const wasLiked = likes.includes(user._id);
     return (
         <div className='detailsPost'>
@@ -68,6 +69,12 @@ const PostPageView = () => {
                         </span>
                     </div>
                 </div>
+            </div>
+            <div className='comments'>
+                <h2>Комментарии</h2>
+                {!!comments.length ? comments.map((comment) => (
+                    <Comment commentData={comment} />)) : <span>Нет комментариев</span>
+                }
             </div>
         </div>
     );
