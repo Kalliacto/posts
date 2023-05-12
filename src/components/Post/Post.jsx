@@ -17,10 +17,13 @@ const Post = ({ post }) => {
             setPosts((state) => state.filter((post) => post._id !== id))
         );
     };
-
+    console.log(user._id, author._id);
     return (
         <div className='post'>
-            <Trash3 className='post__trash' onClick={() => deletePost(post._id)} />
+            {user._id === author._id && (
+                <Trash3 className='post__trash' onClick={() => deletePost(post._id)} />
+            )}
+
             <Link to={`/profile/${author._id}`}>
                 <div className='post__header'>
                     <img src={author.avatar} alt='avatar' className='post__autor-avatar' />
