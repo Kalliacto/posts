@@ -4,13 +4,27 @@ import { Chat, Heart, HeartFill } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { Context } from '../../context/Context';
 import { likeToggle } from '../../utils/utils';
+import { Trash3 } from 'react-bootstrap-icons';
+import { api } from '../../api/api';
 
 const Post = ({ post }) => {
     const { user, setPosts } = useContext(Context);
     const { author, image, title, text, tags, likes, created_at, _id, comments } = post;
     const wasLiked = likes.includes(user._id);
+
+    const deletePost = async (id) => {
+        return await api
+            .deletePostById(id)
+            .then(() => setPosts((state) => state.filter((post) => post._id !== id)))
+            .catch((error) => console.log(error));
+    };
+
     return (
         <div className='post'>
+            {user._id === author._id && (
+                <Trash3 className='post__trash' onClick={() => deletePost(post._id)} />
+            )}
+
             <Link to={`/profile/${author._id}`}>
                 <div className='post__header'>
                     <img src={author.avatar} alt='avatar' className='post__autor-avatar' />

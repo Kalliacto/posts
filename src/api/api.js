@@ -65,6 +65,13 @@ class Api {
             headers: this.headers,
         }).then(onResponse);
     }
+
+    deletePostById(id) {
+        return fetch(`${this.basePostsUrl}/${id}`, {
+            method: 'DELETE',
+            headers: this.headers,
+        }).then(onResponse);
+    }
 }
 
 export const api = new Api(config);

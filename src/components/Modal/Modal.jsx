@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import './modal.css';
 import { Context } from '../../context/Context';
 
-const Modal = () => {
+const Modal = ({ children }) => {
     const { activeModal, setActiveModal } = useContext(Context);
     return (
         <div className={!!activeModal ? 'modal modal_active' : 'modal'}>
@@ -25,6 +25,7 @@ const Modal = () => {
                         />
                     </svg>
                 </button>
+                <div className='modal__form_content'>{children}</div>
             </div>
         </div>
     );
