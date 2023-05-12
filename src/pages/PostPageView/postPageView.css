@@ -1,6 +1,6 @@
 .detailsPost {
     display: grid;
-    gap: 20px;
+    gap: 50px;
 }
 
 .detailsPost__main {
@@ -36,6 +36,7 @@
     width: 100px;
     height: 100px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .detailsPost__autor-info {
@@ -86,4 +87,16 @@
     gap: 3px;
     color: #58504d;
     font-weight: 600;
+}
+
+.comments {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+@media (max-width: 730px) {
+    .detailsPost__main {
+        grid-template-columns: 1fr;
+    }
 }
