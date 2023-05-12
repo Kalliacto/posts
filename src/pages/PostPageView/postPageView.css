@@ -87,3 +87,9 @@
     color: #58504d;
     font-weight: 600;
 }
+
+@media (max-width: 730px) {
+    .detailsPost__main {
+        grid-template-columns: 1fr;
+    }
+}
