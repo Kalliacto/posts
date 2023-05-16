@@ -17,12 +17,12 @@ const PostPageView = () => {
     const [postAllComment, setPostAllComment] = useState([]);
 
     useEffect(() => {
-        Promise.all([api.getOnePost(id), api.getPostCommentsAll(id)]).then(
-            ([postData, commentsData]) => {
+        Promise.all([api.getOnePost(id), api.getPostCommentsAll(id)])
+            .then(([postData, commentsData]) => {
                 setPostInfo(postData);
                 setPostAllComment(commentsData);
-            }
-        );
+            })
+            .catch((error) => console.log(error));
     }, [id]);
 
     console.log({ postInfo });
@@ -82,7 +82,7 @@ const PostPageView = () => {
             </div>
             <div className='comments'>
                 <Comment
-                    commentData={comments}
+                    postId={id}
                     postAllComment={postAllComment}
                     setPostAllComment={setPostAllComment}
                 />

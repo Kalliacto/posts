@@ -3,15 +3,19 @@ import './comment.css';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Context } from '../../context/Context';
+import { api } from '../../api/api';
 
-const Comment = ({ commentData, postAllComment, setPostAllComment }) => {
-    const { author, text, created_at } = commentData;
+const Comment = ({ postId, postAllComment, setPostAllComment }) => {
     const [formActive, setFormActive] = useState(false);
     const { register, handleSubmit, reset } = useForm({});
     const { user } = useContext(Context);
 
-    const addCommit = () => {
-        console.log('click');
+    const addCommit = async (comment) => {
+        return await api
+            .addNewComment(postId, comment)
+            .then((comment) => setPostAllComment(comment.comments))
+            .then(reset())
+            .catch((error) => console.log(error));
     };
 
     const deleteCommit = () => {};
@@ -50,7 +54,7 @@ const Comment = ({ commentData, postAllComment, setPostAllComment }) => {
                                     <b>{elem.author.name}</b>
                                     <span>{elem.author.about}</span>
                                     <span className='comment__create-date'>
-                                        {new Date(created_at).toLocaleDateString('ru-RU', {
+                                        {new Date(elem.created_at).toLocaleDateString('ru-RU', {
                                             year: 'numeric',
                                             month: 'long',
                                             day: 'numeric',
