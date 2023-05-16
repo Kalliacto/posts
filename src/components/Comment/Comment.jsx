@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Context } from '../../context/Context';
 import { api } from '../../api/api';
+import { Trash } from 'react-bootstrap-icons';
 
 const Comment = ({ postId, postAllComment, setPostAllComment }) => {
     const [formActive, setFormActive] = useState(false);
@@ -18,7 +19,16 @@ const Comment = ({ postId, postAllComment, setPostAllComment }) => {
             .catch((error) => console.log(error));
     };
 
-    const deleteCommit = () => {};
+    const deleteCommit = async (commentId) => {
+        return await api
+            .deleteCommentPostById(postId, commentId)
+            .then(() =>
+                setPostAllComment((state) =>
+                    state.filter((postComment) => postComment._id !== commentId)
+                )
+            )
+            .catch((error) => console.log(error));
+    };
 
     return (
         <>
@@ -64,6 +74,14 @@ const Comment = ({ postId, postAllComment, setPostAllComment }) => {
                             </div>
                         </Link>
                         <p>{elem.text}</p>
+                        {user._id === elem.author._id ? (
+                            <Trash
+                                className='comments__trash'
+                                onClick={() => deleteCommit(elem._id)}
+                            />
+                        ) : (
+                            ''
+                        )}
                     </div>
                 ))
             ) : (

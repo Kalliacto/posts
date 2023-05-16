@@ -66,3 +66,8 @@
     border: 1px solid lightgrey;
     outline: none;
 }
+
+.comments__trash {
+    cursor: pointer;
+    align-self: flex-end;
+}
