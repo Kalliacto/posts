@@ -12,11 +12,13 @@ const PostPageView = () => {
     const { user, setPosts } = useContext(Context);
     const [postInfo, setPostInfo] = useState(preloadObj);
     const { id } = useParams();
+    const { author, image, title, text, tags, likes, created_at, comments } = postInfo;
+    const wasLiked = likes.includes(user._id);
+
     useEffect(() => {
         api.getOnePost(id).then((data) => setPostInfo(data));
     }, [id]);
-    const { author, image, title, text, tags, likes, created_at, comments } = postInfo;
-    const wasLiked = likes.includes(user._id);
+
     return (
         <div className='detailsPost'>
             <GoBackBtn />
@@ -72,9 +74,11 @@ const PostPageView = () => {
             </div>
             <div className='comments'>
                 <h2>Комментарии</h2>
-                {!!comments.length ? comments.map((comment) => (
-                    <Comment commentData={comment} />)) : <span>Нет комментариев</span>
-                }
+                {!!comments.length ? (
+                    comments.map((comment) => <Comment commentData={comment} />)
+                ) : (
+                    <span>Нет комментариев</span>
+                )}
             </div>
         </div>
     );
