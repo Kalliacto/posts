@@ -95,6 +95,7 @@ class Api {
 
     getPostCommentsAll(id) {
         return fetch(`${this.basePostsUrl}/comments/${id}`, {
+            method: 'GET',
             headers: this.headers,
         }).then(onResponse);
     }
