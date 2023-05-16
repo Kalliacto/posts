@@ -12,11 +12,17 @@ const PostPageView = () => {
     const { user, setPosts } = useContext(Context);
     const [postInfo, setPostInfo] = useState(preloadObj);
     const { id } = useParams();
-    const { author, image, title, text, tags, likes, created_at, comments } = postInfo;
+    const { author, image, title, text, tags, likes, created_at } = postInfo;
     const wasLiked = likes.includes(user._id);
+    const [postAllComment, setPostAllComment] = useState([]);
 
     useEffect(() => {
-        api.getOnePost(id).then((data) => setPostInfo(data));
+        Promise.all([api.getOnePost(id), api.getPostCommentsAll(id)]).then(
+            ([postData, commentsData]) => {
+                setPostInfo(postData);
+                setPostAllComment(commentsData);
+            }
+        );
     }, [id]);
 
     return (
@@ -74,8 +80,14 @@ const PostPageView = () => {
             </div>
             <div className='comments'>
                 <h2>Комментарии</h2>
-                {!!comments.length ? (
-                    comments.map((comment) => <Comment commentData={comment} />)
+                {postAllComment.length ? (
+                    postAllComment.map((comment) => (
+                        <Comment
+                            commentData={comment}
+                            postAllComment={postAllComment}
+                            setPostAllComment={setPostAllComment}
+                        />
+                    ))
                 ) : (
                     <span>Нет комментариев</span>
                 )}

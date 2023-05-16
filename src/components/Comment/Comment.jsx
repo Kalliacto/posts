@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Comment = ({ commentData }) => {
     const { author, text, created_at } = commentData;
+
     return (
         <div className='comment'>
             <Link className='comment__link' to={`/profile/${author._id}`}>
