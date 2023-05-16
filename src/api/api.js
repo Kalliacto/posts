@@ -72,6 +72,33 @@ class Api {
             headers: this.headers,
         }).then(onResponse);
     }
+
+    getAllComments() {
+        return fetch(`${this.basePostsUrl}/comments`, {
+            headers: this.headers,
+        }).then(onResponse);
+    }
+
+    getPostCommentsAll(id) {
+        return fetch(`${this.basePostsUrl}/comments/${id}`, {
+            headers: this.headers,
+        }).then(onResponse);
+    }
+
+    addNewComment(postId, comment) {
+        return fetch(`${this.basePostsUrl}/comments/${postId}`, {
+            method: 'POST',
+            headers: this.headers,
+            body: JSON.stringify(comment),
+        }).then(onResponse);
+    }
+
+    deleteCommentPostById(postId, commentId) {
+        return fetch(`${this.basePostsUrl}/comments/${postId}/${commentId}`, {
+            method: 'DELETE',
+            headers: this.headers,
+        }).then(onResponse);
+    }
 }
 
 export const api = new Api(config);
