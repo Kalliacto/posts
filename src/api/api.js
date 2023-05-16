@@ -66,6 +66,20 @@ class Api {
         }).then(onResponse);
     }
 
+    changingProfileInfo() {
+        return fetch(`${this.baseUsersUrl}/me`, {
+            method: 'PATCH',
+            headers: this.headers,
+        }).then(onResponse);
+    }
+
+    changingAvatar() {
+        return fetch(`${this.baseUsersUrl}/me/avatar`, {
+            method: 'PATCH',
+            headers: this.headers,
+        }).then(onResponse);
+    }
+
     deletePostById(id) {
         return fetch(`${this.basePostsUrl}/${id}`, {
             method: 'DELETE',
