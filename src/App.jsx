@@ -47,7 +47,7 @@ function App() {
             <Context.Provider value={valueContext}>
                 <Header />
                 <Main />
-                <Modal children={<AddInputPost />} />
+
                 <Footer />
             </Context.Provider>
         </div>

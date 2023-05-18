@@ -16,6 +16,7 @@ const Comment = ({ postId, postAllComment, setPostAllComment }) => {
             .addNewComment(postId, comment)
             .then((comment) => setPostAllComment(comment.comments))
             .then(reset())
+            .then(setFormActive(false))
             .catch((error) => console.log(error));
     };
 
