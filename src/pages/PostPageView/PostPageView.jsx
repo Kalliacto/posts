@@ -7,12 +7,13 @@ import { Heart, HeartFill } from 'react-bootstrap-icons';
 import { Context } from '../../context/Context';
 import { likeToogleDetailsPage, preloadObj } from '../../utils/utils';
 import Comment from '../../components/Comment/Comment';
+import Modal from '../../components/Modal/Modal';
 
 const PostPageView = () => {
-    const { user, setPosts } = useContext(Context);
+    const { user, setPosts, setActiveModal } = useContext(Context);
     const [postInfo, setPostInfo] = useState(preloadObj);
     const { id } = useParams();
-    const { author, image, title, text, tags, likes, created_at, comments } = postInfo;
+    const { author, image, title, text, tags, likes, created_at } = postInfo;
     const wasLiked = likes.includes(user._id);
     const [postAllComment, setPostAllComment] = useState([]);
 
@@ -25,14 +26,17 @@ const PostPageView = () => {
             .catch((error) => console.log(error));
     }, [id]);
 
-    console.log({ postInfo });
-
     return (
         <div className='detailsPost'>
             <GoBackBtn />
             <div className='detailsPost__main'>
                 <div className='detailsPost__image-wrapper'>
-                    <img src={image} alt='post' className='detailsPost__image' />
+                    <img
+                        src={image}
+                        alt='post'
+                        className='detailsPost__image'
+                        onClick={() => setActiveModal(true)}
+                    />
                 </div>
                 <div className='detailsPost__info-wrapper'>
                     <Link to={`/profile/${author._id}`}>
@@ -87,6 +91,7 @@ const PostPageView = () => {
                     setPostAllComment={setPostAllComment}
                 />
             </div>
+            <Modal children={<img src={image} alt='post' />} />
         </div>
     );
 };

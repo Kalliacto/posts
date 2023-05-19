@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './postsListTitle.css';
 import SortPosts from '../SortPosts/SortPosts';
 import { Arrow90degDown } from 'react-bootstrap-icons';
 import ButtonAddPost from '../BattonAddPost/ButtonAddPost';
+import Modal from '../Modal/Modal';
+import { Context } from '../../context/Context';
+import AddInputPost from '../AddInputPost/AddInputPost';
 
 const PostsListTitle = () => {
+    const { setActiveModal } = useContext(Context);
     return (
         <div className='posts__title'>
             <h1>Добро пожаловать к нам!</h1>
@@ -14,8 +18,9 @@ const PostsListTitle = () => {
             </div>
             <div className='wrapper__for_functional'>
                 <SortPosts />
-                <ButtonAddPost title={'Создать новый пост'} />
+                <ButtonAddPost title={'Создать новый пост'} onClick={() => setActiveModal(true)} />
             </div>
+            <Modal children={<AddInputPost />} />
         </div>
     );
 };
