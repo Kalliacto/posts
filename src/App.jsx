@@ -5,8 +5,6 @@ import Header from './components/Header/Header';
 import Main from './components/Main/Main';
 import Footer from './components/Footer/Footer';
 import { api } from './api/api';
-import Modal from './components/Modal/Modal';
-import AddInputPost from './components/AddInputPost/AddInputPost';
 
 function App() {
     const [user, setUser] = useState({});
@@ -47,7 +45,6 @@ function App() {
             <Context.Provider value={valueContext}>
                 <Header />
                 <Main />
-
                 <Footer />
             </Context.Provider>
         </div>

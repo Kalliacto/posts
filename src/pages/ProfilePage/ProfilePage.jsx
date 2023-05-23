@@ -6,15 +6,19 @@ import { preloadUser } from '../../utils/utils';
 import GoBackBtn from '../../components/GoBackBtn/GoBackBtn';
 import { Context } from '../../context/Context';
 import PostsList from '../../components/PostsList/PostsList';
+import ChangingAvatar from '../../components/Forms/ChangingAvatar/ChangingAvatar';
 import { PencilSquare } from 'react-bootstrap-icons';
+import Modal from '../../components/Modal/Modal';
+import EditInfoUserInProfile from '../../components/Forms/EditInfoUserInProfile/EditInfoUserInProfile';
 
 const ProfilePage = () => {
-    const { user, posts } = useContext(Context);
+    const { user, posts, setActiveModal } = useContext(Context);
     const [userInfo, setUserInfo] = useState(preloadUser);
     const [userPosts, setUserPosts] = useState([]);
     const [userFavPosts, setUserFavPosts] = useState([]);
     const { name, about, email, avatar } = userInfo;
     const { userId } = useParams();
+
     useEffect(() => {
         api.getUserInfoById(userId)
             .then((userData) => {
@@ -29,13 +33,20 @@ const ProfilePage = () => {
             );
     }, [userId, posts]);
     const myProfile = user._id === userId;
+
     return (
         <div className='profilePage'>
             <GoBackBtn />
             <div className='profile'>
                 <div className='profile__avatar-wrapper'>
                     <img className='profile__avatar' src={avatar} alt='avatar' />
-                    {myProfile && <PencilSquare className='editProfile' />}
+                    {myProfile && (
+                        <PencilSquare
+                            className='editProfile'
+                            onClick={() => setActiveModal(true)}
+                        />
+                    )}
+                    <Modal children={<ChangingAvatar />} />
                 </div>
                 <div className='profile__info-wrapper'>
                     <div className='profile__info'>
@@ -46,7 +57,13 @@ const ProfilePage = () => {
                         <h2>О себе:</h2>
                         <span>{about}</span>
                     </div>
-                    {myProfile && <PencilSquare className='editProfile' />}
+                    {myProfile && (
+                        <PencilSquare
+                            className='editProfile'
+                            onClick={() => setActiveModal(true)}
+                        />
+                    )}
+                    {/* <Modal children={<EditInfoUserInProfile />} /> */}
                 </div>
             </div>
 

@@ -46,6 +46,14 @@ class Api {
         }).then(onResponse);
     }
 
+    editInfoPost(id, data) {
+        return fetch(`${this.basePostsUrl}/${id}`, {
+            method: 'PATCH',
+            headers: this.headers,
+            body: JSON.stringify(data),
+        }).then(onResponse);
+    }
+
     changePostLike(postId, isLiked) {
         return fetch(`${this.basePostsUrl}/likes/${postId}`, {
             headers: this.headers,
@@ -66,17 +74,19 @@ class Api {
         }).then(onResponse);
     }
 
-    changingProfileInfo() {
+    changingProfileInfo(data) {
         return fetch(`${this.baseUsersUrl}/me`, {
             method: 'PATCH',
             headers: this.headers,
+            body: JSON.stringify(data),
         }).then(onResponse);
     }
 
-    changingAvatar() {
+    changingAvatarInfo(avatar) {
         return fetch(`${this.baseUsersUrl}/me/avatar`, {
             method: 'PATCH',
             headers: this.headers,
+            body: JSON.stringify(avatar),
         }).then(onResponse);
     }
 

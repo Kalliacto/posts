@@ -5,7 +5,7 @@ import { Arrow90degDown } from 'react-bootstrap-icons';
 import ButtonAddPost from '../BattonAddPost/ButtonAddPost';
 import Modal from '../Modal/Modal';
 import { Context } from '../../context/Context';
-import AddInputPost from '../AddInputPost/AddInputPost';
+import AddInputPost from '../Forms/AddInputPost/AddInputPost';
 
 const PostsListTitle = () => {
     const { setActiveModal } = useContext(Context);
