@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { api } from '../../../api/api';
 import { Context } from '../../../context/Context';
 
-const AddInputPost = () => {
+const AddPostForm = () => {
     const { register, handleSubmit, reset } = useForm({});
     const { setPosts, setActiveModal } = useContext(Context);
 
@@ -51,4 +51,4 @@ const AddInputPost = () => {
     );
 };
 
-export default AddInputPost;
+export default AddPostForm;

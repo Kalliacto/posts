@@ -14,15 +14,18 @@ const ChangingAvatar = (props) => {
     }, [user.avatar]);
 
     const sendEditDataAvatarInfo = async (avatar) => {
-        return await api
-            .changingAvatar(avatar)
-            .then((info) => setUser((state) => [...state]))
-            .then(reset())
-            .catch((error) => console.log(error));
+        // return await api
+        //     .changingAvatar(avatar)
+        //     .then((info) => {
+        //         console.log({ info });
+        //         setUser((state) => [info, ...state]);
+        //     })
+        //     .then(reset())
+        //     .catch((error) => console.log(error));
+        console.log('есть контакт');
     };
 
     const onPreviewFile = (e) => {
-        console.log(e.target.value);
         setPreviewFile(e.target.value);
     };
 
