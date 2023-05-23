@@ -1,22 +1,22 @@
-.addInputPost__wrapper {
+.inputPost__wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
 }
 
-.addInputPost__input {
+.inputPost__input {
     width: 100%;
     border-radius: 24px;
     border: none;
     padding: 7px 10px;
 }
 
-.addInputPost__input:focus {
+.inputPost__input:focus {
     outline: none;
 }
 
-.addInputPost__btn {
+.inputPost__btn {
     margin-top: 10px;
     padding: 10px;
     background-color: coral;
@@ -26,6 +26,20 @@
     font-weight: 600;
 }
 
-.addInputPost__btn:hover {
+.inputPost__btn:hover {
     cursor: pointer;
+}
+
+.inputPost__title {
+    margin-bottom: 15px;
+}
+.inputPost__preview_wrap {
+    max-width: 250px;
+    padding: 8px;
+}
+.inputPost__preview {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 24px;
 }

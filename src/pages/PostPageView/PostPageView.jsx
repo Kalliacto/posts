@@ -3,7 +3,7 @@ import './postPageView.css';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../../api/api';
 import GoBackBtn from '../../components/GoBackBtn/GoBackBtn';
-import { Heart, HeartFill } from 'react-bootstrap-icons';
+import { Heart, HeartFill, ZoomIn } from 'react-bootstrap-icons';
 import { Context } from '../../context/Context';
 import { likeToogleDetailsPage, preloadObj } from '../../utils/utils';
 import Comment from '../../components/Comment/Comment';
@@ -31,12 +31,8 @@ const PostPageView = () => {
             <GoBackBtn />
             <div className='detailsPost__main'>
                 <div className='detailsPost__image-wrapper'>
-                    <img
-                        src={image}
-                        alt='post'
-                        className='detailsPost__image'
-                        onClick={() => setActiveModal(true)}
-                    />
+                    <img src={image} alt='post' className='detailsPost__image' />
+                    <ZoomIn className='detailsPost__zoom' onClick={() => setActiveModal(true)} />
                 </div>
                 <div className='detailsPost__info-wrapper'>
                     <Link to={`/profile/${author._id}`}>

@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import './addInputPost.css';
+import '../inputPost.css';
 import { useForm } from 'react-hook-form';
-import { api } from '../../api/api';
-import { Context } from '../../context/Context';
+import { api } from '../../../api/api';
+import { Context } from '../../../context/Context';
 
-const AddInputPost = () => {
+const AddPostForm = () => {
     const { register, handleSubmit, reset } = useForm({});
     const { setPosts, setActiveModal } = useContext(Context);
 
@@ -18,24 +18,24 @@ const AddInputPost = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(sendPost)} className='addInputPost__wrapper'>
+        <form onSubmit={handleSubmit(sendPost)} className='inputPost__wrapper'>
             <input
                 type='text'
                 {...register('title')}
-                className='addInputPost__input'
+                className='inputPost__input'
                 placeholder='Заголовок поста'
             />
             <textarea
                 type='text'
                 {...register('text')}
-                className='addInputPost__input'
+                className='inputPost__input'
                 placeholder='Текст поста'
                 rows={1}
             />
             <input
                 type='text'
                 {...register('image')}
-                className='addInputPost__input'
+                className='inputPost__input'
                 placeholder='Изображение'
             />
             {/* <input
@@ -44,11 +44,11 @@ const AddInputPost = () => {
                 className='addInputPost__input'
                 placeholder='Тэги'
             /> */}
-            <button type='submit' className='addInputPost__btn'>
+            <button type='submit' className='inputPost__btn'>
                 Создать новый пост
             </button>
         </form>
     );
 };
 
-export default AddInputPost;
+export default AddPostForm;

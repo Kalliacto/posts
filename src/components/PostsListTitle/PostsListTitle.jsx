@@ -5,7 +5,7 @@ import { Arrow90degDown } from 'react-bootstrap-icons';
 import ButtonAddPost from '../BattonAddPost/ButtonAddPost';
 import Modal from '../Modal/Modal';
 import { Context } from '../../context/Context';
-import AddInputPost from '../AddInputPost/AddInputPost';
+import AddPostForm from '../Forms/AddPostForm/AddPostForm';
 
 const PostsListTitle = () => {
     const { setActiveModal } = useContext(Context);
@@ -20,7 +20,7 @@ const PostsListTitle = () => {
                 <SortPosts />
                 <ButtonAddPost title={'Создать новый пост'} onClick={() => setActiveModal(true)} />
             </div>
-            <Modal children={<AddInputPost />} />
+            <Modal children={<AddPostForm />} />
         </div>
     );
 };
