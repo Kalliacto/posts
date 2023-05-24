@@ -11,7 +11,9 @@ function App() {
     const [posts, setPosts] = useState([]);
     const [search, setSearch] = useState(undefined);
     const [activeModal, setActiveModal] = useState(false);
-
+    const [previewImage, setPreviewImage] = useState(
+        'https://jkfenner.com/wp-content/uploads/2019/11/default.jpg'
+    );
     useEffect(() => {
         Promise.all([api.getAllPosts(), api.getUserInfo()])
             .then(([postData, userData]) => {
@@ -33,11 +35,14 @@ function App() {
     const valueContext = {
         posts,
         user,
+        setUser,
         setPosts,
         search,
         setSearch,
         activeModal,
         setActiveModal,
+        previewImage,
+        setPreviewImage,
     };
 
     return (

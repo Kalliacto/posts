@@ -7,7 +7,7 @@ import GoBackBtn from '../../components/GoBackBtn/GoBackBtn';
 import { Context } from '../../context/Context';
 import PostsList from '../../components/PostsList/PostsList';
 import ChangingAvatar from '../../components/Forms/ChangingAvatar/ChangingAvatar';
-import { PencilSquare } from 'react-bootstrap-icons';
+import { PencilSquare, XLg } from 'react-bootstrap-icons';
 import Modal from '../../components/Modal/Modal';
 import EditInfoUserInProfile from '../../components/Forms/EditInfoUserInProfile/EditInfoUserInProfile';
 
@@ -18,6 +18,9 @@ const ProfilePage = () => {
     const [userFavPosts, setUserFavPosts] = useState([]);
     const { name, about, email, avatar } = userInfo;
     const { userId } = useParams();
+    const myProfile = user._id === userId;
+    const [previewAvatar, setPreviewAvatar] = useState('');
+    const [showForm, setShowForm] = useState(false);
 
     useEffect(() => {
         api.getUserInfoById(userId)
@@ -27,12 +30,12 @@ const ProfilePage = () => {
                 setUserPosts(filter);
                 const favFilter = posts.filter((post) => post.likes.includes(userId));
                 setUserFavPosts(favFilter);
+                setPreviewAvatar(userData.avatar);
             })
             .catch((error) =>
                 console.error('Ошибка при запросе данных пользователя в профиле', error)
             );
     }, [userId, posts]);
-    const myProfile = user._id === userId;
 
     return (
         <div className='profilePage'>
@@ -46,24 +49,36 @@ const ProfilePage = () => {
                             onClick={() => setActiveModal(true)}
                         />
                     )}
-                    <Modal children={<ChangingAvatar />} />
+                    <Modal
+                        children={
+                            <>
+                                <ChangingAvatar
+                                    setUserInfo={setUserInfo}
+                                    previewAvatar={previewAvatar}
+                                    setPreviewAvatar={setPreviewAvatar}
+                                />
+                            </>
+                        }
+                    />
                 </div>
                 <div className='profile__info-wrapper'>
-                    <div className='profile__info'>
-                        <h2>Имя:</h2>
-                        <span>{name}</span>
-                        <h2>email:</h2>
-                        <span>{email}</span>
-                        <h2>О себе:</h2>
-                        <span>{about}</span>
-                    </div>
-                    {myProfile && (
-                        <PencilSquare
-                            className='editProfile'
-                            onClick={() => setActiveModal(true)}
-                        />
+                    {showForm ? (
+                        <EditInfoUserInProfile userInfo={userInfo} setUserInfo={setUserInfo} setShowForm={setShowForm} />
+                    ) : (
+                        <div className='profile__info'>
+                            <h2>Имя:</h2>
+                            <span>{name}</span>
+                            <h2>О себе:</h2>
+                            <span>{about}</span>
+                            <h2>email:</h2>
+                            <span>{email}</span>
+                        </div>
                     )}
-                    {/* <Modal children={<EditInfoUserInProfile />} /> */}
+                    {myProfile && !showForm ? (
+                        <PencilSquare className='editProfile' onClick={() => setShowForm(true)} />
+                    ) : (
+                        <XLg className='editProfile' onClick={() => setShowForm(false)} />
+                    )}
                 </div>
             </div>
 
