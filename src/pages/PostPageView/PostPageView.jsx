@@ -87,7 +87,13 @@ const PostPageView = () => {
                     setPostAllComment={setPostAllComment}
                 />
             </div>
-            <Modal children={<img src={image} alt='post' />} />
+            <Modal
+                children={
+                    <div className='detailsPost__preview-wrap'>
+                        <img className='detailsPost__preview' src={image} alt='post' />
+                    </div>
+                }
+            />
         </div>
     );
 };

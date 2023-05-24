@@ -1,46 +1,51 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import '../inputPost.css';
 import { Context } from '../../../context/Context';
 import { api } from '../../../api/api';
+import { avatarOptions } from '../forsmOptions';
 
-const ChangingAvatar = (props) => {
-    const { register, handleSubmit, reset } = useForm({});
-    const { setUser, user } = useContext(Context);
-    const [previewFile, setPreviewFile] = useState('');
+const ChangingAvatar = ({setUserInfo, previewAvatar, setPreviewAvatar}) => {
+    const { setActiveModal } = useContext(Context);
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm({mode: 'onChange'});
 
-    useEffect(() => {
-        setPreviewFile(user.avatar);
-    }, [user.avatar]);
-
-    const sendEditDataAvatarInfo = async (avatar) => {
-        // return await api
-        //     .changingAvatar(avatar)
-        //     .then((info) => {
-        //         console.log({ info });
-        //         setUser((state) => [info, ...state]);
-        //     })
-        //     .then(reset())
-        //     .catch((error) => console.log(error));
-        console.log('есть контакт');
-    };
-
-    const onPreviewFile = (e) => {
-        setPreviewFile(e.target.value);
+    const sendEditDataAvatarInfo = (newAvatar) => {
+        return api
+            .changingAvatarInfo(newAvatar)
+            .then((userInfo) => {
+                setActiveModal(false);
+                reset();
+                setUserInfo({...userInfo});
+            })
+            .catch((error) => console.log(error));
     };
 
     return (
-        <form className='inputPost__wrapper' onClick={() => handleSubmit(sendEditDataAvatarInfo)}>
+        <form className='inputPost__wrapper' onSubmit={handleSubmit(sendEditDataAvatarInfo)}>
             <h4 className='inputPost__title'>Мой аватар</h4>
             <input
                 type='text'
-                {...register('image')}
-                className='inputPost__input'
+                {...register('avatar', avatarOptions)}
+                className={errors.avatar ? 'inputPost__input error' : 'inputPost__input'}
                 placeholder='Новое изображение'
-                onChange={onPreviewFile}
+                onChange={(e) => setPreviewAvatar(e.target.value)}
             />
+            {errors.avatar && <span className='error__message'>{errors.avatar.message}</span>}
             <div className='inputPost__preview_wrap'>
-                {previewFile && <img src={previewFile} className='inputPost__preview' />}
+                <img
+                    className='inputPost__preview'
+                    src={previewAvatar}
+                    onError={(e) =>
+                        (e.currentTarget.src =
+                            'https://jkfenner.com/wp-content/uploads/2019/11/default.jpg')
+                    }
+                    alt='avatar'
+                />
             </div>
             <button type='submit' className='inputPost__btn'>
                 Сохранить изменения аватара

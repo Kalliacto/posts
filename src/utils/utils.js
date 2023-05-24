@@ -80,3 +80,7 @@ export const preloadUser = {
     _id: '',
     email: '',
 };
+
+export const splitTags = (tags) => {
+    return tags.trim().split(',')
+};

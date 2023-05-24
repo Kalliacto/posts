@@ -5,12 +5,12 @@ import { Context } from '../../context/Context';
 const Modal = ({ children }) => {
     const { activeModal, setActiveModal } = useContext(Context);
     return (
-        <div className={!!activeModal ? 'modal modal_active' : 'modal'}>
+        <div className={activeModal ? 'modal modal_active' : 'modal'}>
             <div className='modal__content'>
                 <button
                     className='close__modal'
                     onClick={() => {
-                        setActiveModal(!activeModal);
+                        setActiveModal(false);
                     }}
                 >
                     <svg

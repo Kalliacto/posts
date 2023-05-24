@@ -9,8 +9,16 @@
 }
 
 .post__trash {
+    cursor: pointer;
     position: absolute;
     top: 15px;
+    right: 15px;
+}
+
+.post__edit {
+    cursor: pointer;
+    position: absolute;
+    top: 40px;
     right: 15px;
 }
 
