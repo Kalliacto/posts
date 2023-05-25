@@ -1,33 +1,34 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import '../inputPost.css';
 import { useForm } from 'react-hook-form';
-import { api } from '../../../api/api';
-import { Context } from '../../../context/Context';
-import { splitTags } from '../../../utils/utils';
 import { imageOptions, textOptions, titleOptions } from '../forsmOptions';
+import { Context } from '../../../context/Context';
+import { api } from '../../../api/api';
+import { splitTags } from '../../../utils/utils';
 
-const AddPostForm = ({ setShowAddPostModal }) => {
+const EditPostInfoForm = ({ setShowEditPostModal, editablePost, defObj }) => {
     const { setPosts, previewPostImage, setPreviewPostImage } = useContext(Context);
+console.log(defObj);
     const {
         register,
         handleSubmit,
         reset,
         formState: { errors },
-    } = useForm({ mode: 'onChange' });
+    } = useForm({
+        mode: 'onChange',
+        defaultValues: defObj,
+    });
 
-    const sendPost = async (post) => {
-        return await api
-            .addNewPost({ ...post, tags: splitTags(post.tags) })
-            .then((post) => {
-                setPosts((state) => [post, ...state]);
-                setShowAddPostModal(false);
-                reset();
-            })
-            .catch((error) => console.log(error));
+    const sendNewInfoPost = (post) => {
+        // api.setNewInfoPost(_id, { ...post, tags: splitTags(post.tags) }).then((res) => {
+        //     setPosts((state) => state.map((post) => (post._id === _id ? res : post)));
+        //     // reset();
+        //     setShowEditPostModal(false);
+        // });
     };
 
     return (
-        <form onSubmit={handleSubmit(sendPost)} className='inputPost__wrapper'>
+        <form onSubmit={handleSubmit(sendNewInfoPost)} className='inputPost__wrapper'>
             <input
                 type='text'
                 {...register('title', titleOptions)}
@@ -69,10 +70,10 @@ const AddPostForm = ({ setShowAddPostModal }) => {
                 placeholder='Тэги через запятую'
             />
             <button type='submit' className='inputPost__btn'>
-                Создать новый пост
+                Сохранить изменения
             </button>
         </form>
     );
 };
 
-export default AddPostForm;
+export default EditPostInfoForm;

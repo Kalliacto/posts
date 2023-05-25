@@ -10,8 +10,8 @@ function App() {
     const [user, setUser] = useState({});
     const [posts, setPosts] = useState([]);
     const [search, setSearch] = useState(undefined);
-    const [activeModal, setActiveModal] = useState(false);
-    const [previewImage, setPreviewImage] = useState(
+    // const [activeModal, setActiveModal] = useState(false);
+    const [previewPostImage, setPreviewPostImage] = useState(
         'https://jkfenner.com/wp-content/uploads/2019/11/default.jpg'
     );
     useEffect(() => {
@@ -39,10 +39,10 @@ function App() {
         setPosts,
         search,
         setSearch,
-        activeModal,
-        setActiveModal,
-        previewImage,
-        setPreviewImage,
+        // activeModal,
+        // setActiveModal,
+        previewPostImage,
+        setPreviewPostImage,
     };
 
     return (

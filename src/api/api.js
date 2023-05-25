@@ -46,7 +46,7 @@ class Api {
         }).then(onResponse);
     }
 
-    editInfoPost(id, data) {
+    setNewInfoPost(id, data) {
         return fetch(`${this.basePostsUrl}/${id}`, {
             method: 'PATCH',
             headers: this.headers,

@@ -52,6 +52,7 @@
 
 .detailsPost__text {
     max-width: 100%;
+    text-align: justify;
 }
 
 .detailsPost__tags {

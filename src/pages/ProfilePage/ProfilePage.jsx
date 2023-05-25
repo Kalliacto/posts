@@ -12,7 +12,7 @@ import Modal from '../../components/Modal/Modal';
 import EditInfoUserInProfile from '../../components/Forms/EditInfoUserInProfile/EditInfoUserInProfile';
 
 const ProfilePage = () => {
-    const { user, posts, setActiveModal } = useContext(Context);
+    const { user, posts } = useContext(Context);
     const [userInfo, setUserInfo] = useState(preloadUser);
     const [userPosts, setUserPosts] = useState([]);
     const [userFavPosts, setUserFavPosts] = useState([]);
@@ -20,8 +20,9 @@ const ProfilePage = () => {
     const { userId } = useParams();
     const myProfile = user._id === userId;
     const [previewAvatar, setPreviewAvatar] = useState('');
+    const [showAvatarModal, setShowAvatarModal] = useState(false);
     const [showForm, setShowForm] = useState(false);
-
+    
     useEffect(() => {
         api.getUserInfoById(userId)
             .then((userData) => {
@@ -44,26 +45,23 @@ const ProfilePage = () => {
                 <div className='profile__avatar-wrapper'>
                     <img className='profile__avatar' src={avatar} alt='avatar' />
                     {myProfile && (
-                        <PencilSquare
-                            className='editProfile'
-                            onClick={() => setActiveModal(true)}
-                        />
+                        <PencilSquare className='editProfile' onClick={() => setShowAvatarModal(true)} />
                     )}
-                    <Modal
-                        children={
-                            <>
-                                <ChangingAvatar
-                                    setUserInfo={setUserInfo}
-                                    previewAvatar={previewAvatar}
-                                    setPreviewAvatar={setPreviewAvatar}
-                                />
-                            </>
-                        }
-                    />
+                    <Modal state={showAvatarModal} setState={setShowAvatarModal}>
+                        <ChangingAvatar
+                            setUserInfo={setUserInfo}
+                            previewAvatar={previewAvatar}
+                            setPreviewAvatar={setPreviewAvatar}
+                        />
+                    </Modal>
                 </div>
                 <div className='profile__info-wrapper'>
                     {showForm ? (
-                        <EditInfoUserInProfile userInfo={userInfo} setUserInfo={setUserInfo} setShowForm={setShowForm} />
+                        <EditInfoUserInProfile
+                            userInfo={userInfo}
+                            setUserInfo={setUserInfo}
+                            setShowForm={setShowForm}
+                        />
                     ) : (
                         <div className='profile__info'>
                             <h2>Имя:</h2>
@@ -81,7 +79,6 @@ const ProfilePage = () => {
                     )}
                 </div>
             </div>
-
             <div className='userPosts'>
                 {myProfile ? (
                     <h2 className='profilePage__title'>Мои посты</h2>

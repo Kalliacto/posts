@@ -14,7 +14,7 @@ const Comment = ({ postId, postAllComment, setPostAllComment }) => {
     const addCommit = async (comment) => {
         return await api
             .addNewComment(postId, comment)
-            .then((comment) => setPostAllComment(comment.comments))
+            .then((comment) => setPostAllComment(comment.comments.reverse()))
             .then(reset())
             .then(setFormActive(false))
             .catch((error) => console.log(error));
@@ -52,8 +52,8 @@ const Comment = ({ postId, postAllComment, setPostAllComment }) => {
                 </form>
             )}
             {!!postAllComment.length ? (
-                postAllComment.map((elem) => (
-                    <div div className='comment'>
+                postAllComment.map((elem, i) => (
+                    <div key={`${elem.created_at}+${i}`} className='comment'>
                         <Link className='comment__link' to={`/profile/${elem.author._id}`}>
                             <div className='comment__author'>
                                 <img

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { aboutOptions, nameOptions } from '../forsmOptions';
 
 const EditInfoUserInProfile = ({ userInfo, setUserInfo, setShowForm }) => {
+    console.log(userInfo);
     const {
         register,
         handleSubmit,
