@@ -2,9 +2,9 @@ import React from 'react';
 import { api } from '../../../api/api';
 import '../inputPost.css';
 import { useForm } from 'react-hook-form';
-import { aboutOptions, nameOptions } from '../forsmOptions';
+import { aboutOptions, nameOptions } from '../formsOptions';
 
-const EditInfoUserInProfile = ({ userInfo, setUserInfo, setShowForm }) => {
+const EditInfoUserInProfile = ({ userInfo, setUserInfo, setActiveModal }) => {
     const {
         register,
         handleSubmit,
@@ -19,7 +19,7 @@ const EditInfoUserInProfile = ({ userInfo, setUserInfo, setShowForm }) => {
             .changingProfileInfo(data)
             .then((userData) => {
                 setUserInfo(userData);
-                setShowForm(false);
+                setActiveModal('');
             })
             .catch((error) => console.log(error));
     };

@@ -1,33 +1,37 @@
 import React, { useContext } from 'react';
 import '../inputPost.css';
 import { useForm } from 'react-hook-form';
-import { api } from '../../../api/api';
-import { Context } from '../../../context/Context';
-import { splitTags } from '../../../utils/utils';
 import { imageOptions, textOptions, titleOptions } from '../formsOptions';
+import { Context } from '../../../context/Context';
+import { api } from '../../../api/api';
+import { splitTags } from '../../../utils/utils';
 
-const AddPostForm = ({ setActiveModal }) => {
-    const { setPosts, previewPostImage, setPreviewPostImage } = useContext(Context);
+const EditPostInfoForm = ({ setActiveModal, editablePost, setPostInfo }) => {
+    const { previewPostImage, setPreviewPostImage } = useContext(Context);
     const {
         register,
         handleSubmit,
-        reset,
         formState: { errors },
-    } = useForm({ mode: 'onChange' });
-
-    const sendPost = async (post) => {
-        return await api
-            .addNewPost({ ...post, tags: splitTags(post.tags) })
-            .then((post) => {
-                setPosts((state) => [post, ...state]);
+    } = useForm({
+        mode: 'onChange',
+        defaultValues: {
+            title: editablePost.title,
+            text: editablePost.text,
+            image: editablePost.image,
+            tags: editablePost.tags.join(','),
+        },
+    });
+    const sendNewInfoPost = (post) => {
+        api.setNewInfoPost(editablePost._id, { ...post, tags: splitTags(post.tags) }).then(
+            (res) => {
+                setPostInfo(res);
                 setActiveModal('');
-                reset();
-            })
-            .catch((error) => console.log(error));
+            }
+        );
     };
 
     return (
-        <form onSubmit={handleSubmit(sendPost)} className='inputPost__wrapper'>
+        <form onSubmit={handleSubmit(sendNewInfoPost)} className='inputPost__wrapper'>
             <input
                 type='text'
                 {...register('title', titleOptions)}
@@ -40,7 +44,7 @@ const AddPostForm = ({ setActiveModal }) => {
                 {...register('text', textOptions)}
                 className={errors.text ? 'inputPost__input error' : 'inputPost__input'}
                 placeholder='Текст поста'
-                rows={1}
+                rows={5}
             />
             {errors.text && <span className='error__message'>{errors.text.message}</span>}
             <input
@@ -69,10 +73,10 @@ const AddPostForm = ({ setActiveModal }) => {
                 placeholder='Тэги через запятую'
             />
             <button type='submit' className='inputPost__btn'>
-                Создать новый пост
+                Сохранить изменения
             </button>
         </form>
     );
 };
 
-export default AddPostForm;
+export default EditPostInfoForm;
