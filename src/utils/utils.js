@@ -82,5 +82,5 @@ export const preloadUser = {
 };
 
 export const splitTags = (tags) => {
-    return tags.trim().split(',')
+    return tags.trim().split(',');
 };

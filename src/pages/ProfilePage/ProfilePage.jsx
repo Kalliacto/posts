@@ -35,7 +35,7 @@ const ProfilePage = () => {
         setUserPosts(filter);
         const favFilter = posts.filter((post) => post.likes.includes(userId));
         setUserFavPosts(favFilter);
-    }, [userId, posts])
+    }, [userId, posts]);
 
     return (
         <div className='profilePage'>

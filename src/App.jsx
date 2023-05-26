@@ -36,7 +36,7 @@ function App() {
         if (search === undefined) return;
         api.searchPost(search)
             .then((data) => setPosts(data))
-            .catch((error) => console.log(error));
+            .catch((error) => console.log('Ошибка при поиске постов', error));
     }, [search]);
 
     const valueContext = {

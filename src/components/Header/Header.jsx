@@ -25,7 +25,9 @@ const Header = () => {
                     </Link>
                     {auth ? (
                         <Link to='login'>
-                            <button onClick={() => setAuth(false)} className='button__profile'>Выйти</button>
+                            <button onClick={() => setAuth(false)} className='button__profile'>
+                                Выйти
+                            </button>
                         </Link>
                     ) : (
                         <Link to='login'>
