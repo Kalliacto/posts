@@ -28,9 +28,11 @@ const PostsListTitle = () => {
                     }}
                 />
             </div>
-            {activeModal === 'addPostForm' && <Modal state={activeModal === 'addPostForm'} setState={setActiveModal}>
-                <AddPostForm setActiveModal={setActiveModal} />
-            </Modal>}
+            {activeModal === 'addPostForm' && (
+                <Modal state={activeModal === 'addPostForm'} setState={setActiveModal}>
+                    <AddPostForm setActiveModal={setActiveModal} />
+                </Modal>
+            )}
         </div>
     );
 };

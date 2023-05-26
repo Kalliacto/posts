@@ -8,7 +8,7 @@ import { Context } from '../../../context/Context';
 import { emailOptions, passwordOptions } from '../formsOptions';
 
 const AuthorizationForm = () => {
-    const {showPassword, setShowPassword, setAuth } = useContext(Context);
+    const { showPassword, setShowPassword, setAuth } = useContext(Context);
     const navigate = useNavigate();
     const {
         register,
@@ -48,8 +48,8 @@ const AuthorizationForm = () => {
                         placeholder='Пароль'
                         autoComplete='true'
                     />
-                    <span className='inputPost__eye' onClick={() => setShowPassword(s => !s)}>
-                    {showPassword ? <EyeFill /> : <EyeSlashFill />}
+                    <span className='inputPost__eye' onClick={() => setShowPassword((s) => !s)}>
+                        {showPassword ? <EyeFill /> : <EyeSlashFill />}
                     </span>
                 </div>
                 {errors.password && (

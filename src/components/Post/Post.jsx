@@ -1,16 +1,14 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import './post.css';
-import { Chat, Heart, HeartFill, PencilSquare } from 'react-bootstrap-icons';
+import { Chat, Heart, HeartFill } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { Context } from '../../context/Context';
 import { likeToggle } from '../../utils/utils';
 import { Trash3 } from 'react-bootstrap-icons';
 import { api } from '../../api/api';
-import Modal from '../Modal/Modal';
-import EditPostInfoForm from '../Forms/EditPostInfoForm/EditPostInfoForm';
 
-const Post = ({ post, setEditablePost }) => {
-    const { user, setPosts, setPreviewPostImage } = useContext(Context);
+const Post = ({ post }) => {
+    const { user, setPosts } = useContext(Context);
     const { author, image, title, text, tags, likes, created_at, _id, comments } = post;
     const wasLiked = likes?.includes(user._id);
 

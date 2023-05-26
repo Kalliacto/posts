@@ -5,14 +5,14 @@ import { Context } from '../../../context/Context';
 import { api } from '../../../api/api';
 import { avatarOptions } from '../formsOptions';
 
-const ChangingAvatar = ({setUserInfo, previewAvatar, setPreviewAvatar}) => {
+const ChangingAvatar = ({ setUserInfo, previewAvatar, setPreviewAvatar }) => {
     const { setActiveModal } = useContext(Context);
     const {
         register,
         handleSubmit,
         reset,
         formState: { errors },
-    } = useForm({mode: 'onChange'});
+    } = useForm({ mode: 'onChange' });
 
     const sendEditDataAvatarInfo = (newAvatar) => {
         return api
@@ -20,7 +20,7 @@ const ChangingAvatar = ({setUserInfo, previewAvatar, setPreviewAvatar}) => {
             .then((userInfo) => {
                 setActiveModal('');
                 reset();
-                setUserInfo({...userInfo});
+                setUserInfo({ ...userInfo });
             })
             .catch((error) => console.log(error));
     };

@@ -15,7 +15,7 @@ const ForgotPasswordForm = () => {
     } = useForm({ mode: 'onSubmit' });
 
     const resetPassword = (data) => {
-        api.getTokenByEmail(data).then(res => {
+        api.getTokenByEmail(data).then((res) => {
             if (!!res.err) {
                 alert('Аккаунта с данным Email не существует');
             } else {
@@ -23,7 +23,7 @@ const ForgotPasswordForm = () => {
                 navigate('/password-reset');
                 reset();
             }
-        })
+        });
         reset();
     };
 
