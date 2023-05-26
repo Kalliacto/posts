@@ -7,28 +7,28 @@ export const titleOptions = {
         value: 70,
         message: 'Заголовок слишком длинный',
     },
-}
+};
 
 export const textOptions = {
     required: {
         value: true,
         message: 'Введите текст поста',
     },
-}
+};
 
 export const imageOptions = {
     required: {
         value: true,
         message: 'Введите URL-адрес вашей картинки',
     },
-}
+};
 
 export const avatarOptions = {
     required: {
         value: true,
         message: 'Введите URL-адрес вашего аватара',
     },
-}
+};
 
 export const nameOptions = {
     required: {
@@ -59,8 +59,7 @@ export const emailOptions = {
     },
     pattern: {
         value: /^([A-Za-z0-9_.])+(@)([A-Za-z0-9_\-.])+([.])([A-Za-z]{2,4})$/,
-        message:
-            'Некорректный  email',
+        message: 'Некорректный  email',
     },
 };
 
@@ -72,7 +71,7 @@ export const passwordOptions = {
     pattern: {
         value: /(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/g,
         message:
-        'Пароль должен быть длиной от 6 символов и включать в себя цифры, спецсимволовы и буквы латинского алфавита в нижнем и верхнем регистре.',
+            'Пароль должен быть длиной от 6 символов и включать в себя цифры, спецсимволовы и буквы латинского алфавита в нижнем и верхнем регистре.',
     },
 };
 
@@ -84,5 +83,5 @@ export const tokenOptions = {
     minLength: {
         value: 197,
         message: 'Неккоректный токен. Проверьте ещё раз',
-    }
+    },
 };
