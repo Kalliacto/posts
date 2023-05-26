@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 const GoBackBtn = () => {
     return (
-        <Link to={-1}>
-            <button className="btn__back">{`< Назад`}</button>
+        <Link to={'/'}>
+            <button className='btn__back'>{`< Назад`}</button>
         </Link>
     );
 };

@@ -2,17 +2,19 @@
     width: fit-content;
     font-size: 12px;
     line-height: 143%;
-    color: #535557;
     align-items: center;
     padding: 10px 15px;
     background-color: coral;
-    border-radius: 10px;
+    border-radius: 24px;
     transition: all 0.2s;
-    border: #535557 0.9px solid;
+    border: none;
+    color: inherit;
+    font-weight: 600;
+    color: #58504d;
 }
 
 .btn__back:hover {
     cursor: pointer;
-    color: rgb(0, 0, 0);
-    box-shadow: 3px 3px 9px 1px coral;
+    color: black;
+    box-shadow: 3px 3px 9px 1px #58504d;
 }

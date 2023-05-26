@@ -6,23 +6,32 @@ import Search from '../Search/Search';
 import { Context } from '../../context/Context';
 
 const Header = () => {
-    const { setSearch, user } = useContext(Context);
+    const { setSearch, user, auth, setAuth } = useContext(Context);
 
     const setSearchQuery = (path) => {
         setSearch(path);
     };
 
     return (
-        <header className="header">
-            <div className="container">
-                <div className="header__wrapper">
+        <header className='header'>
+            <div className='container'>
+                <div className='header__wrapper'>
                     <Link to={'/'}>
-                        <Logo className="header__logo" />
+                        <Logo className='header__logo' />
                     </Link>
                     <Search setSearch={setSearchQuery} />
                     <Link to={`/profile/${user._id}`}>
-                        <button className="button__profile">Профиль</button>
+                        <button className='button__profile'>Профиль</button>
                     </Link>
+                    {auth ? (
+                        <Link to='login'>
+                            <button onClick={() => setAuth(false)} className='button__profile'>Выйти</button>
+                        </Link>
+                    ) : (
+                        <Link to='login'>
+                            <button className='button__profile'>Войти</button>
+                        </Link>
+                    )}
                 </div>
             </div>
         </header>

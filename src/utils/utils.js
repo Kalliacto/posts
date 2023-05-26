@@ -23,9 +23,7 @@ export const onSortPosts = (posts, method, setPosts, users) => {
     }
 
     if (method === 'comments') {
-        const newPosts = posts.sort(
-            (a, b) => b.comments.length - a.comments.length
-        );
+        const newPosts = posts.sort((a, b) => b.comments.length - a.comments.length);
         setPosts([...newPosts]);
     }
 
@@ -35,26 +33,17 @@ export const onSortPosts = (posts, method, setPosts, users) => {
     }
 
     if (method === 'new') {
-        const newPosts = posts.sort(
-            (a, b) => new Date(b.created_at) - new Date(a.created_at)
-        );
+        const newPosts = posts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         setPosts([...newPosts]);
     }
 
     if (method === 'old') {
-        const newPosts = posts.sort(
-            (a, b) => new Date(a.created_at) - new Date(b.created_at)
-        );
+        const newPosts = posts.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
         setPosts([...newPosts]);
     }
 };
 
-export const likeToogleDetailsPage = (
-    postId,
-    wasLiked,
-    setPosts,
-    setPostInfo
-) => {
+export const likeToogleDetailsPage = (postId, wasLiked, setPosts, setPostInfo) => {
     api.changePostLike(postId, wasLiked)
         .then((postData) => {
             setPostInfo(postData);
@@ -90,4 +79,8 @@ export const preloadUser = {
     avatar: '',
     _id: '',
     email: '',
+};
+
+export const splitTags = (tags) => {
+    return tags.trim().split(',')
 };

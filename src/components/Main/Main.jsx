@@ -5,23 +5,58 @@ import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage';
 import PostsPage from '../../pages/PostsPage/PostsPage';
 import PostPageView from '../../pages/PostPageView/PostPageView';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
+import AuthorizationForm from '../Forms/AuthorizationForm/AuthorizationForm';
+import IdentificationPage from '../../pages/IdentificationPage/IdentificationPage';
+import RegistrationForm from '../Forms/RegistrationForm/RegistrationForm';
+import ForgotPasswordForm from '../Forms/ForgotPasswordForm/ForgotPasswordForm';
+import ResetPasswordForm from '../Forms/ResetPasswordForm/ResetPasswordForm';
 
 const Main = () => {
     return (
         <main className='main'>
-            <Routes>
-                <Route index element={<PostsPage />}></Route>
-                <Route path="/:id" element={<PostPageView />}></Route>
-                <Route
-                    path='*'
-                    element={
-                        <NotFoundPage
-                            title={'Простите, данная страница не найдена.'}
-                        />
-                    }
-                ></Route>
-                <Route path="/profile/:userId" element={<ProfilePage />}></Route>
-            </Routes>
+            <div className='container'>
+                <Routes>
+                    <Route index element={<PostsPage />}></Route>
+                    <Route path='/post/:id' element={<PostPageView />}></Route>
+                    <Route path='/profile/:userId' element={<ProfilePage />}></Route>
+                    <Route
+                        path='*'
+                        element={<NotFoundPage title={'Простите, данная страница не найдена.'} />}
+                    ></Route>
+                    <Route
+                        path='/login'
+                        element={
+                            <IdentificationPage>
+                                <AuthorizationForm />
+                            </IdentificationPage>
+                        }
+                    ></Route>
+                    <Route
+                        path='/registration'
+                        element={
+                            <IdentificationPage>
+                                <RegistrationForm />
+                            </IdentificationPage>
+                        }
+                    ></Route>
+                    <Route
+                        path='/forgot-password'
+                        element={
+                            <IdentificationPage>
+                                <ForgotPasswordForm />
+                            </IdentificationPage>
+                        }
+                    ></Route>
+                    <Route
+                        path='/password-reset'
+                        element={
+                            <IdentificationPage>
+                                <ResetPasswordForm />
+                            </IdentificationPage>
+                        }
+                    />
+                </Routes>
+            </div>
         </main>
     );
 };

@@ -1,47 +1,50 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import './post.css';
-import { Chat, Heart, HeartFill } from 'react-bootstrap-icons';
+import { Chat, Heart, HeartFill, PencilSquare } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { Context } from '../../context/Context';
 import { likeToggle } from '../../utils/utils';
+import { Trash3 } from 'react-bootstrap-icons';
+import { api } from '../../api/api';
+import Modal from '../Modal/Modal';
+import EditPostInfoForm from '../Forms/EditPostInfoForm/EditPostInfoForm';
 
-const Post = ({ post }) => {
-    const { user, setPosts } = useContext(Context);
-    const {
-        author,
-        image,
-        title,
-        text,
-        tags,
-        likes,
-        created_at,
-        _id,
-        comments,
-    } = post;
-    const wasLiked = likes.includes(user._id);
+const Post = ({ post, setEditablePost }) => {
+    const { user, setPosts, setPreviewPostImage } = useContext(Context);
+    const { author, image, title, text, tags, likes, created_at, _id, comments } = post;
+    const wasLiked = likes?.includes(user._id);
+
+    const deletePost = async (id) => {
+        return await api
+            .deletePostById(id)
+            .then(() => setPosts((state) => state.filter((post) => post._id !== id)))
+            .catch((error) => console.log(error));
+    };
+
     return (
         <div className='post'>
+            {user._id === author._id && (
+                <Trash3 className='post__trash' onClick={() => deletePost(post._id)} />
+            )}
             <Link to={`/profile/${author._id}`}>
                 <div className='post__header'>
-                    <img
-                        src={author.avatar}
-                        alt='avatar'
-                        className='post__autor-avatar'
-                    />
+                    <img src={author.avatar} alt='avatar' className='post__autor-avatar' />
                     <div className='post__autor-info'>
                         <span className='post__autor-name'>
                             <b>{author.name}</b>
                         </span>
-                        <span className='post__autor-about'>
-                            {author.about}
-                        </span>
+                        <span className='post__autor-about'>{author.about}</span>
                     </div>
                 </div>
             </Link>
-            <Link to={`/${_id}`} className='post__link'>
-                <h3 className='post__title'>{title}</h3>
+            <Link to={`/post/${_id}`} className='post__link'>
+                <h3 className='post__title'>
+                    {title.length >= 60 ? title.slice(0, 60) + '...' : title}
+                </h3>
                 <img src={image} alt='post' className='post__image' />
-                <p className='post__text'>{text}</p>
+                <p className='post__text'>
+                    {text.length >= 170 ? text.slice(0, 170) + '...' : text}
+                </p>
             </Link>
             <div className='post__tags'>
                 {!!tags.length &&
@@ -58,9 +61,7 @@ const Post = ({ post }) => {
                         onClick={() => likeToggle(_id, wasLiked, setPosts)}
                     >
                         {wasLiked ? <HeartFill fill='red' /> : <Heart />}{' '}
-                        <span className='post__like-count'>
-                            {!!likes.length && likes.length}
-                        </span>
+                        <span className='post__like-count'>{!!likes.length && likes.length}</span>
                     </button>
                     <button className='post__button'>
                         <Chat />{' '}

@@ -1,0 +1,111 @@
+.inputPost__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.authForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 18px;
+    width: 300px;
+}
+
+.editUserForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 18px;
+}
+
+.inputPost__input {
+    width: 100%;
+    border-radius: 24px;
+    border: none;
+    padding: 7px 10px;
+}
+
+.inputPost__input:focus {
+    outline: none;
+}
+
+.inputPost__input-wrapper {
+    position: relative;
+}
+
+.inputPost__eye {
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 15px;
+}
+
+.inputPost__forgote-password {
+    align-self: flex-end;
+    color: coral;
+}
+
+.inputPost__btn {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: coral;
+    border: none;
+    border-radius: 24px;
+    color: #58504d;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.inputPost__btn:hover {
+    color: black;
+    box-shadow: 3px 3px 9px 1px #58504d;
+}
+
+.inputPost__btn-link {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #58504d;
+    border: none;
+    border-radius: 24px;
+    color: beige;
+    font-weight: 600;
+    width: 100%;
+    cursor: pointer;
+}
+
+.inputPost__btn-link:hover {
+    color: white;
+    box-shadow: 3px 3px 9px 1px #58504d;
+}
+
+.inputPost__text {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 143%;
+    color: gray;
+    text-decoration: none;
+}
+
+.inputPost__title {
+    margin-bottom: 15px;
+}
+.inputPost__preview_wrap {
+    height: 60vh;
+    padding: 8px;
+}
+.inputPost__preview {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 24px;
+}
+.error {
+    outline: auto;
+    outline-color: red;
+}
+.error__message {
+    color: red;
+    align-self: flex-start;
+    font-size: 14px;
+}

@@ -6,7 +6,7 @@
     gap: 40px;
     margin-top: 50px;
     padding: 40px;
-    border-radius: 10px;
+    border-radius: 24px;
 }
 
 .notFoundPage__img {
@@ -22,7 +22,7 @@
 .notFoundPage__btn {
     padding: 9px 16px;
     border: 1px solid #cfd8dc;
-    border-radius: 87px;
+    border-radius: 24px;
     background: coral;
     transition: all 0.2s;
 }

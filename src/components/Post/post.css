@@ -2,9 +2,24 @@
     display: grid;
     gap: 20px;
     padding: 16px;
-    border-radius: 10px;
+    border-radius: 24px;
     box-shadow: 0 0 1px 1px coral;
     justify-content: space-around;
+    position: relative;
+}
+
+.post__trash {
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.post__edit {
+    cursor: pointer;
+    position: absolute;
+    top: 40px;
+    right: 15px;
 }
 
 .post:hover {
@@ -20,6 +35,7 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .post__autor-info {
@@ -28,8 +44,6 @@
 
 .post__link {
     display: grid;
-    width: max-content;
-    grid-template-columns: 300px;
     grid-template-rows: 30px 350px 100px;
     text-decoration: none;
     color: black;
@@ -44,7 +58,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 24px;
 }
 
 .post__text {
@@ -59,10 +73,12 @@
 }
 
 .post__tag {
-    padding: 3px;
-    border: 1px solid black;
-    border-radius: 10px;
+    padding: 4px 7px;
+    border: none;
+    border-radius: 24px;
     background-color: coral;
+    color: #58504d;
+    font-weight: 600;
 }
 
 .post__footer {
@@ -76,9 +92,9 @@
 }
 
 .post__button {
-    padding: 5px;
-    border: 1px solid black;
-    border-radius: 10px;
+    padding: 4px 7px;
+    border: none;
+    border-radius: 24px;
     cursor: pointer;
     background-color: coral;
     display: flex;
