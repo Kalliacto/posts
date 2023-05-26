@@ -2,7 +2,7 @@ import React from 'react';
 import { api } from '../../../api/api';
 import '../inputPost.css';
 import { useForm } from 'react-hook-form';
-import { aboutOptions, nameOptions } from '../forsmOptions';
+import { aboutOptions, nameOptions } from '../formsOptions';
 
 const EditInfoUserInProfile = ({ userInfo, setUserInfo, setActiveModal }) => {
     const {

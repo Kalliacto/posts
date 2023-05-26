@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import '../inputPost.css';
 import { Context } from '../../../context/Context';
 import { api } from '../../../api/api';
-import { avatarOptions } from '../forsmOptions';
+import { avatarOptions } from '../formsOptions';
 
 const ChangingAvatar = ({setUserInfo, previewAvatar, setPreviewAvatar}) => {
     const { setActiveModal } = useContext(Context);

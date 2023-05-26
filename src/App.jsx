@@ -18,6 +18,8 @@ function App() {
     const [postInfo, setPostInfo] = useState(preloadObj);
     const [postAllComment, setPostAllComment] = useState([]);
     const [userInfo, setUserInfo] = useState(preloadUser);
+    const [showPassword, setShowPassword] = useState(false);
+    const [auth, setAuth] = useState(false);
 
     useEffect(() => {
         Promise.all([api.getAllPosts(), api.getUserInfo()])
@@ -54,6 +56,10 @@ function App() {
         setPostAllComment,
         userInfo,
         setUserInfo,
+        showPassword,
+        setShowPassword,
+        auth,
+        setAuth,
     };
 
     return (

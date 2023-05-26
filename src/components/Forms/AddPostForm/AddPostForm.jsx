@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { api } from '../../../api/api';
 import { Context } from '../../../context/Context';
 import { splitTags } from '../../../utils/utils';
-import { imageOptions, textOptions, titleOptions } from '../forsmOptions';
+import { imageOptions, textOptions, titleOptions } from '../formsOptions';
 
 const AddPostForm = ({ setActiveModal }) => {
     const { setPosts, previewPostImage, setPreviewPostImage } = useContext(Context);

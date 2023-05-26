@@ -42,13 +42,15 @@
     color: inherit;
     font-weight: 600;
     color: #58504d;
+    cursor: pointer;
 }
 .comments_btn {
     width: 100%;
 }
-.addComment_btn,
-.comments_btn {
-    cursor: pointer;
+.addComment_btn:hover,
+.comments_btn:hover {
+    color: black;
+    box-shadow: 3px 3px 9px 1px #58504d;
 }
 .form__comments {
     display: grid;

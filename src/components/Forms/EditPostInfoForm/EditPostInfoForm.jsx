@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import '../inputPost.css';
 import { useForm } from 'react-hook-form';
-import { imageOptions, textOptions, titleOptions } from '../forsmOptions';
+import { imageOptions, textOptions, titleOptions } from '../formsOptions';
 import { Context } from '../../../context/Context';
 import { api } from '../../../api/api';
 import { splitTags } from '../../../utils/utils';
