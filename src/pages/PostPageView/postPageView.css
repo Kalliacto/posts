@@ -26,6 +26,17 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    position: relative;
+}
+
+.detailsPost__edit{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.detailsPost__link {
+    width: fit-content;
 }
 
 .detailsPostInfo__header {

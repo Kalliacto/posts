@@ -6,7 +6,7 @@ import { Context } from '../../../context/Context';
 import { splitTags } from '../../../utils/utils';
 import { imageOptions, textOptions, titleOptions } from '../forsmOptions';
 
-const AddPostForm = ({ setShowAddPostModal }) => {
+const AddPostForm = ({ setActiveModal }) => {
     const { setPosts, previewPostImage, setPreviewPostImage } = useContext(Context);
     const {
         register,
@@ -20,7 +20,7 @@ const AddPostForm = ({ setShowAddPostModal }) => {
             .addNewPost({ ...post, tags: splitTags(post.tags) })
             .then((post) => {
                 setPosts((state) => [post, ...state]);
-                setShowAddPostModal(false);
+                setActiveModal('');
                 reset();
             })
             .catch((error) => console.log(error));

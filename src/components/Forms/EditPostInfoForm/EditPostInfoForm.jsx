@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import '../inputPost.css';
 import { useForm } from 'react-hook-form';
 import { imageOptions, textOptions, titleOptions } from '../forsmOptions';
@@ -6,25 +6,28 @@ import { Context } from '../../../context/Context';
 import { api } from '../../../api/api';
 import { splitTags } from '../../../utils/utils';
 
-const EditPostInfoForm = ({ setShowEditPostModal, editablePost, defObj }) => {
-    const { setPosts, previewPostImage, setPreviewPostImage } = useContext(Context);
-console.log(defObj);
+const EditPostInfoForm = ({ setActiveModal, editablePost, setPostInfo }) => {
+    const { previewPostImage, setPreviewPostImage } = useContext(Context);
     const {
         register,
         handleSubmit,
-        reset,
         formState: { errors },
     } = useForm({
         mode: 'onChange',
-        defaultValues: defObj,
+        defaultValues: {
+            title: editablePost.title,
+            text: editablePost.text,
+            image: editablePost.image,
+            tags: editablePost.tags.join(','),
+        },
     });
-
     const sendNewInfoPost = (post) => {
-        // api.setNewInfoPost(_id, { ...post, tags: splitTags(post.tags) }).then((res) => {
-        //     setPosts((state) => state.map((post) => (post._id === _id ? res : post)));
-        //     // reset();
-        //     setShowEditPostModal(false);
-        // });
+        api.setNewInfoPost(editablePost._id, { ...post, tags: splitTags(post.tags) }).then(
+            (res) => {
+                setPostInfo(res);
+                setActiveModal('');
+            }
+        );
     };
 
     return (
@@ -41,7 +44,7 @@ console.log(defObj);
                 {...register('text', textOptions)}
                 className={errors.text ? 'inputPost__input error' : 'inputPost__input'}
                 placeholder='Текст поста'
-                rows={1}
+                rows={5}
             />
             {errors.text && <span className='error__message'>{errors.text.message}</span>}
             <input

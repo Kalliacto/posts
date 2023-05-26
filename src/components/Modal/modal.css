@@ -5,11 +5,9 @@
     top: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.7);
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
-    transform: scale(0);
-    transition: 0.5s;
     z-index: 999;
 }
 .modal__content {
@@ -30,10 +28,6 @@
 }
 .close__modal:hover {
     cursor: pointer;
-}
-.modal_active {
-    transform: scale(1);
-    display: flex;
 }
 
 .modal__form_content {

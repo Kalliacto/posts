@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import './postsListTitle.css';
 import SortPosts from '../SortPosts/SortPosts';
 import { Arrow90degDown } from 'react-bootstrap-icons';
@@ -8,8 +8,7 @@ import AddPostForm from '../Forms/AddPostForm/AddPostForm';
 import { Context } from '../../context/Context';
 
 const PostsListTitle = () => {
-    const [showAddPostModal, setShowAddPostModal] = useState(false);
-    const { setPreviewPostImage } = useContext(Context);
+    const { setPreviewPostImage, activeModal, setActiveModal } = useContext(Context);
     return (
         <div className='posts__title'>
             <h1>Добро пожаловать к нам!</h1>
@@ -22,16 +21,16 @@ const PostsListTitle = () => {
                 <ButtonAddPost
                     title={'Создать новый пост'}
                     onClick={() => {
-                        setShowAddPostModal(true);
+                        setActiveModal('addPostForm');
                         setPreviewPostImage(
                             'https://jkfenner.com/wp-content/uploads/2019/11/default.jpg'
                         );
                     }}
                 />
             </div>
-            <Modal state={showAddPostModal} setState={setShowAddPostModal}>
-                <AddPostForm setShowAddPostModal={setShowAddPostModal} />
-            </Modal>
+            {activeModal === 'addPostForm' && <Modal state={activeModal === 'addPostForm'} setState={setActiveModal}>
+                <AddPostForm setActiveModal={setActiveModal} />
+            </Modal>}
         </div>
     );
 };

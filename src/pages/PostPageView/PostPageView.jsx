@@ -1,39 +1,40 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './postPageView.css';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../../api/api';
 import GoBackBtn from '../../components/GoBackBtn/GoBackBtn';
 import { Heart, HeartFill, PencilSquare, ZoomIn } from 'react-bootstrap-icons';
 import { Context } from '../../context/Context';
-import { likeToogleDetailsPage, preloadObj } from '../../utils/utils';
+import { likeToogleDetailsPage } from '../../utils/utils';
 import Comment from '../../components/Comment/Comment';
 import Modal from '../../components/Modal/Modal';
 import EditPostInfoForm from '../../components/Forms/EditPostInfoForm/EditPostInfoForm';
 
 const PostPageView = () => {
-    const { user, setPosts } = useContext(Context);
-    const [postInfo, setPostInfo] = useState(preloadObj);
+    const {
+        user,
+        setPosts,
+        activeModal,
+        setActiveModal,
+        setPreviewPostImage,
+        postInfo,
+        setPostInfo,
+        postAllComment,
+        setPostAllComment,
+    } = useContext(Context);
+
     const { id } = useParams();
     const { author, image, title, text, tags, likes, created_at } = postInfo;
     const wasLiked = likes.includes(user._id);
-    const [postAllComment, setPostAllComment] = useState([]);
-    const [showPostImageModal, setShowPostImageModal] = useState(false);
-    const [showEditPostModal, setShowEditPostModal] = useState(false);
-    const [defObj, setDefObj] = useState({});
 
     useEffect(() => {
         Promise.all([api.getOnePost(id), api.getPostCommentsAll(id)])
             .then(([postData, commentsData]) => {
                 setPostInfo(postData);
-                setDefObj({
-                    title: postData?.title,
-                    text: postData?.text,
-                    image: postData?.image,
-                });
                 setPostAllComment(commentsData.reverse());
             })
             .catch((error) => console.log(error));
-    }, [id]);
+    }, [id, setPostInfo, setPostAllComment]);
 
     return (
         <div className='detailsPost'>
@@ -43,11 +44,20 @@ const PostPageView = () => {
                     <img src={image} alt='post' className='detailsPost__image' />
                     <ZoomIn
                         className='detailsPost__zoom'
-                        onClick={() => setShowPostImageModal(true)}
+                        onClick={() => setActiveModal('postImage')}
                     />
                 </div>
                 <div className='detailsPost__info-wrapper'>
-                    <Link to={`/profile/${author._id}`}>
+                    {user._id === author._id && (
+                        <PencilSquare
+                            className='detailsPost__edit'
+                            onClick={() => {
+                                setActiveModal('editPostOnPostPage');
+                                setPreviewPostImage(image);
+                            }}
+                        />
+                    )}
+                    <Link className='detailsPost__link' to={`/profile/${author._id}`}>
                         <div className='detailsPostInfo__header'>
                             <img
                                 src={author.avatar}
@@ -60,14 +70,6 @@ const PostPageView = () => {
                             </div>
                         </div>
                     </Link>
-                    <PencilSquare
-                        // className='post__edit'
-                        onClick={() => {
-                            setShowEditPostModal(true);
-                            // setEditablePost(post);
-                            // setPreviewPostImage(image);
-                        }}
-                    />
                     <h3 className='detailsPost__title'>{title}</h3>
                     <p className='detailsPost__text'>{text}</p>
                     <div className='detailsPost__tags'>
@@ -107,19 +109,22 @@ const PostPageView = () => {
                     setPostAllComment={setPostAllComment}
                 />
             </div>
-            <Modal state={showPostImageModal} setState={setShowPostImageModal}>
-                <div className='detailsPost__preview-wrap'>
-                    <img className='detailsPost__preview' src={image} alt='post' />
-                </div>
-            </Modal>
-            {/* {showEditPostModal && <Modal state={showEditPostModal} setState={setShowEditPostModal}> */}
-            <Modal state={showEditPostModal} setState={setShowEditPostModal}>
-                <EditPostInfoForm
-                    editablePost={postInfo}
-                    defObj={defObj}
-                    setShowEditPostModal={setShowEditPostModal}
-                />
-            </Modal>
+            {activeModal === 'postImage' && (
+                <Modal state={activeModal === 'postImage'} setState={setActiveModal}>
+                    <div className='detailsPost__preview-wrap'>
+                        <img className='detailsPost__preview' src={image} alt='post' />
+                    </div>
+                </Modal>
+            )}
+            {activeModal === 'editPostOnPostPage' && (
+                <Modal state={activeModal === 'editPostOnPostPage'} setState={setActiveModal}>
+                    <EditPostInfoForm
+                        editablePost={postInfo}
+                        setActiveModal={setActiveModal}
+                        setPostInfo={setPostInfo}
+                    />
+                </Modal>
+            )}
         </div>
     );
 };

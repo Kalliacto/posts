@@ -4,8 +4,7 @@ import '../inputPost.css';
 import { useForm } from 'react-hook-form';
 import { aboutOptions, nameOptions } from '../forsmOptions';
 
-const EditInfoUserInProfile = ({ userInfo, setUserInfo, setShowForm }) => {
-    console.log(userInfo);
+const EditInfoUserInProfile = ({ userInfo, setUserInfo, setActiveModal }) => {
     const {
         register,
         handleSubmit,
@@ -20,7 +19,7 @@ const EditInfoUserInProfile = ({ userInfo, setUserInfo, setShowForm }) => {
             .changingProfileInfo(data)
             .then((userData) => {
                 setUserInfo(userData);
-                setShowForm(false);
+                setActiveModal('');
             })
             .catch((error) => console.log(error));
     };

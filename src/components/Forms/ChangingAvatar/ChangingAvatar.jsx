@@ -18,7 +18,7 @@ const ChangingAvatar = ({setUserInfo, previewAvatar, setPreviewAvatar}) => {
         return api
             .changingAvatarInfo(newAvatar)
             .then((userInfo) => {
-                setActiveModal(false);
+                setActiveModal('');
                 reset();
                 setUserInfo({...userInfo});
             })

@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import './profilePage.css';
 import { useParams } from 'react-router-dom';
 import { api } from '../../api/api';
-import { preloadUser } from '../../utils/utils';
 import GoBackBtn from '../../components/GoBackBtn/GoBackBtn';
 import { Context } from '../../context/Context';
 import PostsList from '../../components/PostsList/PostsList';
@@ -12,31 +11,31 @@ import Modal from '../../components/Modal/Modal';
 import EditInfoUserInProfile from '../../components/Forms/EditInfoUserInProfile/EditInfoUserInProfile';
 
 const ProfilePage = () => {
-    const { user, posts } = useContext(Context);
-    const [userInfo, setUserInfo] = useState(preloadUser);
+    const { user, userInfo, setUserInfo, posts, activeModal, setActiveModal } = useContext(Context);
     const [userPosts, setUserPosts] = useState([]);
     const [userFavPosts, setUserFavPosts] = useState([]);
     const { name, about, email, avatar } = userInfo;
     const { userId } = useParams();
     const myProfile = user._id === userId;
     const [previewAvatar, setPreviewAvatar] = useState('');
-    const [showAvatarModal, setShowAvatarModal] = useState(false);
-    const [showForm, setShowForm] = useState(false);
-    
+
     useEffect(() => {
         api.getUserInfoById(userId)
             .then((userData) => {
                 setUserInfo(userData);
-                const filter = posts.filter((post) => post.author._id === userId);
-                setUserPosts(filter);
-                const favFilter = posts.filter((post) => post.likes.includes(userId));
-                setUserFavPosts(favFilter);
                 setPreviewAvatar(userData.avatar);
             })
             .catch((error) =>
                 console.error('Ошибка при запросе данных пользователя в профиле', error)
             );
-    }, [userId, posts]);
+    }, [userId, setUserInfo]);
+
+    useEffect(() => {
+        const filter = posts.filter((post) => post.author._id === userId);
+        setUserPosts(filter);
+        const favFilter = posts.filter((post) => post.likes.includes(userId));
+        setUserFavPosts(favFilter);
+    }, [userId, posts])
 
     return (
         <div className='profilePage'>
@@ -45,22 +44,27 @@ const ProfilePage = () => {
                 <div className='profile__avatar-wrapper'>
                     <img className='profile__avatar' src={avatar} alt='avatar' />
                     {myProfile && (
-                        <PencilSquare className='editProfile' onClick={() => setShowAvatarModal(true)} />
-                    )}
-                    <Modal state={showAvatarModal} setState={setShowAvatarModal}>
-                        <ChangingAvatar
-                            setUserInfo={setUserInfo}
-                            previewAvatar={previewAvatar}
-                            setPreviewAvatar={setPreviewAvatar}
+                        <PencilSquare
+                            className='editProfile'
+                            onClick={() => setActiveModal('avatar')}
                         />
-                    </Modal>
+                    )}
+                    {activeModal === 'avatar' && (
+                        <Modal state={activeModal === 'avatar'} setState={setActiveModal}>
+                            <ChangingAvatar
+                                setUserInfo={setUserInfo}
+                                previewAvatar={previewAvatar}
+                                setPreviewAvatar={setPreviewAvatar}
+                            />
+                        </Modal>
+                    )}
                 </div>
                 <div className='profile__info-wrapper'>
-                    {showForm ? (
+                    {activeModal === 'editUserInfoForm' ? (
                         <EditInfoUserInProfile
                             userInfo={userInfo}
                             setUserInfo={setUserInfo}
-                            setShowForm={setShowForm}
+                            setActiveModal={setActiveModal}
                         />
                     ) : (
                         <div className='profile__info'>
@@ -72,11 +76,15 @@ const ProfilePage = () => {
                             <span>{email}</span>
                         </div>
                     )}
-                    {myProfile && !showForm ? (
-                        <PencilSquare className='editProfile' onClick={() => setShowForm(true)} />
-                    ) : (
-                        <XLg className='editProfile' onClick={() => setShowForm(false)} />
-                    )}
+                    {myProfile &&
+                        (myProfile && !(activeModal === 'editUserInfoForm') ? (
+                            <PencilSquare
+                                className='editProfile'
+                                onClick={() => setActiveModal('editUserInfoForm')}
+                            />
+                        ) : (
+                            <XLg className='editProfile' onClick={() => setActiveModal('')} />
+                        ))}
                 </div>
             </div>
             <div className='userPosts'>
