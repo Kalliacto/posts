@@ -6,6 +6,8 @@ import Main from './components/Main/Main';
 import Footer from './components/Footer/Footer';
 import { api } from './api/api';
 import { preloadObj, preloadUser } from './utils/utils';
+import { useDispatch } from 'react-redux';
+import { getUser } from './store/slices/userSlice';
 
 function App() {
     const [user, setUser] = useState({});
@@ -20,6 +22,12 @@ function App() {
     const [userInfo, setUserInfo] = useState(preloadUser);
     const [showPassword, setShowPassword] = useState(false);
     const [auth, setAuth] = useState(false);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getUser());
+    }, [dispatch]);
 
     useEffect(() => {
         Promise.all([api.getAllPosts(), api.getUserInfo()])
