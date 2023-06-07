@@ -1,34 +1,22 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import './comment.css';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { Context } from '../../context/Context';
 import { api } from '../../api/api';
 import { Trash } from 'react-bootstrap-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { addComment, deleteComment } from '../../store/slices/onePostSlice';
 
-const Comment = ({ postId, postAllComment, setPostAllComment }) => {
+const Comment = ({ postId, postAllComment }) => {
     const [formActive, setFormActive] = useState(false);
     const { register, handleSubmit, reset } = useForm({});
-    const { user } = useContext(Context);
+    const { user } = useSelector((s) => s.user);
+    const dispatch = useDispatch();
 
-    const addCommit = async (comment) => {
-        return await api
-            .addNewComment(postId, comment)
-            .then((comment) => setPostAllComment(comment.comments.reverse()))
-            .then(reset())
-            .then(setFormActive(false))
-            .catch((error) => console.log(error));
-    };
-
-    const deleteCommit = async (commentId) => {
-        return await api
-            .deleteCommentPostById(postId, commentId)
-            .then(() =>
-                setPostAllComment((state) =>
-                    state.filter((postComment) => postComment._id !== commentId)
-                )
-            )
-            .catch((error) => console.log(error));
+    const addCommit = async ({ text }) => {
+        dispatch(addComment({ id: postId, body: { text } }));
+        reset();
+        setFormActive(false);
     };
 
     return (
@@ -78,7 +66,10 @@ const Comment = ({ postId, postAllComment, setPostAllComment }) => {
                         {user._id === elem.author._id ? (
                             <Trash
                                 className='comments__trash'
-                                onClick={() => deleteCommit(elem._id)}
+                                onClick={() => {
+                                    console.log(postId, elem._id);
+                                    dispatch(deleteComment({ postId, elemId: elem._id }));
+                                }}
                             />
                         ) : (
                             ''

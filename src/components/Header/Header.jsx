@@ -7,6 +7,7 @@ import { Context } from '../../context/Context';
 
 const Header = () => {
     const { setSearch, user, auth, setAuth } = useContext(Context);
+    // const { user } = useSelector((s) => s.user);
 
     const setSearchQuery = (path) => {
         setSearch(path);
@@ -20,20 +21,22 @@ const Header = () => {
                         <Logo className='header__logo' />
                     </Link>
                     <Search setSearch={setSearchQuery} />
-                    <Link to={`/profile/${user._id}`}>
-                        <button className='button__profile'>Профиль</button>
-                    </Link>
-                    {auth ? (
-                        <Link to='login'>
-                            <button onClick={() => setAuth(false)} className='button__profile'>
-                                Выйти
-                            </button>
+                    <div className='header__btns'>
+                        <Link to={`/profile/${user._id}`}>
+                            <button className='button__profile'>Профиль</button>
                         </Link>
-                    ) : (
-                        <Link to='login'>
-                            <button className='button__profile'>Войти</button>
-                        </Link>
-                    )}
+                        {auth ? (
+                            <Link to='login'>
+                                <button onClick={() => setAuth(false)} className='button__profile'>
+                                    Выйти
+                                </button>
+                            </Link>
+                        ) : (
+                            <Link to='login'>
+                                <button className='button__profile'>Войти</button>
+                            </Link>
+                        )}
+                    </div>
                 </div>
             </div>
         </header>
