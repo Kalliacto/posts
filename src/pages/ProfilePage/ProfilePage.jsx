@@ -15,6 +15,7 @@ const ProfilePage = () => {
     const { userInfo, setUserInfo, posts, activeModal, setActiveModal } = useContext(Context);
     const { user } = useSelector((s) => s.user);
     const [userPosts, setUserPosts] = useState([]);
+    console.log({ userPosts });
     const [userFavPosts, setUserFavPosts] = useState([]);
     const { name, about, email, avatar } = userInfo;
     const { userId } = useParams();
