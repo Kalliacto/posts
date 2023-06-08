@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './comment.css';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { api } from '../../api/api';
 import { Trash } from 'react-bootstrap-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { addComment, deleteComment } from '../../store/slices/onePostSlice';
@@ -67,7 +66,6 @@ const Comment = ({ postId, postAllComment }) => {
                             <Trash
                                 className='comments__trash'
                                 onClick={() => {
-                                    console.log(postId, elem._id);
                                     dispatch(deleteComment({ postId, elemId: elem._id }));
                                 }}
                             />
