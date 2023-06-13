@@ -9,10 +9,13 @@ import ChangingAvatar from '../../components/Forms/ChangingAvatar/ChangingAvatar
 import { PencilSquare, XLg } from 'react-bootstrap-icons';
 import Modal from '../../components/Modal/Modal';
 import EditInfoUserInProfile from '../../components/Forms/EditInfoUserInProfile/EditInfoUserInProfile';
+import { useSelector } from 'react-redux';
 
 const ProfilePage = () => {
-    const { user, userInfo, setUserInfo, posts, activeModal, setActiveModal } = useContext(Context);
+    const { userInfo, setUserInfo, posts, activeModal, setActiveModal } = useContext(Context);
+    const { user } = useSelector((s) => s.user);
     const [userPosts, setUserPosts] = useState([]);
+    console.log({ userPosts });
     const [userFavPosts, setUserFavPosts] = useState([]);
     const { name, about, email, avatar } = userInfo;
     const { userId } = useParams();

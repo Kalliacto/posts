@@ -6,11 +6,10 @@ import Main from './components/Main/Main';
 import Footer from './components/Footer/Footer';
 import { api } from './api/api';
 import { preloadObj, preloadUser } from './utils/utils';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from './store/slices/userSlice';
 
 function App() {
-    const [user, setUser] = useState({});
     const [posts, setPosts] = useState([]);
     const [search, setSearch] = useState(undefined);
     const [activeModal, setActiveModal] = useState('');
@@ -30,10 +29,9 @@ function App() {
     }, [dispatch]);
 
     useEffect(() => {
-        Promise.all([api.getAllPosts(), api.getUserInfo()])
-            .then(([postData, userData]) => {
+        Promise.all([api.getAllPosts()])
+            .then(([postData]) => {
                 setPosts(postData);
-                setUser(userData);
             })
             .catch((error) =>
                 console.error('Ошибка при загрузке данных постов или пользователя', error)
@@ -50,8 +48,6 @@ function App() {
     const valueContext = {
         posts,
         setPosts,
-        user,
-        setUser,
         search,
         setSearch,
         activeModal,

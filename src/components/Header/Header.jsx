@@ -4,10 +4,11 @@ import Logo from '../Logo/Logo';
 import { Link } from 'react-router-dom';
 import Search from '../Search/Search';
 import { Context } from '../../context/Context';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
-    const { setSearch, user, auth, setAuth } = useContext(Context);
-    // const { user } = useSelector((s) => s.user);
+    const { setSearch, auth, setAuth } = useContext(Context);
+    const { user } = useSelector((s) => s.user);
 
     const setSearchQuery = (path) => {
         setSearch(path);

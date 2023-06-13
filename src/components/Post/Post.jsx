@@ -6,9 +6,11 @@ import { Context } from '../../context/Context';
 import { likeToggle } from '../../utils/utils';
 import { Trash3 } from 'react-bootstrap-icons';
 import { api } from '../../api/api';
+import { useSelector } from 'react-redux';
 
 const Post = ({ post }) => {
-    const { user, setPosts } = useContext(Context);
+    const { setPosts } = useContext(Context);
+    const { user } = useSelector((s) => s.user);
     const { author, image, title, text, tags, likes, created_at, _id, comments } = post;
     const wasLiked = likes?.includes(user._id);
 
