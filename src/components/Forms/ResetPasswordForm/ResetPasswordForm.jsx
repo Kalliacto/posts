@@ -3,9 +3,9 @@ import '../inputPost.css';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { tokenOptions, passwordOptions } from '../formsOptions';
-import { api } from '../../../api/api';
 import { EyeFill, EyeSlashFill } from 'react-bootstrap-icons';
 import { Context } from '../../../context/Context';
+import { userApi } from '../../../api/userApi';
 
 const ResetPasswordForm = () => {
     const { showPassword, setShowPassword } = useContext(Context);
@@ -18,7 +18,7 @@ const ResetPasswordForm = () => {
     } = useForm({ mode: 'onSubmit' });
 
     const resetPassword = (data) => {
-        api.setNewPassword(data).then((res) => {
+        userApi.setNewPassword(data).then((res) => {
             if (!!res.err) {
                 alert(`${res.message}`);
             } else {

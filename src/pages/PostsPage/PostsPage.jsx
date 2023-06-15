@@ -1,15 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import './postsPage.css';
 import PostsList from '../../components/PostsList/PostsList';
-import { Context } from '../../context/Context';
 import PostsListTitle from '../../components/PostsListTitle/PostsListTitle';
+import { useSelector } from 'react-redux';
 
 const PostsPage = () => {
-    const { posts } = useContext(Context);
+    const { posts } = useSelector((s) => s.posts);
+
     return (
         <>
             <PostsListTitle />
-            <PostsList posts={posts} />
+            {!!posts.length && <PostsList posts={posts} />}
         </>
     );
 };

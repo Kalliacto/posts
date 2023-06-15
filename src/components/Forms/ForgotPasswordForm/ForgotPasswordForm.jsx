@@ -3,7 +3,7 @@ import '../inputPost.css';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { emailOptions } from '../formsOptions';
-import { api } from '../../../api/api';
+import { userApi } from '../../../api/userApi';
 
 const ForgotPasswordForm = () => {
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ const ForgotPasswordForm = () => {
     } = useForm({ mode: 'onSubmit' });
 
     const resetPassword = (data) => {
-        api.getTokenByEmail(data).then((res) => {
+        userApi.getTokenByEmail(data).then((res) => {
             if (!!res.err) {
                 alert('Аккаунта с данным Email не существует');
             } else {
