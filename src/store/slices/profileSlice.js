@@ -14,7 +14,8 @@ export const getUserInfoById = createAsyncThunk(
     async (id, { getState, fulfillWithValue, rejectWithValue }) => {
         try {
             const state = getState();
-            return await userApi.getUserInfoById(id);
+            const userInfo = await userApi.getUserInfoById(id);
+            return fulfillWithValue({ userInfo, state });
         } catch (error) {
             return rejectWithValue(error);
         }
@@ -26,9 +27,14 @@ const profileSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addMatcher(getUserInfoById, (state, action) => {
+        builder.addCase(getUserInfoById.fulfilled, (state, { payload }) => {
             state.isLoading = false;
-            state.currentUser = action.payload;
+            state.currentUser = payload.userInfo;
+            const allPosts = payload.state.posts.posts;
+            state.userPosts = allPosts.filter((e) => e.author._id === payload.userInfo._id);
+            state.userFavoritesPosts = allPosts.filter((e) =>
+                e.likes.includes(payload.userInfo._id)
+            );
         });
         builder.addMatcher(isLoadingData, (state) => {
             state.isLoading = true;
