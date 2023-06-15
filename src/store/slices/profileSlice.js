@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { api } from '../../api/api';
 import { forErrors, isLoadingData, showError } from '../../utils/utils';
+import { userApi } from '../../api/userApi';
 
 const initialState = {
     currentUser: {},
@@ -11,7 +11,7 @@ const initialState = {
 
 export const getUserInfoById = createAsyncThunk('', async (id, { getState }) => {
     // const state = getState();
-    return await api.getUserInfoById(id);
+    return await userApi.getUserInfoById(id);
 });
 
 const profileSlice = createSlice({

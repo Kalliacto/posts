@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { api } from '../../api/api';
 import { forErrors, isLoadingData, showError } from '../../utils/utils';
+import { userApi } from '../../api/userApi';
 
 const initialState = {
     user: {},
@@ -11,7 +11,7 @@ export const getUser = createAsyncThunk(
     'user/getUser',
     async function (str, { getState, fulfillWithValue }) {
         try {
-            return await api.getUserInfo();
+            return await userApi.getUserInfo();
         } catch {}
     }
 );
@@ -21,9 +21,9 @@ export const updateUser = createAsyncThunk(
     async function (newUserData, { fulfillWithValue }) {
         try {
             if (newUserData.avatar) {
-                return await api.changingAvatarInfo({ avatar: newUserData.avatar });
+                return await userApi.changingAvatarInfo({ avatar: newUserData.avatar });
             }
-            return await api.changingProfileInfo({
+            return await userApi.changingProfileInfo({
                 name: newUserData.name,
                 about: newUserData.about,
             });

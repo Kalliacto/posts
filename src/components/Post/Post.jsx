@@ -15,10 +15,13 @@ const Post = ({ post }) => {
     const wasLiked = likes?.includes(user._id);
 
     const deletePost = async (id) => {
-        return await api
-            .deletePostById(id)
-            .then(() => setPosts((state) => state.filter((post) => post._id !== id)))
-            .catch((error) => console.log(error));
+        if (true) {
+            return await api
+                .deletePostById(id)
+                .then(() => setPosts((state) => state.filter((post) => post._id !== id)))
+                .catch((error) => console.log(error));
+        }
+        return;
     };
 
     return (

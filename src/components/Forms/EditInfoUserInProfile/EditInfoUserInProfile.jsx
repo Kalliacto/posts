@@ -1,8 +1,8 @@
 import React from 'react';
-import { api } from '../../../api/api';
 import '../inputPost.css';
 import { useForm } from 'react-hook-form';
 import { aboutOptions, nameOptions } from '../formsOptions';
+import { userApi } from '../../../api/userApi';
 
 const EditInfoUserInProfile = ({ userInfo, setUserInfo, setActiveModal }) => {
     const {
@@ -15,7 +15,7 @@ const EditInfoUserInProfile = ({ userInfo, setUserInfo, setActiveModal }) => {
     });
 
     const sendNewUserInfo = (data) => {
-        return api
+        return userApi
             .changingProfileInfo(data)
             .then((userData) => {
                 setUserInfo(userData);

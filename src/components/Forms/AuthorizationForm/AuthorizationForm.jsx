@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import '../inputPost.css';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { api } from '../../../api/api';
 import { EyeFill, EyeSlashFill } from 'react-bootstrap-icons';
 import { Context } from '../../../context/Context';
 import { emailOptions, passwordOptions } from '../formsOptions';
+import { userApi } from '../../../api/userApi';
 
 const AuthorizationForm = () => {
     const { showPassword, setShowPassword, setAuth } = useContext(Context);
@@ -18,7 +18,7 @@ const AuthorizationForm = () => {
     } = useForm({ mode: 'onSubmit' });
 
     const logIn = (data) => {
-        api.signIn(data).then((res) => {
+        userApi.signIn(data).then((res) => {
             if (!!res.err) {
                 alert(`${res.message}`);
             } else {

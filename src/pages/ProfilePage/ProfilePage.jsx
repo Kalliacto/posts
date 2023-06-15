@@ -10,12 +10,12 @@ import { PencilSquare, XLg } from 'react-bootstrap-icons';
 import Modal from '../../components/Modal/Modal';
 import EditInfoUserInProfile from '../../components/Forms/EditInfoUserInProfile/EditInfoUserInProfile';
 import { useSelector } from 'react-redux';
+import { userApi } from '../../api/userApi';
 
 const ProfilePage = () => {
     const { userInfo, setUserInfo, posts, activeModal, setActiveModal } = useContext(Context);
     const { user } = useSelector((s) => s.user);
     const [userPosts, setUserPosts] = useState([]);
-    console.log({ userPosts });
     const [userFavPosts, setUserFavPosts] = useState([]);
     const { name, about, email, avatar } = userInfo;
     const { userId } = useParams();
@@ -23,7 +23,8 @@ const ProfilePage = () => {
     const [previewAvatar, setPreviewAvatar] = useState('');
 
     useEffect(() => {
-        api.getUserInfoById(userId)
+        userApi
+            .getUserInfoById(userId)
             .then((userData) => {
                 setUserInfo(userData);
                 setPreviewAvatar(userData.avatar);
