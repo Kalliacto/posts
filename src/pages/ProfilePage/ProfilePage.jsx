@@ -9,43 +9,23 @@ import { PencilSquare, XLg } from 'react-bootstrap-icons';
 import Modal from '../../components/Modal/Modal';
 import EditInfoUserInProfile from '../../components/Forms/EditInfoUserInProfile/EditInfoUserInProfile';
 import { useDispatch, useSelector } from 'react-redux';
-import { userApi } from '../../api/userApi';
 import { getUserInfoById } from '../../store/slices/profileSlice';
 
 const ProfilePage = () => {
-    const { userInfo, setUserInfo, activeModal, setActiveModal } = useContext(Context);
-    const { posts } = useSelector((s) => s.posts);
+    const { activeModal, setActiveModal } = useContext(Context);
     const { user } = useSelector((s) => s.user);
-    const [userPosts, setUserPosts] = useState([]);
+    const { currentUser, userPosts, userFavoritesPosts } = useSelector((s) => s.profile);
     const [userFavPosts, setUserFavPosts] = useState([]);
-    const { name, about, email, avatar } = userInfo;
+    const { name, about, email, avatar } = currentUser;
     const { userId } = useParams();
     const myProfile = user._id === userId;
     const [previewAvatar, setPreviewAvatar] = useState('');
+
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getUserInfoById(userId));
+        dispatch(getUserInfoById(userId)).then(() => setPreviewAvatar(currentUser.avatar));
     }, [dispatch]);
-
-    useEffect(() => {
-        userApi
-            .getUserInfoById(userId)
-            .then((userData) => {
-                setUserInfo(userData);
-                setPreviewAvatar(userData.avatar);
-            })
-            .catch((error) =>
-                console.error('Ошибка при запросе данных пользователя в профиле', error)
-            );
-    }, [userId, setUserInfo]);
-
-    useEffect(() => {
-        const filter = posts.filter((post) => post.author._id === userId);
-        setUserPosts(filter);
-        const favFilter = posts.filter((post) => post.likes.includes(userId));
-        setUserFavPosts(favFilter);
-    }, [userId, posts]);
 
     return (
         <div className='profilePage'>
@@ -62,7 +42,7 @@ const ProfilePage = () => {
                     {activeModal === 'avatar' && (
                         <Modal state={activeModal === 'avatar'} setState={setActiveModal}>
                             <ChangingAvatar
-                                setUserInfo={setUserInfo}
+                                // setUserInfo={setUserInfo}
                                 previewAvatar={previewAvatar}
                                 setPreviewAvatar={setPreviewAvatar}
                             />
@@ -72,8 +52,8 @@ const ProfilePage = () => {
                 <div className='profile__info-wrapper'>
                     {activeModal === 'editUserInfoForm' ? (
                         <EditInfoUserInProfile
-                            userInfo={userInfo}
-                            setUserInfo={setUserInfo}
+                            userInfo={currentUser}
+                            // setUserInfo={setUserInfo}
                             setActiveModal={setActiveModal}
                         />
                     ) : (
@@ -111,7 +91,7 @@ const ProfilePage = () => {
             ) : (
                 <div className='userFavPosts'>
                     <h2 className='profilePage__title'>Понравившиеся посты</h2>
-                    <PostsList posts={userFavPosts} />
+                    <PostsList posts={userFavoritesPosts} />
                 </div>
             )}
         </div>
