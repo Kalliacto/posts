@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './profilePage.css';
 import { useParams } from 'react-router-dom';
-import { api } from '../../api/api';
 import GoBackBtn from '../../components/GoBackBtn/GoBackBtn';
 import { Context } from '../../context/Context';
 import PostsList from '../../components/PostsList/PostsList';
@@ -9,11 +8,13 @@ import ChangingAvatar from '../../components/Forms/ChangingAvatar/ChangingAvatar
 import { PencilSquare, XLg } from 'react-bootstrap-icons';
 import Modal from '../../components/Modal/Modal';
 import EditInfoUserInProfile from '../../components/Forms/EditInfoUserInProfile/EditInfoUserInProfile';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userApi } from '../../api/userApi';
+import { getUserInfoById } from '../../store/slices/profileSlice';
 
 const ProfilePage = () => {
-    const { userInfo, setUserInfo, posts, activeModal, setActiveModal } = useContext(Context);
+    const { userInfo, setUserInfo, activeModal, setActiveModal } = useContext(Context);
+    const { posts } = useSelector((s) => s.posts);
     const { user } = useSelector((s) => s.user);
     const [userPosts, setUserPosts] = useState([]);
     const [userFavPosts, setUserFavPosts] = useState([]);
@@ -21,6 +22,11 @@ const ProfilePage = () => {
     const { userId } = useParams();
     const myProfile = user._id === userId;
     const [previewAvatar, setPreviewAvatar] = useState('');
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getUserInfoById(userId));
+    }, [dispatch]);
 
     useEffect(() => {
         userApi

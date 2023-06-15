@@ -4,15 +4,12 @@ import Logo from '../Logo/Logo';
 import { Link } from 'react-router-dom';
 import Search from '../Search/Search';
 import { Context } from '../../context/Context';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSearch } from '../../store/slices/postsSlice';
 
 const Header = () => {
-    const { setSearch, auth, setAuth } = useContext(Context);
+    const { auth, setAuth } = useContext(Context);
     const { user } = useSelector((s) => s.user);
-
-    const setSearchQuery = (path) => {
-        setSearch(path);
-    };
 
     return (
         <header className='header'>
@@ -21,7 +18,7 @@ const Header = () => {
                     <Link to={'/'}>
                         <Logo className='header__logo' />
                     </Link>
-                    <Search setSearch={setSearchQuery} />
+                    <Search />
                     <div className='header__btns'>
                         <Link to={`/profile/${user._id}`}>
                             <button className='button__profile'>Профиль</button>

@@ -8,24 +8,24 @@ import { api } from './api/api';
 import { preloadObj, preloadUser } from './utils/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from './store/slices/userSlice';
+import { getAllPostsData, searchPosts } from './store/slices/postsSlice';
 
 function App() {
     const [posts, setPosts] = useState([]);
-    const [search, setSearch] = useState(undefined);
     const [activeModal, setActiveModal] = useState('');
     const [previewPostImage, setPreviewPostImage] = useState(
         'https://jkfenner.com/wp-content/uploads/2019/11/default.jpg'
     );
     const [postInfo, setPostInfo] = useState(preloadObj);
-    const [postAllComment, setPostAllComment] = useState([]);
     const [userInfo, setUserInfo] = useState(preloadUser);
     const [showPassword, setShowPassword] = useState(false);
     const [auth, setAuth] = useState(false);
-
+    const { search } = useSelector((s) => s.posts);
+    const { comments } = useSelector((s) => s.onePost);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getUser());
+        dispatch(getUser()).then(() => dispatch(getAllPostsData()));
     }, [dispatch]);
 
     useEffect(() => {
@@ -36,28 +36,25 @@ function App() {
             .catch((error) =>
                 console.error('Ошибка при загрузке данных постов или пользователя', error)
             );
-    }, [postInfo, postAllComment, userInfo]);
+    }, [postInfo, comments, userInfo]);
 
     useEffect(() => {
         if (search === undefined) return;
-        api.searchPost(search)
-            .then((data) => setPosts(data))
-            .catch((error) => console.log('Ошибка при поиске постов', error));
-    }, [search]);
+        const timer = setTimeout(() => {
+            dispatch(searchPosts(search));
+        }, 200);
+        return () => clearTimeout(timer);
+    }, [dispatch, search]);
 
     const valueContext = {
         posts,
         setPosts,
-        search,
-        setSearch,
         activeModal,
         setActiveModal,
         previewPostImage,
         setPreviewPostImage,
         postInfo,
         setPostInfo,
-        postAllComment,
-        setPostAllComment,
         userInfo,
         setUserInfo,
         showPassword,

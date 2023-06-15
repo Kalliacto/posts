@@ -1,11 +1,11 @@
-import { Context } from '../../context/Context';
-import { onSortPosts } from '../../utils/utils';
+import { useDispatch } from 'react-redux';
 import './sortPosts.css';
-
-import React, { useContext } from 'react';
+import React from 'react';
+import { sortingPosts } from '../../store/slices/postsSlice';
 
 const SortPosts = () => {
-    const { posts, setPosts } = useContext(Context);
+    const dispatch = useDispatch();
+
     const sortItem = [
         { id: 'alphabet', title: 'По алфавиту' },
         { id: 'popular', title: 'Популярные' },
@@ -20,7 +20,7 @@ const SortPosts = () => {
                     return (
                         <span
                             key={item.id}
-                            onClick={() => onSortPosts(posts, item.id, setPosts)}
+                            onClick={() => dispatch(sortingPosts(item.id))}
                             className='sort__posts_text'
                         >
                             {item.title}
