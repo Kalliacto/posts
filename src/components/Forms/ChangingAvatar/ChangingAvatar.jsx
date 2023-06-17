@@ -3,9 +3,11 @@ import { useForm } from 'react-hook-form';
 import '../inputPost.css';
 import { Context } from '../../../context/Context';
 import { avatarOptions } from '../formsOptions';
-import { userApi } from '../../../api/userApi';
+import { useDispatch } from 'react-redux';
+import { updateUser } from '../../../store/slices/userSlice';
 
-const ChangingAvatar = ({ setUserInfo, previewAvatar, setPreviewAvatar }) => {
+const ChangingAvatar = ({ previewAvatar, setPreviewAvatar }) => {
+    const dispatch = useDispatch();
     const { setActiveModal } = useContext(Context);
     const {
         register,
@@ -15,14 +17,10 @@ const ChangingAvatar = ({ setUserInfo, previewAvatar, setPreviewAvatar }) => {
     } = useForm({ mode: 'onChange' });
 
     const sendEditDataAvatarInfo = (newAvatar) => {
-        return userApi
-            .changingAvatarInfo(newAvatar)
-            .then((userInfo) => {
-                setActiveModal('');
-                reset();
-                setUserInfo({ ...userInfo });
-            })
-            .catch((error) => console.log(error));
+        dispatch(updateUser(newAvatar)).then(() => {
+            setActiveModal('');
+            reset();
+        });
     };
 
     return (

@@ -9,7 +9,7 @@ const config = {
 };
 
 const onResponse = (data) => {
-    return data.ok ? data.json() : Promise.reject('Что-то пошло не так');
+    return data.ok ? data.json() : data.json().then((res) => Promise.reject(res.message));
 };
 
 class UserApi {
@@ -56,7 +56,7 @@ class UserApi {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ ...data, group: 'group-12' }),
-        }).then((res) => res.json());
+        }).then(onResponse);
     }
     signIn(data) {
         return fetch(`${this.baseUrl}/signin`, {
@@ -65,7 +65,7 @@ class UserApi {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
-        }).then((res) => res.json());
+        }).then(onResponse);
     }
     getTokenByEmail(data) {
         return fetch(`${this.baseUrl}/forgot-password`, {
@@ -74,7 +74,7 @@ class UserApi {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
-        }).then((res) => res.json());
+        }).then(onResponse);
     }
     setNewPassword(data) {
         return fetch(`${this.baseUrl}/password-reset/${data.token}`, {
@@ -83,7 +83,7 @@ class UserApi {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ password: data.password }),
-        }).then((res) => res.json());
+        }).then(onResponse);
     }
 }
 

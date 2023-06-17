@@ -46,12 +46,12 @@ const onePostSlice = createSlice({
         builder.addCase(addComment.fulfilled, (state, action) => {
             state.comments = action.payload.comments;
         });
-        builder.addMatcher(isLoadingData, (state) => {
-            state.isLoading = true;
-        });
-        builder.addMatcher(forErrors, (action) => {
-            showError(action.error.message);
-        });
+        // builder.addMatcher(isLoadingData, (state) => {
+        //     state.isLoading = true;
+        // });
+        // builder.addMatcher(forErrors, (action) => {
+        //     showError(action.error.message);
+        // });
     },
 });
 

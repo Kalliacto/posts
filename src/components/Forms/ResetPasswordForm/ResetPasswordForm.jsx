@@ -5,9 +5,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { tokenOptions, passwordOptions } from '../formsOptions';
 import { EyeFill, EyeSlashFill } from 'react-bootstrap-icons';
 import { Context } from '../../../context/Context';
-import { userApi } from '../../../api/userApi';
+import { useDispatch } from 'react-redux';
+import { sendNewPassword } from '../../../store/slices/userSlice';
 
 const ResetPasswordForm = () => {
+    const dispatch = useDispatch();
     const { showPassword, setShowPassword } = useContext(Context);
     const navigate = useNavigate();
     const {
@@ -18,16 +20,12 @@ const ResetPasswordForm = () => {
     } = useForm({ mode: 'onSubmit' });
 
     const resetPassword = (data) => {
-        userApi.setNewPassword(data).then((res) => {
-            if (!!res.err) {
-                alert(`${res.message}`);
-            } else {
-                alert(`Добро пожаловать, ${res.data.name}`);
-                navigate('/');
-                reset();
-            }
+        dispatch(sendNewPassword(data)).then(() => {
+            navigate('/');
+            reset();
         });
     };
+    
     return (
         <div className='inputPost__wrapper'>
             <h3>Восстановление пароля</h3>

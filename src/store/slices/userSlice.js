@@ -1,35 +1,88 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { forErrors, isLoadingData, showError } from '../../utils/utils';
 import { userApi } from '../../api/userApi';
+import { api } from '../../api/api';
+import { setNewUserData } from './profileSlice';
 
 const initialState = {
     user: {},
     isLoading: false,
+    isAuth: false,
 };
 
 export const getUser = createAsyncThunk(
     'user/getUser',
-    async function (str, { getState, fulfillWithValue }) {
+    async function (data, { fulfillWithValue, rejectWithValue }) {
         try {
-            return await userApi.getUserInfo();
-        } catch {}
+            const user = await userApi.getUserInfo();
+            return fulfillWithValue(user);
+        } catch (error) {
+            alert(`${error}`);
+            return rejectWithValue(error);
+        }
     }
 );
 
 export const updateUser = createAsyncThunk(
     'user/updateUser',
-    async function (newUserData, { fulfillWithValue }) {
+    async function (newUserData, { dispatch, fulfillWithValue, rejectWithValue }) {
         try {
             if (newUserData.avatar) {
-                return await userApi.changingAvatarInfo({ avatar: newUserData.avatar });
+                const updatedUser = await userApi.changingAvatarInfo({
+                    avatar: newUserData.avatar,
+                });
+                dispatch(setNewUserData(updatedUser));
+                return fulfillWithValue(updatedUser);
             }
-            return await userApi.changingProfileInfo({
+            const updatedUser = await userApi.changingProfileInfo({
                 name: newUserData.name,
                 about: newUserData.about,
             });
-        } catch {}
+            dispatch(setNewUserData(updatedUser));
+            return fulfillWithValue(updatedUser);
+        } catch (error) {
+            alert(`${error}`);
+            rejectWithValue(error);
+        }
     }
 );
+
+export const registration = createAsyncThunk('user/authorization', async function (data) {
+    try {
+        return await userApi.signUp(data);
+    } catch (error) {
+        alert(`${error}`);
+    }
+});
+
+export const authorization = createAsyncThunk(
+    'user/authorization',
+    async function (data, { fulfillWithValue, rejectWithValue }) {
+        try {
+            const response = await userApi.signIn(data);
+            return fulfillWithValue(response);
+        } catch (error) {
+            alert(`${error}`);
+            return rejectWithValue(error);
+        }
+    }
+);
+
+export const getNewToken = createAsyncThunk('user/getNewToken', async function (data) {
+    try {
+        return await userApi.getTokenByEmail(data);
+    } catch (error) {
+        alert(`${error.message}`);
+    }
+});
+
+export const sendNewPassword = createAsyncThunk('user/sendNewPassword', async function (data) {
+    try {
+        return await userApi.setNewPassword(data);
+    } catch (error) {
+        alert(`${error.message}`);
+    }
+});
 
 const userSlice = createSlice({
     name: 'user',
@@ -39,16 +92,34 @@ const userSlice = createSlice({
             state.isLoading = false;
             state.user = action.payload;
         });
+
         builder.addCase(updateUser.fulfilled, (state, action) => {
             state.isLoading = false;
             state.user = action.payload;
         });
-        builder.addMatcher(isLoadingData, (state) => {
-            state.isLoading = true;
+
+        builder.addCase(authorization.fulfilled, (state, action) => {
+            console.log(action);
+            state.isLoading = false;
+            state.isAuth = true;
+            localStorage.setItem('postsToken2023', action.payload.token);
         });
-        builder.addMatcher(forErrors, (action) => {
-            showError(action.error.message);
+
+        builder.addCase(getNewToken.fulfilled, (state, action) => {
+            state.isLoading = false;
         });
+
+        builder.addCase(sendNewPassword.fulfilled, (state, action) => {
+            state.isLoading = false;
+        });
+
+        // builder.addMatcher(isLoadingData, (state) => {
+        //     state.isLoading = true;
+        // });
+
+        // builder.addMatcher(forErrors, (action) => {
+        //     showError(action.error.message);
+        // });
     },
 });
 

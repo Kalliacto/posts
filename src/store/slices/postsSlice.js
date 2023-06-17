@@ -85,12 +85,12 @@ const postsSlice = createSlice({
             state.posts = action.payload;
         });
         builder.addCase(changeLikeInPost.fulfilled, (state, action) => {});
-        builder.addMatcher(isLoadingData, (state) => {
-            state.isLoading = true;
-        });
-        builder.addMatcher(forErrors, (action) => {
-            showError(action.error.message);
-        });
+        // builder.addMatcher(isLoadingData, (state) => {
+        //     state.isLoading = true;
+        // });
+        // builder.addMatcher(forErrors, (action) => {
+        //     showError(action.error.message);
+        // });
     },
 });
 

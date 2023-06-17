@@ -5,9 +5,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { aboutOptions, emailOptions, nameOptions, passwordOptions } from '../formsOptions';
 import { EyeFill, EyeSlashFill } from 'react-bootstrap-icons';
 import { Context } from '../../../context/Context';
-import { userApi } from '../../../api/userApi';
+import { useDispatch } from 'react-redux';
+import { registration } from '../../../store/slices/userSlice';
 
 const RegistrationForm = () => {
+    const dispatch = useDispatch();
     const { showPassword, setShowPassword } = useContext(Context);
     const navigate = useNavigate();
     const {
@@ -17,25 +19,17 @@ const RegistrationForm = () => {
         formState: { errors },
     } = useForm({ mode: 'onSubmit' });
 
-    const registration = (data) => {
-        userApi
-            .signUp(data)
-            .then((res) => {
-                if (!!res.err) {
-                    alert(`${res.message}`);
-                } else {
-                    alert(`Добро пожаловать, ${res.data.name}`);
-                    navigate('/');
-                    reset();
-                }
-            })
-            .catch((error) => alert(`${error}`));
+    const sendRegistrationData = (data) => {
+        dispatch(registration(data)).then(() => {
+            navigate('/');
+            reset();
+        });
     };
 
     return (
         <div className='inputPost__wrapper'>
             <h3>Регистрация</h3>
-            <form className='authForm' onSubmit={handleSubmit(registration)}>
+            <form className='authForm' onSubmit={handleSubmit(sendRegistrationData)}>
                 <input
                     className={errors.name ? 'inputPost__input error' : 'inputPost__input'}
                     type='text'

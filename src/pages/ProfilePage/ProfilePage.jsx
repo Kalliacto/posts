@@ -15,7 +15,6 @@ const ProfilePage = () => {
     const { activeModal, setActiveModal } = useContext(Context);
     const { user } = useSelector((s) => s.user);
     const { currentUser, userPosts, userFavoritesPosts } = useSelector((s) => s.profile);
-    const [userFavPosts, setUserFavPosts] = useState([]);
     const { name, about, email, avatar } = currentUser;
     const { userId } = useParams();
     const myProfile = user._id === userId;
@@ -25,7 +24,7 @@ const ProfilePage = () => {
 
     useEffect(() => {
         dispatch(getUserInfoById(userId)).then(() => setPreviewAvatar(currentUser.avatar));
-    }, [dispatch]);
+    }, [dispatch, userId]);
 
     return (
         <div className='profilePage'>
@@ -85,14 +84,13 @@ const ProfilePage = () => {
                 )}
                 <PostsList posts={userPosts} />
             </div>
-
-            {!userFavPosts.length ? (
-                'Нет понравившихся постов'
-            ) : (
+            {userFavoritesPosts.length ? (
                 <div className='userFavPosts'>
                     <h2 className='profilePage__title'>Понравившиеся посты</h2>
                     <PostsList posts={userFavoritesPosts} />
                 </div>
+            ) : (
+                'Нет понравившихся постов'
             )}
         </div>
     );

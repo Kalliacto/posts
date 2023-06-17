@@ -8,7 +8,7 @@ const config = {
 };
 
 const onResponse = (data) => {
-    return data.ok ? data.json() : Promise.reject('Что-то пошло не так');
+    return data.ok ? data.json() : data.json().then((res) => Promise.reject(res));
 };
 
 class Api {

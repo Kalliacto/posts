@@ -3,28 +3,22 @@ import '../inputPost.css';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { emailOptions } from '../formsOptions';
-import { userApi } from '../../../api/userApi';
+import { useDispatch } from 'react-redux';
+import { getNewToken } from '../../../store/slices/userSlice';
 
 const ForgotPasswordForm = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const {
         register,
-        reset,
         handleSubmit,
         formState: { errors },
     } = useForm({ mode: 'onSubmit' });
 
     const resetPassword = (data) => {
-        userApi.getTokenByEmail(data).then((res) => {
-            if (!!res.err) {
-                alert('Аккаунта с данным Email не существует');
-            } else {
-                alert(`${res.message}`);
-                navigate('/password-reset');
-                reset();
-            }
+        dispatch(getNewToken(data)).then(() => {
+            navigate('/password-reset');
         });
-        reset();
     };
 
     return (
