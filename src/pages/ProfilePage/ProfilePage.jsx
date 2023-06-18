@@ -15,17 +15,16 @@ const ProfilePage = () => {
     const { activeModal, setActiveModal } = useContext(Context);
     const { user } = useSelector((s) => s.user);
     const { currentUser, userPosts, userFavoritesPosts } = useSelector((s) => s.profile);
-    const [userFavPosts, setUserFavPosts] = useState([]);
+    const { posts } = useSelector((s) => s.posts);
     const { name, about, email, avatar } = currentUser;
     const { userId } = useParams();
     const myProfile = user._id === userId;
-    const [previewAvatar, setPreviewAvatar] = useState('');
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getUserInfoById(userId)).then(() => setPreviewAvatar(currentUser.avatar));
-    }, [dispatch]);
+        dispatch(getUserInfoById(userId));
+    }, [dispatch, userId, posts]);
 
     return (
         <div className='profilePage'>
@@ -41,11 +40,7 @@ const ProfilePage = () => {
                     )}
                     {activeModal === 'avatar' && (
                         <Modal state={activeModal === 'avatar'} setState={setActiveModal}>
-                            <ChangingAvatar
-                                // setUserInfo={setUserInfo}
-                                previewAvatar={previewAvatar}
-                                setPreviewAvatar={setPreviewAvatar}
-                            />
+                            <ChangingAvatar userInfo={currentUser} />
                         </Modal>
                     )}
                 </div>
@@ -53,7 +48,6 @@ const ProfilePage = () => {
                     {activeModal === 'editUserInfoForm' ? (
                         <EditInfoUserInProfile
                             userInfo={currentUser}
-                            // setUserInfo={setUserInfo}
                             setActiveModal={setActiveModal}
                         />
                     ) : (
@@ -85,14 +79,13 @@ const ProfilePage = () => {
                 )}
                 <PostsList posts={userPosts} />
             </div>
-
-            {!userFavPosts.length ? (
-                'Нет понравившихся постов'
-            ) : (
+            {userFavoritesPosts.length ? (
                 <div className='userFavPosts'>
                     <h2 className='profilePage__title'>Понравившиеся посты</h2>
                     <PostsList posts={userFavoritesPosts} />
                 </div>
+            ) : (
+                'Нет понравившихся постов'
             )}
         </div>
     );

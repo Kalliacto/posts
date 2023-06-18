@@ -25,31 +25,6 @@ export const likeToogleDetailsPage = (postId, wasLiked, setPosts, setPostInfo) =
         .catch((error) => console.error('Ошибка при установке лайка', error));
 };
 
-export const preloadObj = {
-    image: '',
-    likes: [],
-    comments: [],
-    tags: [],
-    _id: '',
-    title: '',
-    author: {
-        name: '',
-        about: '',
-        avatar: '',
-        _id: '',
-    },
-    text: '',
-    created_at: '',
-};
-
-export const preloadUser = {
-    name: '',
-    about: '',
-    avatar: '',
-    _id: '',
-    email: '',
-};
-
 export const splitTags = (tags) => {
     return tags.trim().split(',');
 };
@@ -66,4 +41,8 @@ export const isLoadingData = (data) => {
 };
 export const forErrors = (data) => {
     return data.type.endsWith('rejected');
+};
+
+export const refreshToken = () => {
+    return localStorage.getItem('postsToken2023');
 };

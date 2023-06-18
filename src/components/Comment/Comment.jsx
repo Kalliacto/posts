@@ -6,7 +6,7 @@ import { Trash } from 'react-bootstrap-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { addComment, deleteComment } from '../../store/slices/onePostSlice';
 
-const Comment = ({ postId, postAllComment }) => {
+const Comment = ({ postId, comments }) => {
     const [formActive, setFormActive] = useState(false);
     const { register, handleSubmit, reset } = useForm({});
     const { user } = useSelector((s) => s.user);
@@ -38,8 +38,8 @@ const Comment = ({ postId, postAllComment }) => {
                     </button>
                 </form>
             )}
-            {!!postAllComment.length ? (
-                postAllComment.map((elem, i) => (
+            {!!comments.length ? (
+                comments.map((elem, i) => (
                     <div key={`${elem.created_at}+${i}`} className='comment'>
                         <Link className='comment__link' to={`/profile/${elem.author._id}`}>
                             <div className='comment__author'>

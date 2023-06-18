@@ -1,27 +1,23 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import './post.css';
 import { Chat, Heart, HeartFill } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
-import { Context } from '../../context/Context';
-import { likeToggle } from '../../utils/utils';
 import { Trash3 } from 'react-bootstrap-icons';
-import { api } from '../../api/api';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { deletePostFetch, switchLike } from '../../store/slices/postsSlice';
 
 const Post = ({ post }) => {
-    const { setPosts } = useContext(Context);
+    const dispatch = useDispatch();
     const { user } = useSelector((s) => s.user);
     const { author, image, title, text, tags, likes, created_at, _id, comments } = post;
     const wasLiked = likes?.includes(user._id);
 
-    const deletePost = async (id) => {
-        if (window.confirm('Вы уверены, что хотите удалить данный пост безвозвратно?')) {
-            return await api
-                .deletePostById(id)
-                .then(() => setPosts((state) => state.filter((post) => post._id !== id)))
-                .catch((error) => console.log(error));
-        }
-        return;
+    const deletePost = (id) => {
+        dispatch(deletePostFetch(id));
+    };
+
+    const handleLike = (_id, wasLiked) => {
+        dispatch(switchLike({ _id, wasLiked }));
     };
 
     return (
@@ -59,10 +55,7 @@ const Post = ({ post }) => {
             </div>
             <div className='post__footer'>
                 <div className='post__buttons'>
-                    <button
-                        className='post__button'
-                        onClick={() => likeToggle(_id, wasLiked, setPosts)}
-                    >
+                    <button className='post__button' onClick={() => handleLike(_id, wasLiked)}>
                         {wasLiked ? <HeartFill fill='red' /> : <Heart />}{' '}
                         <span className='post__like-count'>{!!likes.length && likes.length}</span>
                     </button>

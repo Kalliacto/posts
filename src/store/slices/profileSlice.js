@@ -11,7 +11,7 @@ const initialState = {
 
 export const getUserInfoById = createAsyncThunk(
     'profileSlice/getUserInfoById',
-    async (id, { getState, fulfillWithValue, rejectWithValue }) => {
+    async function (id, { getState, fulfillWithValue, rejectWithValue }) {
         try {
             const state = getState();
             const userInfo = await userApi.getUserInfoById(id);
@@ -25,7 +25,11 @@ export const getUserInfoById = createAsyncThunk(
 const profileSlice = createSlice({
     name: 'profile',
     initialState,
-    reducers: {},
+    reducers: {
+        setNewUserData(state, action) {
+            state.currentUser = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(getUserInfoById.fulfilled, (state, { payload }) => {
             state.isLoading = false;
@@ -36,13 +40,14 @@ const profileSlice = createSlice({
                 e.likes.includes(payload.userInfo._id)
             );
         });
-        builder.addMatcher(isLoadingData, (state) => {
-            state.isLoading = true;
-        });
-        builder.addMatcher(forErrors, (action) => {
-            showError(action.error.message);
-        });
+        // builder.addMatcher(isLoadingData, (state) => {
+        //     state.isLoading = true;
+        // });
+        // builder.addMatcher(forErrors, (action) => {
+        //     showError(action.error.message);
+        // });
     },
 });
 
+export const { setNewUserData } = profileSlice.actions;
 export default profileSlice.reducer;
