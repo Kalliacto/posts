@@ -1,12 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import '../inputPost.css';
 import { Context } from '../../../context/Context';
 import { avatarOptions } from '../formsOptions';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '../../../store/slices/userSlice';
+import defaultImage from '../../../images/defaultImage.jpg';
 
-const ChangingAvatar = ({ previewAvatar, setPreviewAvatar }) => {
+const ChangingAvatar = ({ userInfo }) => {
+    const [previewAvatar, setPreviewAvatar] = useState(userInfo.avatar);
     const dispatch = useDispatch();
     const { setActiveModal } = useContext(Context);
     const {
@@ -38,10 +40,7 @@ const ChangingAvatar = ({ previewAvatar, setPreviewAvatar }) => {
                 <img
                     className='inputPost__preview'
                     src={previewAvatar}
-                    onError={(e) =>
-                        (e.currentTarget.src =
-                            'https://jkfenner.com/wp-content/uploads/2019/11/default.jpg')
-                    }
+                    onError={(e) => (e.currentTarget.src = { defaultImage })}
                     alt='avatar'
                 />
             </div>

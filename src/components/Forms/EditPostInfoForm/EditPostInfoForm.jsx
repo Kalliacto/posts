@@ -1,13 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useState } from 'react';
 import '../inputPost.css';
 import { useForm } from 'react-hook-form';
 import { imageOptions, textOptions, titleOptions } from '../formsOptions';
-import { Context } from '../../../context/Context';
-import { api } from '../../../api/api';
 import { splitTags } from '../../../utils/utils';
+import { useDispatch } from 'react-redux';
+import { sendUpdatedPostInfo } from '../../../store/slices/onePostSlice';
+import defaultImage from '../../../images/defaultImage.jpg';
 
-const EditPostInfoForm = ({ setActiveModal, editablePost, setPostInfo }) => {
-    const { previewPostImage, setPreviewPostImage } = useContext(Context);
+const EditPostInfoForm = ({ setActiveModal, editablePost }) => {
+    const dispatch = useDispatch();
+    const [previewPostImage, setPreviewPostImage] = useState(editablePost.image);
     const {
         register,
         handleSubmit,
@@ -21,17 +23,17 @@ const EditPostInfoForm = ({ setActiveModal, editablePost, setPostInfo }) => {
             tags: editablePost.tags.join(','),
         },
     });
-    const sendNewInfoPost = (post) => {
-        api.setNewInfoPost(editablePost._id, { ...post, tags: splitTags(post.tags) }).then(
-            (res) => {
-                setPostInfo(res);
-                setActiveModal('');
-            }
-        );
+
+    const submitСhanges = (post) => {
+        dispatch(
+            sendUpdatedPostInfo({ editablePost, post: { ...post, tags: splitTags(post.tags) } })
+        ).then(() => {
+            setActiveModal('');
+        });
     };
 
     return (
-        <form onSubmit={handleSubmit(sendNewInfoPost)} className='inputPost__wrapper'>
+        <form onSubmit={handleSubmit(submitСhanges)} className='inputPost__wrapper'>
             <input
                 type='text'
                 {...register('title', titleOptions)}
@@ -59,10 +61,7 @@ const EditPostInfoForm = ({ setActiveModal, editablePost, setPostInfo }) => {
                 <img
                     className='inputPost__preview'
                     src={previewPostImage}
-                    onError={(e) =>
-                        (e.currentTarget.src =
-                            'https://jkfenner.com/wp-content/uploads/2019/11/default.jpg')
-                    }
+                    onError={(e) => (e.currentTarget.src = { defaultImage })}
                     alt='preview'
                 />
             </div>

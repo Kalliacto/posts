@@ -5,25 +5,42 @@ import Header from './components/Header/Header';
 import Main from './components/Main/Main';
 import Footer from './components/Footer/Footer';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUser } from './store/slices/userSlice';
+import { getUser, setAuth } from './store/slices/userSlice';
 import { getAllPostsData, searchPosts } from './store/slices/postsSlice';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function App() {
-    const [activeModal, setActiveModal] = useState('');
-    const [previewPostImage, setPreviewPostImage] = useState(
-        'https://jkfenner.com/wp-content/uploads/2019/11/default.jpg'
-    );
-    const [showPassword, setShowPassword] = useState(false);
-    const { search } = useSelector((s) => s.posts);
-    const { user } = useSelector((s) => s.user);
     const dispatch = useDispatch();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [activeModal, setActiveModal] = useState('');
+    const { search } = useSelector((s) => s.posts);
+    const { user, isAuth } = useSelector((s) => s.user);
 
     useEffect(() => {
+        if (!!localStorage.getItem('postsToken2023')) {
+            dispatch(setAuth(true));
+        } else {
+            if (
+                location.pathname.includes('/registration') ||
+                location.pathname.includes('/login') ||
+                location.pathname.includes('/forgot-password') ||
+                location.pathname.includes('/password-reset')
+            ) {
+                return;
+            } else {
+                navigate('/login');
+            }
+        }
+    }, [dispatch, isAuth, location, navigate]);
+
+    useEffect(() => {
+        if (!isAuth) return;
         dispatch(getUser()).then(() => dispatch(getAllPostsData()));
-    }, [dispatch]);
+    }, [dispatch, isAuth]);
 
     useEffect(() => {
-        if (typeof(search) !== 'string') return;
+        if (typeof search !== 'string') return;
         const timer = setTimeout(() => {
             dispatch(searchPosts(search));
         }, 400);
@@ -33,10 +50,6 @@ function App() {
     const valueContext = {
         activeModal,
         setActiveModal,
-        previewPostImage,
-        setPreviewPostImage,
-        showPassword,
-        setShowPassword,
     };
 
     return (

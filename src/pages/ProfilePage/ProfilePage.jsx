@@ -19,12 +19,11 @@ const ProfilePage = () => {
     const { name, about, email, avatar } = currentUser;
     const { userId } = useParams();
     const myProfile = user._id === userId;
-    const [previewAvatar, setPreviewAvatar] = useState('');
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getUserInfoById(userId)).then(() => setPreviewAvatar(currentUser.avatar));
+        dispatch(getUserInfoById(userId));
     }, [dispatch, userId, posts]);
 
     return (
@@ -41,11 +40,7 @@ const ProfilePage = () => {
                     )}
                     {activeModal === 'avatar' && (
                         <Modal state={activeModal === 'avatar'} setState={setActiveModal}>
-                            <ChangingAvatar
-                                // setUserInfo={setUserInfo}
-                                previewAvatar={previewAvatar}
-                                setPreviewAvatar={setPreviewAvatar}
-                            />
+                            <ChangingAvatar userInfo={currentUser} />
                         </Modal>
                     )}
                 </div>
@@ -53,7 +48,6 @@ const ProfilePage = () => {
                     {activeModal === 'editUserInfoForm' ? (
                         <EditInfoUserInProfile
                             userInfo={currentUser}
-                            // setUserInfo={setUserInfo}
                             setActiveModal={setActiveModal}
                         />
                     ) : (

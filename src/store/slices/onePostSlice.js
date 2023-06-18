@@ -11,54 +11,68 @@ const initialState = {
 
 export const getInfoOnePost = createAsyncThunk(
     'post/getInfoOnePost',
-    async (postId, { fulfillWithValue, rejectWithValue }) => {
+    async function (postId, { fulfillWithValue, rejectWithValue }) {
         try {
             const postInfo = await api.getOnePost(postId);
             return fulfillWithValue(postInfo);
         } catch (error) {
             alert(`${error}`);
-            rejectWithValue(error);
+            return rejectWithValue(error);
+        }
+    }
+);
+
+export const sendUpdatedPostInfo = createAsyncThunk(
+    'post/sendUpdatedPostInfo',
+    async function ({editablePost, post}, { dispatch, fulfillWithValue, rejectWithValue }) {
+        try {
+            const updatedPost = await api.setNewInfoPost(editablePost._id, post);
+            dispatch(updatePostsState(updatedPost));
+            return fulfillWithValue(updatedPost);
+        } catch (error) {
+            alert(`${error}`);
+            return rejectWithValue(error);
         }
     }
 );
 
 export const getPostAllComments = createAsyncThunk(
     'post/getPostAllComments',
-    async (postId, { fulfillWithValue, rejectWithValue }) => {
+    async function (postId, { fulfillWithValue, rejectWithValue }) {
         try {
             const postInfoComments = await api.getPostCommentsAll(postId);
             return fulfillWithValue(postInfoComments);
         } catch (error) {
             alert(`${error}`);
-            rejectWithValue(error);
+            return rejectWithValue(error);
         }
     }
 );
 
 export const deleteComment = createAsyncThunk(
     'post/deleteComment',
-    async ({ postId, elemId }, { dispatch, fulfillWithValue, rejectWithValue }) => {
+    async function ({ postId, elemId }, { dispatch, fulfillWithValue, rejectWithValue }) {
         try {
             const updatedPost = await api.deleteCommentPostById(postId, elemId);
             dispatch(updatePostsState(updatedPost));
             return fulfillWithValue(updatedPost);
         } catch (error) {
             alert(`${error}`);
-            rejectWithValue(error);
+            return rejectWithValue(error);
         }
     }
 );
 
 export const addComment = createAsyncThunk(
     'post/addComment',
-    async (data, { dispatch, fulfillWithValue, rejectWithValue }) => {
+    async function (data, { dispatch, fulfillWithValue, rejectWithValue }) {
         try {
             const updatedPost = await api.addNewComment(data.id, data.body);
             dispatch(updatePostsState(updatedPost));
             return fulfillWithValue(updatedPost);
         } catch (error) {
             alert(`${error}`);
-            rejectWithValue(error);
+            return rejectWithValue(error);
         }
     }
 );
@@ -72,7 +86,7 @@ export const switchLikeOnPost = createAsyncThunk(
             return fulfillWithValue(updatedPost);
         } catch (error) {
             alert(`${error}`);
-            rejectWithValue(error);
+            return rejectWithValue(error);
         }
     }
 );
@@ -96,6 +110,9 @@ const onePostSlice = createSlice({
             state.comments = action.payload.comments;
         });
         builder.addCase(switchLikeOnPost.fulfilled, (state, action) => {
+            state.post = action.payload;
+        });
+        builder.addCase(sendUpdatedPostInfo.fulfilled, (state, action) => {
             state.post = action.payload;
         });
         // builder.addMatcher(isLoadingData, (state) => {

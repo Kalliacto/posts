@@ -1,9 +1,9 @@
+import { refreshToken } from "../utils/utils";
+
 const config = {
     basePostsUrl: 'https://api.react-learning.ru/v2/group-12/posts',
     headers: {
         'Content-Type': 'application/json',
-        authorization:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDNmYjgyNDMyOTFkNzkwYjNmM2IzMDkiLCJncm91cCI6Imdyb3VwLTEyIiwiaWF0IjoxNjgyMDY0ODY3LCJleHAiOjE3MTM2MDA4Njd9.IpO04cd78A6d9Zdit3IkrPueQkJEfh2Xv573sf111Qw',
     },
 };
 
@@ -20,26 +20,26 @@ class Api {
     getAllPosts() {
         return fetch(`${this.basePostsUrl}`, {
             method: 'GET',
-            headers: this.headers,
+            headers: { ...this.headers, authorization: refreshToken() },
         }).then(onResponse);
     }
 
     searchPost(path) {
         return fetch(`${this.basePostsUrl}/search/?query=${path}`, {
-            headers: this.headers,
+            headers: { ...this.headers, authorization: refreshToken() },
         }).then(onResponse);
     }
 
     getOnePost(id) {
         return fetch(`${this.basePostsUrl}/${id}`, {
-            headers: this.headers,
+            headers: { ...this.headers, authorization: refreshToken() },
         }).then(onResponse);
     }
 
     addNewPost(post) {
         return fetch(`${this.basePostsUrl}`, {
             method: 'POST',
-            headers: this.headers,
+            headers: { ...this.headers, authorization: refreshToken() },
             body: JSON.stringify(post),
         }).then(onResponse);
     }
@@ -47,14 +47,14 @@ class Api {
     setNewInfoPost(id, data) {
         return fetch(`${this.basePostsUrl}/${id}`, {
             method: 'PATCH',
-            headers: this.headers,
+            headers: { ...this.headers, authorization: refreshToken() },
             body: JSON.stringify(data),
         }).then(onResponse);
     }
 
     changePostLike(postId, isLiked) {
         return fetch(`${this.basePostsUrl}/likes/${postId}`, {
-            headers: this.headers,
+            headers: { ...this.headers, authorization: refreshToken() },
             method: isLiked ? 'DELETE' : 'PUT',
         }).then(onResponse);
     }
@@ -62,27 +62,27 @@ class Api {
     deletePostById(id) {
         return fetch(`${this.basePostsUrl}/${id}`, {
             method: 'DELETE',
-            headers: this.headers,
+            headers: { ...this.headers, authorization: refreshToken() },
         }).then(onResponse);
     }
 
     getAllComments() {
         return fetch(`${this.basePostsUrl}/comments`, {
-            headers: this.headers,
+            headers: { ...this.headers, authorization: refreshToken() },
         }).then(onResponse);
     }
 
     getPostCommentsAll(id) {
         return fetch(`${this.basePostsUrl}/comments/${id}`, {
             method: 'GET',
-            headers: this.headers,
+            headers: { ...this.headers, authorization: refreshToken() },
         }).then(onResponse);
     }
 
     addNewComment(postId, comment) {
         return fetch(`${this.basePostsUrl}/comments/${postId}`, {
             method: 'POST',
-            headers: this.headers,
+            headers: { ...this.headers, authorization: refreshToken() },
             body: JSON.stringify(comment),
         }).then(onResponse);
     }
@@ -90,7 +90,7 @@ class Api {
     deleteCommentPostById(postId, commentId) {
         return fetch(`${this.basePostsUrl}/comments/${postId}/${commentId}`, {
             method: 'DELETE',
-            headers: this.headers,
+            headers: { ...this.headers, authorization: refreshToken() },
         }).then(onResponse);
     }
 }

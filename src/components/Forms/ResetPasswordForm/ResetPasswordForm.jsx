@@ -1,16 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import '../inputPost.css';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { tokenOptions, passwordOptions } from '../formsOptions';
-import { EyeFill, EyeSlashFill } from 'react-bootstrap-icons';
-import { Context } from '../../../context/Context';
+import { tokenOptions } from '../formsOptions';
 import { useDispatch } from 'react-redux';
 import { sendNewPassword } from '../../../store/slices/userSlice';
+import InputPassword from '../InputPassword/InputPassword';
 
 const ResetPasswordForm = () => {
     const dispatch = useDispatch();
-    const { showPassword, setShowPassword } = useContext(Context);
     const navigate = useNavigate();
     const {
         register,
@@ -36,18 +34,7 @@ const ResetPasswordForm = () => {
                     {...register('token', tokenOptions)}
                     placeholder='Токен из письма'
                 />
-                <div className='inputPost__input-wrapper'>
-                    <input
-                        className={errors.password ? 'inputPost__input error' : 'inputPost__input'}
-                        type={showPassword ? 'text' : 'password'}
-                        {...register('password', passwordOptions)}
-                        placeholder='Пароль'
-                        autoComplete='true'
-                    />
-                    <span className='inputPost__eye' onClick={() => setShowPassword((s) => !s)}>
-                        {showPassword ? <EyeFill /> : <EyeSlashFill />}
-                    </span>
-                </div>
+                <InputPassword register={register} errors={errors} />
                 {errors.token && <span className='error__message'>{errors.token.message}</span>}
                 {errors.password && (
                     <span className='error__message'>{errors.password.message}</span>

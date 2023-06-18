@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { forErrors, isLoadingData, showError } from '../../utils/utils';
 import { userApi } from '../../api/userApi';
-import { api } from '../../api/api';
 import { setNewUserData } from './profileSlice';
 
 const initialState = {
@@ -42,7 +41,7 @@ export const updateUser = createAsyncThunk(
             return fulfillWithValue(updatedUser);
         } catch (error) {
             alert(`${error}`);
-            rejectWithValue(error);
+            return rejectWithValue(error);
         }
     }
 );
@@ -87,6 +86,11 @@ export const sendNewPassword = createAsyncThunk('user/sendNewPassword', async fu
 const userSlice = createSlice({
     name: 'user',
     initialState,
+    reducers: {
+        setAuth(state, { payload }) {
+            state.isAuth = payload;
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(getUser.fulfilled, (state, action) => {
             state.isLoading = false;
@@ -99,7 +103,6 @@ const userSlice = createSlice({
         });
 
         builder.addCase(authorization.fulfilled, (state, action) => {
-            console.log(action);
             state.isLoading = false;
             state.isAuth = true;
             localStorage.setItem('postsToken2023', action.payload.token);
@@ -123,4 +126,5 @@ const userSlice = createSlice({
     },
 });
 
+export const { setAuth } = userSlice.actions;
 export default userSlice.reducer;

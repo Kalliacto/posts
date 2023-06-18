@@ -11,7 +11,7 @@ const initialState = {
 
 export const getAllPostsData = createAsyncThunk(
     'posts/getAllPostsData',
-    async (_, { getState, fulfillWithValue, rejectWithValue }) => {
+    async function (_, { getState, fulfillWithValue, rejectWithValue }) {
         try {
             const state = getState();
             const allPosts = await api.getAllPosts();
@@ -24,7 +24,7 @@ export const getAllPostsData = createAsyncThunk(
 
 export const searchPosts = createAsyncThunk(
     'posts/searchPosts',
-    async (search, { fulfillWithValue, rejectWithValue }) => {
+    async function (search, { fulfillWithValue, rejectWithValue }) {
         try {
             const searchResult = await api.searchPost(search);
             return fulfillWithValue(searchResult);
@@ -42,7 +42,31 @@ export const switchLike = createAsyncThunk(
             return fulfillWithValue(updatedPost);
         } catch (error) {
             alert(`${error}`);
-            rejectWithValue(error);
+            return rejectWithValue(error);
+        }
+    }
+);
+
+export const sendNewPostInfo = createAsyncThunk(
+    'posts/sendNewPostInfo',
+    async function (postInfo, { fulfillWithValue, rejectWithValue }) {
+        try {
+            const newPost = await api.addNewPost(postInfo);
+            return fulfillWithValue(newPost);
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    }
+);
+
+export const deletePostFetch = createAsyncThunk(
+    'posts/deletePostFetch',
+    async function (postId, { fulfillWithValue, rejectWithValue }) {
+        try {
+            const deletedPost = await api.deletePostById(postId);
+            return fulfillWithValue(deletedPost);
+        } catch (error) {
+            return rejectWithValue(error);
         }
     }
 );
@@ -51,7 +75,7 @@ const postsSlice = createSlice({
     name: 'posts',
     initialState,
     reducers: {
-        sortingPosts: (state, action) => {
+        sortingPosts(state, action) {
             switch (action.payload) {
                 case 'alphabet':
                     state.posts = state.posts.sort((a, b) => {
@@ -80,7 +104,7 @@ const postsSlice = createSlice({
                     state.posts = state.posts.sort((a, b) => a.price - b.price);
             }
         },
-        setSearch: (state, action) => {
+        setSearch(state, action) {
             state.search = action.payload;
         },
         updatePostsState(state, action) {
@@ -95,14 +119,24 @@ const postsSlice = createSlice({
             state.posts = action.payload.allPosts;
             state.total = state.posts.length;
         });
+
         builder.addCase(searchPosts.fulfilled, (state, action) => {
             state.isLoading = false;
             state.posts = action.payload;
         });
+
         builder.addCase(switchLike.fulfilled, (state, action) => {
             state.posts = state.posts.map((e) =>
                 e._id === action.payload._id ? action.payload : e
             );
+        });
+
+        builder.addCase(sendNewPostInfo.fulfilled, (state, action) => {
+            state.posts.unshift(action.payload);
+        });
+
+        builder.addCase(deletePostFetch.fulfilled, (state, action) => {
+            state.posts = state.posts.filter((e) => e._id !== action.payload._id);
         });
         // builder.addMatcher(isLoadingData, (state) => {
         //     state.isLoading = true;

@@ -1,15 +1,19 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import './header.css';
 import Logo from '../Logo/Logo';
 import { Link } from 'react-router-dom';
 import Search from '../Search/Search';
-import { Context } from '../../context/Context';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSearch } from '../../store/slices/postsSlice';
+import { setAuth } from '../../store/slices/userSlice';
 
 const Header = () => {
-    const { auth, setAuth } = useContext(Context);
-    const { user } = useSelector((s) => s.user);
+    const dispatch = useDispatch();
+    const { user, isAuth } = useSelector((s) => s.user);
+
+    const logOut = () => {
+        localStorage.removeItem('postsToken2023');
+        dispatch(setAuth(false));
+    };
 
     return (
         <header className='header'>
@@ -23,9 +27,9 @@ const Header = () => {
                         <Link to={`/profile/${user._id}`}>
                             <button className='button__profile'>Профиль</button>
                         </Link>
-                        {auth ? (
+                        {isAuth ? (
                             <Link to='login'>
-                                <button onClick={() => setAuth(false)} className='button__profile'>
+                                <button onClick={logOut} className='button__profile'>
                                     Выйти
                                 </button>
                             </Link>

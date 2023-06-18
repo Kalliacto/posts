@@ -42,3 +42,7 @@ export const isLoadingData = (data) => {
 export const forErrors = (data) => {
     return data.type.endsWith('rejected');
 };
+
+export const refreshToken = () => {
+    return localStorage.getItem('postsToken2023');
+};

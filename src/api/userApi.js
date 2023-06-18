@@ -1,10 +1,10 @@
+import { refreshToken } from "../utils/utils";
+
 const config = {
     baseUsersUrl: 'https://api.react-learning.ru/users',
     baseUrl: 'https://api.react-learning.ru',
     headers: {
         'Content-Type': 'application/json',
-        authorization:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDNmYjgyNDMyOTFkNzkwYjNmM2IzMDkiLCJncm91cCI6Imdyb3VwLTEyIiwiaWF0IjoxNjgyMDY0ODY3LCJleHAiOjE3MTM2MDA4Njd9.IpO04cd78A6d9Zdit3IkrPueQkJEfh2Xv573sf111Qw',
     },
 };
 
@@ -22,21 +22,21 @@ class UserApi {
     getUserInfo() {
         return fetch(`${this.baseUsersUrl}/me`, {
             method: 'GET',
-            headers: this.headers,
+            headers: { ...this.headers, authorization: refreshToken() },
         }).then(onResponse);
     }
 
     getUserInfoById(id) {
         return fetch(`${this.baseUsersUrl}/${id}`, {
             method: 'GET',
-            headers: this.headers,
+            headers: { ...this.headers, authorization: refreshToken() },
         }).then(onResponse);
     }
 
     changingProfileInfo(data) {
         return fetch(`${this.baseUsersUrl}/me`, {
             method: 'PATCH',
-            headers: this.headers,
+            headers: { ...this.headers, authorization: refreshToken() },
             body: JSON.stringify(data),
         }).then(onResponse);
     }
@@ -44,7 +44,7 @@ class UserApi {
     changingAvatarInfo(avatar) {
         return fetch(`${this.baseUsersUrl}/me/avatar`, {
             method: 'PATCH',
-            headers: this.headers,
+            headers: { ...this.headers, authorization: refreshToken() },
             body: JSON.stringify(avatar),
         }).then(onResponse);
     }

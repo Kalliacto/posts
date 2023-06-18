@@ -11,7 +11,7 @@ const initialState = {
 
 export const getUserInfoById = createAsyncThunk(
     'profileSlice/getUserInfoById',
-    async (id, { getState, fulfillWithValue, rejectWithValue }) => {
+    async function (id, { getState, fulfillWithValue, rejectWithValue }) {
         try {
             const state = getState();
             const userInfo = await userApi.getUserInfoById(id);
