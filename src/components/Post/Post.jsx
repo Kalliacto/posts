@@ -3,12 +3,13 @@ import './post.css';
 import { Chat, Heart, HeartFill } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { Context } from '../../context/Context';
-import { likeToggle } from '../../utils/utils';
 import { Trash3 } from 'react-bootstrap-icons';
 import { api } from '../../api/api';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { switchLike } from '../../store/slices/postsSlice';
 
 const Post = ({ post }) => {
+    const dispatch = useDispatch();
     const { setPosts } = useContext(Context);
     const { user } = useSelector((s) => s.user);
     const { author, image, title, text, tags, likes, created_at, _id, comments } = post;
@@ -23,6 +24,10 @@ const Post = ({ post }) => {
         }
         return;
     };
+
+    const handleLike = (_id, wasLiked) => {
+        dispatch(switchLike({_id, wasLiked}))
+    }
 
     return (
         <div className='post'>
@@ -61,7 +66,7 @@ const Post = ({ post }) => {
                 <div className='post__buttons'>
                     <button
                         className='post__button'
-                        onClick={() => likeToggle(_id, wasLiked, setPosts)}
+                        onClick={() => handleLike(_id, wasLiked)}
                     >
                         {wasLiked ? <HeartFill fill='red' /> : <Heart />}{' '}
                         <span className='post__like-count'>{!!likes.length && likes.length}</span>

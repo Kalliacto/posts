@@ -15,6 +15,7 @@ const ProfilePage = () => {
     const { activeModal, setActiveModal } = useContext(Context);
     const { user } = useSelector((s) => s.user);
     const { currentUser, userPosts, userFavoritesPosts } = useSelector((s) => s.profile);
+    const { posts } = useSelector((s) => s.posts);
     const { name, about, email, avatar } = currentUser;
     const { userId } = useParams();
     const myProfile = user._id === userId;
@@ -24,7 +25,7 @@ const ProfilePage = () => {
 
     useEffect(() => {
         dispatch(getUserInfoById(userId)).then(() => setPreviewAvatar(currentUser.avatar));
-    }, [dispatch, userId]);
+    }, [dispatch, userId, posts]);
 
     return (
         <div className='profilePage'>

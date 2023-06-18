@@ -6,7 +6,6 @@ const initialState = {
     posts: [],
     isLoading: false,
     total: 0,
-    favoritesPosts: [],
     search: null,
 };
 
@@ -35,7 +34,18 @@ export const searchPosts = createAsyncThunk(
     }
 );
 
-export const changeLikeInPost = createAsyncThunk('posts/changeLikeInPost', async () => {});
+export const switchLike = createAsyncThunk(
+    'posts/switchLike',
+    async function ({ _id, wasLiked }, { fulfillWithValue, rejectWithValue }) {
+        try {
+            const updatedPost = await api.changePostLike(_id, wasLiked);
+            return fulfillWithValue(updatedPost);
+        } catch (error) {
+            alert(`${error}`);
+            rejectWithValue(error);
+        }
+    }
+);
 
 const postsSlice = createSlice({
     name: 'posts',
@@ -73,6 +83,11 @@ const postsSlice = createSlice({
         setSearch: (state, action) => {
             state.search = action.payload;
         },
+        updatePostsState(state, action) {
+            state.posts = state.posts.map((e) =>
+                e._id === action.payload._id ? action.payload : e
+            );
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(getAllPostsData.fulfilled, (state, action) => {
@@ -84,7 +99,11 @@ const postsSlice = createSlice({
             state.isLoading = false;
             state.posts = action.payload;
         });
-        builder.addCase(changeLikeInPost.fulfilled, (state, action) => {});
+        builder.addCase(switchLike.fulfilled, (state, action) => {
+            state.posts = state.posts.map((e) =>
+                e._id === action.payload._id ? action.payload : e
+            );
+        });
         // builder.addMatcher(isLoadingData, (state) => {
         //     state.isLoading = true;
         // });
@@ -94,5 +113,5 @@ const postsSlice = createSlice({
     },
 });
 
-export const { sortingPosts, setSearch } = postsSlice.actions;
+export const { sortingPosts, setSearch, updatePostsState } = postsSlice.actions;
 export default postsSlice.reducer;
