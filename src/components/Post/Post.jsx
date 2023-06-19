@@ -27,12 +27,18 @@ const Post = ({ post }) => {
             )}
             <Link to={`/profile/${author._id}`}>
                 <div className='post__header'>
-                    <img src={author.avatar} alt='avatar' className='post__autor-avatar' />
+                    <img
+                        src={user._id === author._id ? user.avatar : author.avatar}
+                        alt='avatar'
+                        className='post__autor-avatar'
+                    />
                     <div className='post__autor-info'>
                         <span className='post__autor-name'>
-                            <b>{author.name}</b>
+                            <b>{user._id === author._id ? user.name : author.name}</b>
                         </span>
-                        <span className='post__autor-about'>{author.about}</span>
+                        <span className='post__autor-about'>
+                            {user._id === author._id ? user.about : author.about}
+                        </span>
                     </div>
                 </div>
             </Link>

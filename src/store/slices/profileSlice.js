@@ -4,18 +4,24 @@ import { userApi } from '../../api/userApi';
 
 const initialState = {
     currentUser: {},
-    isProfileLoading: false,
+    isProfileLoading: true,
     userPosts: [],
     userFavoritesPosts: [],
+    myProfile: false,
 };
 
 export const getUserInfoById = createAsyncThunk(
     'profileSlice/getUserInfoById',
     async function (userId, { getState, fulfillWithValue, rejectWithValue }) {
+        const { posts, user, profile } = getState();
         try {
-            const { posts } = getState();
-            const user = await userApi.getUserInfoById(userId);
-            return fulfillWithValue({ user, posts });
+            if (profile.myProfile) {
+                return fulfillWithValue({ user: user.user, posts });
+            } else {
+                const { posts } = getState();
+                const user = await userApi.getUserInfoById(userId);
+                return fulfillWithValue({ user, posts });
+            }
         } catch (error) {
             return rejectWithValue(error);
         }
@@ -28,6 +34,25 @@ const profileSlice = createSlice({
     reducers: {
         setNewUserData(state, action) {
             state.currentUser = action.payload;
+        },
+        setMyProfile(state, { payload }) {
+            state.myProfile = payload;
+        },
+        updateProfileState(state, { payload }) {
+            state.userPosts = state.userPosts.map((e) =>
+                e._id === payload.post._id ? payload.post : e
+            );
+            if (state.myProfile && payload.wasLiked) {
+                state.userFavoritesPosts = state.userFavoritesPosts.filter(
+                    (e) => e._id !== payload.post._id
+                );
+            } else if (state.myProfile && !payload.wasLiked) {
+                state.userFavoritesPosts.push(payload.post);
+            } else {
+                state.userFavoritesPosts = state.userFavoritesPosts.map((e) =>
+                    e._id === payload.post._id ? payload.post : e
+                );
+            }
         },
     },
     extraReducers: (builder) => {

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, isPending } from '@reduxjs/toolkit';
 import { api } from '../../api/api';
 import { forErrors } from '../../utils/utils';
+import { updateProfileState } from './profileSlice';
 
 const initialState = {
     posts: [],
@@ -36,9 +37,10 @@ export const searchPosts = createAsyncThunk(
 
 export const switchLike = createAsyncThunk(
     'posts/switchLike',
-    async function ({ _id, wasLiked }, { fulfillWithValue, rejectWithValue }) {
+    async function ({ _id, wasLiked }, { dispatch, fulfillWithValue, rejectWithValue }) {
         try {
             const updatedPost = await api.changePostLike(_id, wasLiked);
+            dispatch(updateProfileState({ post: updatedPost, wasLiked }));
             return fulfillWithValue(updatedPost);
         } catch (error) {
             return rejectWithValue(error);

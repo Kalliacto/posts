@@ -9,25 +9,26 @@ import { PencilSquare, XLg } from 'react-bootstrap-icons';
 import Modal from '../../components/Modal/Modal';
 import EditInfoUserInProfile from '../../components/Forms/EditInfoUserInProfile/EditInfoUserInProfile';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserInfoById } from '../../store/slices/profileSlice';
+import { getUserInfoById, setMyProfile } from '../../store/slices/profileSlice';
 import Loader from '../../components/Loader/Loader';
 
 const ProfilePage = () => {
     const { activeModal, setActiveModal } = useContext(Context);
     const { user } = useSelector((s) => s.user);
-    const { currentUser, userPosts, userFavoritesPosts, isProfileLoading } = useSelector(
+    const { currentUser, userPosts, userFavoritesPosts, isProfileLoading, myProfile } = useSelector(
         (s) => s.profile
     );
-    const { posts } = useSelector((s) => s.posts);
+    const { isPostsLoading } = useSelector((s) => s.posts);
     const { name, about, email, avatar } = currentUser;
     const { userId } = useParams();
-    const myProfile = user._id === userId;
-console.log(myProfile);
-    const dispatch = useDispatch();
 
+    const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getUserInfoById(userId));
-    }, [dispatch, userId, posts, user]);
+        if (!!Object.keys(user).length && !isPostsLoading) {
+            dispatch(setMyProfile(user._id === userId))
+            dispatch(getUserInfoById(userId));
+        }
+    }, [dispatch, userId, isPostsLoading, user]);
 
     return (
         <>
