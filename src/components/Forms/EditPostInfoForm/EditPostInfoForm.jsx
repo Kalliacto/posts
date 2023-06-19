@@ -61,7 +61,7 @@ const EditPostInfoForm = ({ setActiveModal, editablePost }) => {
                 <img
                     className='inputPost__preview'
                     src={previewPostImage}
-                    onError={(e) => (e.currentTarget.src = { defaultImage })}
+                    onError={(e) => (e.currentTarget.src = defaultImage)}
                     alt='preview'
                 />
             </div>

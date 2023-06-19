@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, isPending } from '@reduxjs/toolkit';
 import { api } from '../../api/api';
-import { forErrors, isLoadingData, showError } from '../../utils/utils';
+import { forErrors } from '../../utils/utils';
 import { updatePostsState } from './postsSlice';
 
 const initialState = {
@@ -16,7 +16,6 @@ export const getInfoOnePost = createAsyncThunk(
             const postInfo = await api.getOnePost(postId);
             return fulfillWithValue(postInfo);
         } catch (error) {
-            alert(`${error}`);
             return rejectWithValue(error);
         }
     }
@@ -24,13 +23,12 @@ export const getInfoOnePost = createAsyncThunk(
 
 export const sendUpdatedPostInfo = createAsyncThunk(
     'post/sendUpdatedPostInfo',
-    async function ({editablePost, post}, { dispatch, fulfillWithValue, rejectWithValue }) {
+    async function ({ editablePost, post }, { dispatch, fulfillWithValue, rejectWithValue }) {
         try {
             const updatedPost = await api.setNewInfoPost(editablePost._id, post);
             dispatch(updatePostsState(updatedPost));
             return fulfillWithValue(updatedPost);
         } catch (error) {
-            alert(`${error}`);
             return rejectWithValue(error);
         }
     }
@@ -43,7 +41,6 @@ export const getPostAllComments = createAsyncThunk(
             const postInfoComments = await api.getPostCommentsAll(postId);
             return fulfillWithValue(postInfoComments);
         } catch (error) {
-            alert(`${error}`);
             return rejectWithValue(error);
         }
     }
@@ -57,7 +54,6 @@ export const deleteComment = createAsyncThunk(
             dispatch(updatePostsState(updatedPost));
             return fulfillWithValue(updatedPost);
         } catch (error) {
-            alert(`${error}`);
             return rejectWithValue(error);
         }
     }
@@ -71,7 +67,6 @@ export const addComment = createAsyncThunk(
             dispatch(updatePostsState(updatedPost));
             return fulfillWithValue(updatedPost);
         } catch (error) {
-            alert(`${error}`);
             return rejectWithValue(error);
         }
     }
@@ -85,7 +80,6 @@ export const switchLikeOnPost = createAsyncThunk(
             dispatch(updatePostsState(updatedPost));
             return fulfillWithValue(updatedPost);
         } catch (error) {
-            alert(`${error}`);
             return rejectWithValue(error);
         }
     }
@@ -99,28 +93,38 @@ const onePostSlice = createSlice({
             state.isLoading = false;
             state.post = action.payload;
         });
+
         builder.addCase(getPostAllComments.fulfilled, (state, action) => {
             state.isLoading = false;
             state.comments = action.payload;
         });
+
         builder.addCase(deleteComment.fulfilled, (state, action) => {
             state.comments = action.payload.comments;
         });
+
         builder.addCase(addComment.fulfilled, (state, action) => {
             state.comments = action.payload.comments;
         });
+
         builder.addCase(switchLikeOnPost.fulfilled, (state, action) => {
             state.post = action.payload;
         });
+
         builder.addCase(sendUpdatedPostInfo.fulfilled, (state, action) => {
             state.post = action.payload;
         });
-        // builder.addMatcher(isLoadingData, (state) => {
-        //     state.isLoading = true;
-        // });
-        // builder.addMatcher(forErrors, (action) => {
-        //     showError(action.error.message);
-        // });
+
+        builder.addMatcher(isPending(getInfoOnePost, getPostAllComments), (state) => {
+            state.isLoading = true;
+        });
+
+        builder.addMatcher(
+            (action) => forErrors(action, 'post/'),
+            (state, { payload }) => {
+                alert(`${payload}`);
+            }
+        );
     },
 });
 

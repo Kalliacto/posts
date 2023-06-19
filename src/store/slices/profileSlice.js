@@ -1,21 +1,21 @@
-import { createAsyncThunk, createSlice, isRejectedWithValue } from '@reduxjs/toolkit';
-import { forErrors, isLoadingData, showError } from '../../utils/utils';
+import { createAsyncThunk, createSlice, isPending } from '@reduxjs/toolkit';
+import { forErrors } from '../../utils/utils';
 import { userApi } from '../../api/userApi';
 
 const initialState = {
     currentUser: {},
-    isLoading: false,
+    isProfileLoading: false,
     userPosts: [],
     userFavoritesPosts: [],
 };
 
 export const getUserInfoById = createAsyncThunk(
     'profileSlice/getUserInfoById',
-    async function (id, { getState, fulfillWithValue, rejectWithValue }) {
+    async function (userId, { getState, fulfillWithValue, rejectWithValue }) {
         try {
-            const state = getState();
-            const userInfo = await userApi.getUserInfoById(id);
-            return fulfillWithValue({ userInfo, state });
+            const { posts } = getState();
+            const user = await userApi.getUserInfoById(userId);
+            return fulfillWithValue({ user, posts });
         } catch (error) {
             return rejectWithValue(error);
         }
@@ -32,22 +32,23 @@ const profileSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(getUserInfoById.fulfilled, (state, { payload }) => {
-            state.isLoading = false;
-            state.currentUser = payload.userInfo;
-            const allPosts = payload.state.posts.posts;
-            state.userPosts = allPosts.filter((e) => e.author._id === payload.userInfo._id);
-            state.userFavoritesPosts = allPosts.filter((e) =>
-                e.likes.includes(payload.userInfo._id)
-            );
+            state.isProfileLoading = false;
+            state.currentUser = payload.user;
+            const allPosts = payload.posts.posts;
+            state.userPosts = allPosts.filter((e) => e.author._id === payload.user._id);
+            state.userFavoritesPosts = allPosts.filter((e) => e.likes.includes(payload.user._id));
         });
-        // builder.addMatcher(isLoadingData, (state) => {
-        //     state.isLoading = true;
-        // });
-        // builder.addMatcher(forErrors, (action) => {
-        //     showError(action.error.message);
-        // });
+        builder.addMatcher(isPending(getUserInfoById), (state) => {
+            state.isProfileLoading = true;
+        });
+        builder.addMatcher(
+            (action) => forErrors(action, 'profile'),
+            (state, { payload }) => {
+                alert(`${payload}`);
+            }
+        );
     },
 });
 
-export const { setNewUserData } = profileSlice.actions;
+export const { setNewUserData, updateProfileState, setMyProfile } = profileSlice.actions;
 export default profileSlice.reducer;

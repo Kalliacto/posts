@@ -4,34 +4,39 @@ import { Link, useParams } from 'react-router-dom';
 import GoBackBtn from '../../components/GoBackBtn/GoBackBtn';
 import { Heart, HeartFill, PencilSquare, ZoomIn } from 'react-bootstrap-icons';
 import { Context } from '../../context/Context';
-import { likeToogleDetailsPage } from '../../utils/utils';
 import Comment from '../../components/Comment/Comment';
 import Modal from '../../components/Modal/Modal';
 import EditPostInfoForm from '../../components/Forms/EditPostInfoForm/EditPostInfoForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { getInfoOnePost, getPostAllComments, switchLikeOnPost } from '../../store/slices/onePostSlice';
+import {
+    getInfoOnePost,
+    getPostAllComments,
+    switchLikeOnPost,
+} from '../../store/slices/onePostSlice';
+import Loader from '../../components/Loader/Loader';
 
 const PostPageView = () => {
-    const { activeModal, setActiveModal, setPreviewPostImage } = useContext(Context);
-
+    const { activeModal, setActiveModal } = useContext(Context);
+    const { comments, post, isLoading } = useSelector((s) => s.onePost);
     const { id } = useParams();
     const { user } = useSelector((s) => s.user);
-    const { comments, post } = useSelector((s) => s.onePost);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(getInfoOnePost(id)).then(() => dispatch(getPostAllComments(id)));
-    }, [id]);
+    }, [dispatch, id]);
 
     const wasLiked = post.likes ? post.likes.includes(user._id) : false;
 
     const handleLikeOnPost = (_id, wasLiked) => {
-        dispatch(switchLikeOnPost({_id, wasLiked}))
-    }
+        dispatch(switchLikeOnPost({ _id, wasLiked }));
+    };
 
     return (
         <>
-            {Object.keys(post).length && (
+            {isLoading ? (
+                <Loader />
+            ) : (
                 <div className='detailsPost'>
                     <GoBackBtn />
                     <div className='detailsPost__main'>
@@ -43,36 +48,35 @@ const PostPageView = () => {
                             />
                         </div>
                         <div className='detailsPost__info-wrapper'>
-                            {user._id === post?.author._id && (
+                            {user?._id === post?.author?._id && (
                                 <PencilSquare
                                     className='detailsPost__edit'
                                     onClick={() => {
                                         setActiveModal('editPostOnPostPage');
-                                        setPreviewPostImage(post.image);
                                     }}
                                 />
                             )}
                             <Link
                                 className='detailsPost__link'
-                                to={`/profile/${post.author._id}`}
+                                to={`/profile/${post?.author?._id}`}
                             >
                                 <div className='detailsPostInfo__header'>
                                     <img
-                                        src={post.author.avatar}
+                                        src={post?.author?.avatar}
                                         alt='avatar'
                                         className='detailsPost__autor-avatar'
                                     />
                                     <div className='detailsPost__autor-info'>
-                                        <b>{post.author.name}</b>
-                                        <span>{post.author.about}</span>
+                                        <b>{post?.author?.name}</b>
+                                        <span>{post?.author?.about}</span>
                                     </div>
                                 </div>
                             </Link>
-                            <h3 className='detailsPost__title'>{post.title}</h3>
-                            <p className='detailsPost__text'>{post.text}</p>
+                            <h3 className='detailsPost__title'>{post?.title}</h3>
+                            <p className='detailsPost__text'>{post?.text}</p>
                             <div className='detailsPost__tags'>
-                                {!!post.tags.length &&
-                                    post.tags.map((tag, i) => (
+                                {!!post?.tags?.length &&
+                                    post?.tags?.map((tag, i) => (
                                         <span key={`${tag}+${i}`} className='detailsPost__tag'>
                                             {tag}
                                         </span>
@@ -82,16 +86,14 @@ const PostPageView = () => {
                                 <div className='detailsPostInfo__buttons'>
                                     <button
                                         className='detailsPostInfo__button'
-                                        onClick={() => handleLikeOnPost(post._id, wasLiked)}
+                                        onClick={() => handleLikeOnPost(post?._id, wasLiked)}
                                     >
                                         {wasLiked ? <HeartFill fill='red' /> : <Heart />}{' '}
-                                        <span>
-                                            {!!post.likes.length && post.likes.length}
-                                        </span>
+                                        <span>{!!post?.likes?.length && post?.likes?.length}</span>
                                     </button>
                                 </div>
                                 <span>
-                                    {new Date(post.created_at).toLocaleDateString('ru-RU', {
+                                    {new Date(post?.created_at).toLocaleDateString('ru-RU', {
                                         year: 'numeric',
                                         month: 'long',
                                         day: 'numeric',
@@ -108,7 +110,7 @@ const PostPageView = () => {
                             <div className='detailsPost__preview-wrap'>
                                 <img
                                     className='detailsPost__preview'
-                                    src={post.image}
+                                    src={post?.image}
                                     alt='post'
                                 />
                             </div>
@@ -119,10 +121,7 @@ const PostPageView = () => {
                             state={activeModal === 'editPostOnPostPage'}
                             setState={setActiveModal}
                         >
-                            <EditPostInfoForm
-                                editablePost={post}
-                                setActiveModal={setActiveModal}
-                            />
+                            <EditPostInfoForm editablePost={post} setActiveModal={setActiveModal} />
                         </Modal>
                     )}
                 </div>

@@ -38,7 +38,7 @@ const Post = ({ post }) => {
             </Link>
             <Link to={`/post/${_id}`} className='post__link'>
                 <h3 className='post__title'>
-                    {title.length >= 60 ? title.slice(0, 60) + '...' : title}
+                    {title.length >= 55 ? title.slice(0, 55) + '...' : title}
                 </h3>
                 <img src={image} alt='post' className='post__image' />
                 <p className='post__text'>

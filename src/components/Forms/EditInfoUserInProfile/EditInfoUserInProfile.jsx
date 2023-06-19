@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { aboutOptions, nameOptions } from '../formsOptions';
 import { updateUser } from '../../../store/slices/userSlice';
 import { useDispatch } from 'react-redux';
+import { getAllPostsData } from '../../../store/slices/postsSlice';
 
 const EditInfoUserInProfile = ({ userInfo, setActiveModal }) => {
     const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const EditInfoUserInProfile = ({ userInfo, setActiveModal }) => {
 
     const sendNewUserInfo = (data) => {
         dispatch(updateUser(data)).then(() => {
+            dispatch(getAllPostsData());
             setActiveModal('');
         });
     };

@@ -1,10 +1,10 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, isPending } from '@reduxjs/toolkit';
 import { api } from '../../api/api';
-import { forErrors, isLoadingData, showError } from '../../utils/utils';
+import { forErrors } from '../../utils/utils';
 
 const initialState = {
     posts: [],
-    isLoading: false,
+    isPostsLoading: true,
     total: 0,
     search: null,
 };
@@ -13,9 +13,9 @@ export const getAllPostsData = createAsyncThunk(
     'posts/getAllPostsData',
     async function (_, { getState, fulfillWithValue, rejectWithValue }) {
         try {
-            const state = getState();
+            const { user } = getState();
             const allPosts = await api.getAllPosts();
-            return fulfillWithValue({ allPosts, userId: state.user.user._id });
+            return fulfillWithValue({ allPosts, userId: user.user._id });
         } catch (error) {
             return rejectWithValue(error);
         }
@@ -41,7 +41,6 @@ export const switchLike = createAsyncThunk(
             const updatedPost = await api.changePostLike(_id, wasLiked);
             return fulfillWithValue(updatedPost);
         } catch (error) {
-            alert(`${error}`);
             return rejectWithValue(error);
         }
     }
@@ -115,13 +114,13 @@ const postsSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(getAllPostsData.fulfilled, (state, action) => {
-            state.isLoading = false;
+            state.isPostsLoading = false;
             state.posts = action.payload.allPosts;
             state.total = state.posts.length;
         });
 
         builder.addCase(searchPosts.fulfilled, (state, action) => {
-            state.isLoading = false;
+            state.isPostsLoading = false;
             state.posts = action.payload;
         });
 
@@ -138,12 +137,17 @@ const postsSlice = createSlice({
         builder.addCase(deletePostFetch.fulfilled, (state, action) => {
             state.posts = state.posts.filter((e) => e._id !== action.payload._id);
         });
-        // builder.addMatcher(isLoadingData, (state) => {
-        //     state.isLoading = true;
-        // });
-        // builder.addMatcher(forErrors, (action) => {
-        //     showError(action.error.message);
-        // });
+
+        builder.addMatcher(isPending(getAllPostsData, searchPosts), (state) => {
+            state.isPostsLoading = true;
+        });
+
+        builder.addMatcher(
+            (action) => forErrors(action, 'posts'),
+            (state, { payload }) => {
+                alert(`${payload}`);
+            }
+        );
     },
 });
 

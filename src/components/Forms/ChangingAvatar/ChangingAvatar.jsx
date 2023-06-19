@@ -6,6 +6,7 @@ import { avatarOptions } from '../formsOptions';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '../../../store/slices/userSlice';
 import defaultImage from '../../../images/defaultImage.jpg';
+import { getAllPostsData } from '../../../store/slices/postsSlice';
 
 const ChangingAvatar = ({ userInfo }) => {
     const [previewAvatar, setPreviewAvatar] = useState(userInfo.avatar);
@@ -20,6 +21,7 @@ const ChangingAvatar = ({ userInfo }) => {
 
     const sendEditDataAvatarInfo = (newAvatar) => {
         dispatch(updateUser(newAvatar)).then(() => {
+            dispatch(getAllPostsData());
             setActiveModal('');
             reset();
         });
@@ -40,7 +42,7 @@ const ChangingAvatar = ({ userInfo }) => {
                 <img
                     className='inputPost__preview'
                     src={previewAvatar}
-                    onError={(e) => (e.currentTarget.src = { defaultImage })}
+                    onError={(e) => (e.currentTarget.src = defaultImage)}
                     alt='avatar'
                 />
             </div>

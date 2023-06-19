@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { forErrors, isLoadingData, showError } from '../../utils/utils';
+import { forErrors } from '../../utils/utils';
 import { userApi } from '../../api/userApi';
 import { setNewUserData } from './profileSlice';
 
@@ -16,7 +16,6 @@ export const getUser = createAsyncThunk(
             const user = await userApi.getUserInfo();
             return fulfillWithValue(user);
         } catch (error) {
-            alert(`${error}`);
             return rejectWithValue(error);
         }
     }
@@ -40,19 +39,21 @@ export const updateUser = createAsyncThunk(
             dispatch(setNewUserData(updatedUser));
             return fulfillWithValue(updatedUser);
         } catch (error) {
-            alert(`${error}`);
             return rejectWithValue(error);
         }
     }
 );
 
-export const registration = createAsyncThunk('user/authorization', async function (data) {
-    try {
-        return await userApi.signUp(data);
-    } catch (error) {
-        alert(`${error}`);
+export const registration = createAsyncThunk(
+    'user/authorization',
+    async function (data, { rejectWithValue }) {
+        try {
+            return await userApi.signUp(data);
+        } catch (error) {
+            rejectWithValue(error);
+        }
     }
-});
+);
 
 export const authorization = createAsyncThunk(
     'user/authorization',
@@ -61,27 +62,32 @@ export const authorization = createAsyncThunk(
             const response = await userApi.signIn(data);
             return fulfillWithValue(response);
         } catch (error) {
-            alert(`${error}`);
             return rejectWithValue(error);
         }
     }
 );
 
-export const getNewToken = createAsyncThunk('user/getNewToken', async function (data) {
-    try {
-        return await userApi.getTokenByEmail(data);
-    } catch (error) {
-        alert(`${error.message}`);
+export const getNewToken = createAsyncThunk(
+    'user/getNewToken',
+    async function (data, { rejectWithValue }) {
+        try {
+            return await userApi.getTokenByEmail(data);
+        } catch (error) {
+            rejectWithValue(error);
+        }
     }
-});
+);
 
-export const sendNewPassword = createAsyncThunk('user/sendNewPassword', async function (data) {
-    try {
-        return await userApi.setNewPassword(data);
-    } catch (error) {
-        alert(`${error.message}`);
+export const sendNewPassword = createAsyncThunk(
+    'user/sendNewPassword',
+    async function (data, { rejectWithValue }) {
+        try {
+            return await userApi.setNewPassword(data);
+        } catch (error) {
+            rejectWithValue(error);
+        }
     }
-});
+);
 
 const userSlice = createSlice({
     name: 'user',
@@ -120,9 +126,12 @@ const userSlice = createSlice({
         //     state.isLoading = true;
         // });
 
-        // builder.addMatcher(forErrors, (action) => {
-        //     showError(action.error.message);
-        // });
+        builder.addMatcher(
+            (action) => forErrors(action, 'user'),
+            (state, { payload }) => {
+                alert(`${payload}`);
+            }
+        );
     },
 });
 
