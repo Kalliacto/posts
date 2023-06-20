@@ -53,20 +53,23 @@ const Post = ({ post }) => {
             </Link>
             <div className='post__tags'>
                 {!!tags.length &&
-                    tags.map((tag, i) => (
-                        <span key={`${tag}+${i}`} className='post__tag'>
-                            {tag}
-                        </span>
-                    ))}
+                    tags.map(
+                        (tag, i) =>
+                            tag.trim() !== '' && (
+                                <span key={`${tag}+${i}`} className='post__tag'>
+                                    {tag}
+                                </span>
+                            )
+                    )}
             </div>
             <div className='post__footer'>
                 <div className='post__buttons'>
                     <button className='post__button' onClick={() => handleLike(_id, wasLiked)}>
-                        {wasLiked ? <HeartFill fill='red' /> : <Heart />}{' '}
+                        {wasLiked ? <HeartFill fill='red' /> : <Heart />}
                         <span className='post__like-count'>{!!likes.length && likes.length}</span>
                     </button>
                     <button className='post__button'>
-                        <Chat />{' '}
+                        <Chat />
                         <span className='post__comment-count'>
                             {!!comments.length && comments.length}
                         </span>
