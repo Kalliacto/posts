@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, isPending } from '@reduxjs/toolkit';
 import { api } from '../../api/api';
 import { forErrors } from '../../utils/utils';
-import { updateProfileState } from './profileSlice';
+import { updateProfileLike, updateProfilePosts } from './profileSlice';
 
 const initialState = {
     posts: [],
@@ -40,7 +40,7 @@ export const switchLike = createAsyncThunk(
     async function ({ _id, wasLiked }, { dispatch, fulfillWithValue, rejectWithValue }) {
         try {
             const updatedPost = await api.changePostLike(_id, wasLiked);
-            dispatch(updateProfileState({ post: updatedPost, wasLiked }));
+            dispatch(updateProfileLike({ post: updatedPost, wasLiked }));
             return fulfillWithValue(updatedPost);
         } catch (error) {
             return rejectWithValue(error);
@@ -62,9 +62,10 @@ export const sendNewPostInfo = createAsyncThunk(
 
 export const deletePostFetch = createAsyncThunk(
     'posts/deletePostFetch',
-    async function (postId, { fulfillWithValue, rejectWithValue }) {
+    async function (postId, { dispatch, fulfillWithValue, rejectWithValue }) {
         try {
             const deletedPost = await api.deletePostById(postId);
+            dispatch(updateProfilePosts(deletedPost));
             return fulfillWithValue(deletedPost);
         } catch (error) {
             return rejectWithValue(error);

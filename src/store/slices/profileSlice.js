@@ -38,7 +38,7 @@ const profileSlice = createSlice({
         setMyProfile(state, { payload }) {
             state.myProfile = payload;
         },
-        updateProfileState(state, { payload }) {
+        updateProfileLike(state, { payload }) {
             state.userPosts = state.userPosts.map((e) =>
                 e._id === payload.post._id ? payload.post : e
             );
@@ -53,6 +53,12 @@ const profileSlice = createSlice({
                     e._id === payload.post._id ? payload.post : e
                 );
             }
+        },
+        updateProfilePosts(state, { payload }) {
+            state.userPosts = state.userPosts.filter((e) => e._id !== payload._id);
+            state.userFavoritesPosts = state.userFavoritesPosts.filter(
+                (e) => e._id !== payload._id
+            );
         },
     },
     extraReducers: (builder) => {
@@ -75,5 +81,6 @@ const profileSlice = createSlice({
     },
 });
 
-export const { setNewUserData, updateProfileState, setMyProfile } = profileSlice.actions;
+export const { setNewUserData, updateProfileLike, setMyProfile, updateProfilePosts } =
+    profileSlice.actions;
 export default profileSlice.reducer;
