@@ -1,14 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import '../inputPost.css';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { api } from '../../../api/api';
-import { EyeFill, EyeSlashFill } from 'react-bootstrap-icons';
-import { Context } from '../../../context/Context';
-import { emailOptions, passwordOptions } from '../formsOptions';
+import { emailOptions } from '../formsOptions';
+import { useDispatch } from 'react-redux';
+import { authorization } from '../../../store/slices/userSlice';
+import InputPassword from '../InputPassword/InputPassword';
 
 const AuthorizationForm = () => {
-    const { showPassword, setShowPassword, setAuth } = useContext(Context);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const {
         register,
@@ -18,17 +18,14 @@ const AuthorizationForm = () => {
     } = useForm({ mode: 'onSubmit' });
 
     const logIn = (data) => {
-        api.signIn(data).then((res) => {
-            if (!!res.err) {
-                alert(`${res.message}`);
-            } else {
-                alert(`Добро пожаловать, ${res.data.name}`);
-                setAuth(true);
+        dispatch(authorization(data)).then((res) => {
+            if (res.type.endsWith('fulfilled')) {
                 navigate('/');
                 reset();
             }
         });
     };
+
     return (
         <div className='inputPost__wrapper'>
             <h3>Авторизация</h3>
@@ -40,18 +37,7 @@ const AuthorizationForm = () => {
                     placeholder='Email'
                 />
                 {errors.email && <span className='error__message'>{errors.email.message}</span>}
-                <div className='inputPost__input-wrapper'>
-                    <input
-                        className={errors.password ? 'inputPost__input error' : 'inputPost__input'}
-                        type={showPassword ? 'text' : 'password'}
-                        {...register('password', passwordOptions)}
-                        placeholder='Пароль'
-                        autoComplete='true'
-                    />
-                    <span className='inputPost__eye' onClick={() => setShowPassword((s) => !s)}>
-                        {showPassword ? <EyeFill /> : <EyeSlashFill />}
-                    </span>
-                </div>
+                <InputPassword register={register} errors={errors} />
                 {errors.password && (
                     <span className='error__message'>{errors.password.message}</span>
                 )}

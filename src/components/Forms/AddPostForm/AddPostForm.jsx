@@ -1,13 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useState } from 'react';
 import '../inputPost.css';
 import { useForm } from 'react-hook-form';
-import { api } from '../../../api/api';
-import { Context } from '../../../context/Context';
 import { splitTags } from '../../../utils/utils';
 import { imageOptions, textOptions, titleOptions } from '../formsOptions';
+import defaultImage from '../../../images/defaultImage.jpg';
+import { sendNewPostInfo } from '../../../store/slices/postsSlice';
+import { useDispatch } from 'react-redux';
 
 const AddPostForm = ({ setActiveModal }) => {
-    const { setPosts, previewPostImage, setPreviewPostImage } = useContext(Context);
+    const dispatch = useDispatch();
+    const [previewPostImage, setPreviewPostImage] = useState(defaultImage);
     const {
         register,
         handleSubmit,
@@ -15,15 +17,11 @@ const AddPostForm = ({ setActiveModal }) => {
         formState: { errors },
     } = useForm({ mode: 'onChange' });
 
-    const sendPost = async (post) => {
-        return await api
-            .addNewPost({ ...post, tags: splitTags(post.tags) })
-            .then((post) => {
-                setPosts((state) => [post, ...state]);
-                setActiveModal('');
-                reset();
-            })
-            .catch((error) => console.log(error));
+    const sendPost = (postInfo) => {
+        dispatch(sendNewPostInfo({ ...postInfo, tags: splitTags(postInfo.tags) })).then(() => {
+            setActiveModal('');
+            reset();
+        });
     };
 
     return (
@@ -55,10 +53,7 @@ const AddPostForm = ({ setActiveModal }) => {
                 <img
                     className='inputPost__preview'
                     src={previewPostImage}
-                    onError={(e) =>
-                        (e.currentTarget.src =
-                            'https://jkfenner.com/wp-content/uploads/2019/11/default.jpg')
-                    }
+                    onError={(e) => (e.currentTarget.src = defaultImage)}
                     alt='preview'
                 />
             </div>

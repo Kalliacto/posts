@@ -4,62 +4,52 @@ import { Context } from './context/Context';
 import Header from './components/Header/Header';
 import Main from './components/Main/Main';
 import Footer from './components/Footer/Footer';
-import { api } from './api/api';
-import { preloadObj, preloadUser } from './utils/utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser, setAuth } from './store/slices/userSlice';
+import { getAllPostsData, searchPosts } from './store/slices/postsSlice';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function App() {
-    const [user, setUser] = useState({});
-    const [posts, setPosts] = useState([]);
-    const [search, setSearch] = useState(undefined);
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const navigate = useNavigate();
     const [activeModal, setActiveModal] = useState('');
-    const [previewPostImage, setPreviewPostImage] = useState(
-        'https://jkfenner.com/wp-content/uploads/2019/11/default.jpg'
-    );
-    const [postInfo, setPostInfo] = useState(preloadObj);
-    const [postAllComment, setPostAllComment] = useState([]);
-    const [userInfo, setUserInfo] = useState(preloadUser);
-    const [showPassword, setShowPassword] = useState(false);
-    const [auth, setAuth] = useState(false);
+    const { search } = useSelector((s) => s.posts);
+    const { isAuth } = useSelector((s) => s.user);
 
     useEffect(() => {
-        Promise.all([api.getAllPosts(), api.getUserInfo()])
-            .then(([postData, userData]) => {
-                setPosts(postData);
-                setUser(userData);
-            })
-            .catch((error) =>
-                console.error('Ошибка при загрузке данных постов или пользователя', error)
-            );
-    }, [postInfo, postAllComment, userInfo]);
+        if (!!localStorage.getItem('postsToken2023')) {
+            dispatch(setAuth(true));
+        } else {
+            if (
+                location.pathname.includes('/registration') ||
+                location.pathname.includes('/login') ||
+                location.pathname.includes('/forgot-password') ||
+                location.pathname.includes('/password-reset')
+            ) {
+                return;
+            } else {
+                navigate('/login');
+            }
+        }
+    }, [dispatch, isAuth, location, navigate]);
 
     useEffect(() => {
-        if (search === undefined) return;
-        api.searchPost(search)
-            .then((data) => setPosts(data))
-            .catch((error) => console.log('Ошибка при поиске постов', error));
-    }, [search]);
+        if (!isAuth) return;
+        dispatch(getUser()).then(() => dispatch(getAllPostsData()));
+    }, [dispatch, isAuth]);
+
+    useEffect(() => {
+        if (typeof search !== 'string') return;
+        const timer = setTimeout(() => {
+            dispatch(searchPosts(search));
+        }, 400);
+        return () => clearTimeout(timer);
+    }, [dispatch, search]);
 
     const valueContext = {
-        posts,
-        setPosts,
-        user,
-        setUser,
-        search,
-        setSearch,
         activeModal,
         setActiveModal,
-        previewPostImage,
-        setPreviewPostImage,
-        postInfo,
-        setPostInfo,
-        postAllComment,
-        setPostAllComment,
-        userInfo,
-        setUserInfo,
-        showPassword,
-        setShowPassword,
-        auth,
-        setAuth,
     };
 
     return (

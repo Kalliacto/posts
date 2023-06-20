@@ -1,15 +1,18 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import './header.css';
 import Logo from '../Logo/Logo';
 import { Link } from 'react-router-dom';
 import Search from '../Search/Search';
-import { Context } from '../../context/Context';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuth } from '../../store/slices/userSlice';
 
 const Header = () => {
-    const { setSearch, user, auth, setAuth } = useContext(Context);
+    const dispatch = useDispatch();
+    const { user, isAuth } = useSelector((s) => s.user);
 
-    const setSearchQuery = (path) => {
-        setSearch(path);
+    const logOut = () => {
+        localStorage.removeItem('postsToken2023');
+        dispatch(setAuth(false));
     };
 
     return (
@@ -19,21 +22,23 @@ const Header = () => {
                     <Link to={'/'}>
                         <Logo className='header__logo' />
                     </Link>
-                    <Search setSearch={setSearchQuery} />
-                    <Link to={`/profile/${user._id}`}>
-                        <button className='button__profile'>Профиль</button>
-                    </Link>
-                    {auth ? (
-                        <Link to='login'>
-                            <button onClick={() => setAuth(false)} className='button__profile'>
-                                Выйти
-                            </button>
+                    <Search />
+                    <div className='header__btns'>
+                        <Link to={`/profile/${user?._id}`}>
+                            <button className='button__profile'>Профиль</button>
                         </Link>
-                    ) : (
-                        <Link to='login'>
-                            <button className='button__profile'>Войти</button>
-                        </Link>
-                    )}
+                        {isAuth ? (
+                            <Link to='login'>
+                                <button onClick={logOut} className='button__profile'>
+                                    Выйти
+                                </button>
+                            </Link>
+                        ) : (
+                            <Link to='login'>
+                                <button className='button__profile'>Войти</button>
+                            </Link>
+                        )}
+                    </div>
                 </div>
             </div>
         </header>

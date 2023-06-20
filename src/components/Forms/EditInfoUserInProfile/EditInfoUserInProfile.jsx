@@ -1,10 +1,12 @@
 import React from 'react';
-import { api } from '../../../api/api';
 import '../inputPost.css';
 import { useForm } from 'react-hook-form';
 import { aboutOptions, nameOptions } from '../formsOptions';
+import { updateUser } from '../../../store/slices/userSlice';
+import { useDispatch } from 'react-redux';
 
-const EditInfoUserInProfile = ({ userInfo, setUserInfo, setActiveModal }) => {
+const EditInfoUserInProfile = ({ userInfo, setActiveModal }) => {
+    const dispatch = useDispatch();
     const {
         register,
         handleSubmit,
@@ -15,13 +17,9 @@ const EditInfoUserInProfile = ({ userInfo, setUserInfo, setActiveModal }) => {
     });
 
     const sendNewUserInfo = (data) => {
-        return api
-            .changingProfileInfo(data)
-            .then((userData) => {
-                setUserInfo(userData);
-                setActiveModal('');
-            })
-            .catch((error) => console.log(error));
+        dispatch(updateUser(data)).then(() => {
+            setActiveModal('');
+        });
     };
 
     return (

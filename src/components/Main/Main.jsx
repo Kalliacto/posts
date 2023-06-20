@@ -10,6 +10,7 @@ import IdentificationPage from '../../pages/IdentificationPage/IdentificationPag
 import RegistrationForm from '../Forms/RegistrationForm/RegistrationForm';
 import ForgotPasswordForm from '../Forms/ForgotPasswordForm/ForgotPasswordForm';
 import ResetPasswordForm from '../Forms/ResetPasswordForm/ResetPasswordForm';
+import { ToastContainer } from 'react-toastify';
 
 const Main = () => {
     return (
@@ -56,6 +57,7 @@ const Main = () => {
                         }
                     />
                 </Routes>
+                <ToastContainer position='top-right' autoClose={3000} theme='colored' />
             </div>
         </main>
     );
