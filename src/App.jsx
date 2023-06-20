@@ -15,7 +15,7 @@ function App() {
     const navigate = useNavigate();
     const [activeModal, setActiveModal] = useState('');
     const { search } = useSelector((s) => s.posts);
-    const { user, isAuth } = useSelector((s) => s.user);
+    const { isAuth } = useSelector((s) => s.user);
 
     useEffect(() => {
         if (!!localStorage.getItem('postsToken2023')) {
@@ -45,7 +45,7 @@ function App() {
             dispatch(searchPosts(search));
         }, 400);
         return () => clearTimeout(timer);
-    }, [dispatch, search, user]);
+    }, [dispatch, search]);
 
     const valueContext = {
         activeModal,

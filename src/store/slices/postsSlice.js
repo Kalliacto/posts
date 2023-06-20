@@ -1,10 +1,11 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, isPending } from '@reduxjs/toolkit';
 import { api } from '../../api/api';
-import { forErrors, isLoadingData, showError } from '../../utils/utils';
+import { forErrors } from '../../utils/utils';
+import { updateProfileLike, updateProfilePosts } from './profileSlice';
 
 const initialState = {
     posts: [],
-    isLoading: false,
+    isPostsLoading: true,
     total: 0,
     search: null,
 };
@@ -13,9 +14,9 @@ export const getAllPostsData = createAsyncThunk(
     'posts/getAllPostsData',
     async function (_, { getState, fulfillWithValue, rejectWithValue }) {
         try {
-            const state = getState();
+            const { user } = getState();
             const allPosts = await api.getAllPosts();
-            return fulfillWithValue({ allPosts, userId: state.user.user._id });
+            return fulfillWithValue({ allPosts, userId: user.user._id });
         } catch (error) {
             return rejectWithValue(error);
         }
@@ -36,12 +37,12 @@ export const searchPosts = createAsyncThunk(
 
 export const switchLike = createAsyncThunk(
     'posts/switchLike',
-    async function ({ _id, wasLiked }, { fulfillWithValue, rejectWithValue }) {
+    async function ({ _id, wasLiked }, { dispatch, fulfillWithValue, rejectWithValue }) {
         try {
             const updatedPost = await api.changePostLike(_id, wasLiked);
+            dispatch(updateProfileLike({ post: updatedPost, wasLiked }));
             return fulfillWithValue(updatedPost);
         } catch (error) {
-            alert(`${error}`);
             return rejectWithValue(error);
         }
     }
@@ -61,9 +62,10 @@ export const sendNewPostInfo = createAsyncThunk(
 
 export const deletePostFetch = createAsyncThunk(
     'posts/deletePostFetch',
-    async function (postId, { fulfillWithValue, rejectWithValue }) {
+    async function (postId, { dispatch, fulfillWithValue, rejectWithValue }) {
         try {
             const deletedPost = await api.deletePostById(postId);
+            dispatch(updateProfilePosts(deletedPost));
             return fulfillWithValue(deletedPost);
         } catch (error) {
             return rejectWithValue(error);
@@ -115,13 +117,13 @@ const postsSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(getAllPostsData.fulfilled, (state, action) => {
-            state.isLoading = false;
+            state.isPostsLoading = false;
             state.posts = action.payload.allPosts;
             state.total = state.posts.length;
         });
 
         builder.addCase(searchPosts.fulfilled, (state, action) => {
-            state.isLoading = false;
+            state.isPostsLoading = false;
             state.posts = action.payload;
         });
 
@@ -138,12 +140,17 @@ const postsSlice = createSlice({
         builder.addCase(deletePostFetch.fulfilled, (state, action) => {
             state.posts = state.posts.filter((e) => e._id !== action.payload._id);
         });
-        // builder.addMatcher(isLoadingData, (state) => {
-        //     state.isLoading = true;
-        // });
-        // builder.addMatcher(forErrors, (action) => {
-        //     showError(action.error.message);
-        // });
+
+        builder.addMatcher(isPending(getAllPostsData, searchPosts), (state) => {
+            state.isPostsLoading = true;
+        });
+
+        builder.addMatcher(
+            (action) => forErrors(action, 'posts'),
+            (state, { payload }) => {
+                alert(`${payload}`);
+            }
+        );
     },
 });
 

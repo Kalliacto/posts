@@ -27,18 +27,24 @@ const Post = ({ post }) => {
             )}
             <Link to={`/profile/${author._id}`}>
                 <div className='post__header'>
-                    <img src={author.avatar} alt='avatar' className='post__autor-avatar' />
+                    <img
+                        src={user._id === author._id ? user.avatar : author.avatar}
+                        alt='avatar'
+                        className='post__autor-avatar'
+                    />
                     <div className='post__autor-info'>
                         <span className='post__autor-name'>
-                            <b>{author.name}</b>
+                            <b>{user._id === author._id ? user.name : author.name}</b>
                         </span>
-                        <span className='post__autor-about'>{author.about}</span>
+                        <span className='post__autor-about'>
+                            {user._id === author._id ? user.about : author.about}
+                        </span>
                     </div>
                 </div>
             </Link>
             <Link to={`/post/${_id}`} className='post__link'>
                 <h3 className='post__title'>
-                    {title.length >= 60 ? title.slice(0, 60) + '...' : title}
+                    {title.length >= 55 ? title.slice(0, 55) + '...' : title}
                 </h3>
                 <img src={image} alt='post' className='post__image' />
                 <p className='post__text'>
@@ -47,20 +53,23 @@ const Post = ({ post }) => {
             </Link>
             <div className='post__tags'>
                 {!!tags.length &&
-                    tags.map((tag, i) => (
-                        <span key={`${tag}+${i}`} className='post__tag'>
-                            {tag}
-                        </span>
-                    ))}
+                    tags.map(
+                        (tag, i) =>
+                            tag.trim() !== '' && (
+                                <span key={`${tag}+${i}`} className='post__tag'>
+                                    {tag}
+                                </span>
+                            )
+                    )}
             </div>
             <div className='post__footer'>
                 <div className='post__buttons'>
                     <button className='post__button' onClick={() => handleLike(_id, wasLiked)}>
-                        {wasLiked ? <HeartFill fill='red' /> : <Heart />}{' '}
+                        {wasLiked ? <HeartFill fill='red' /> : <Heart />}
                         <span className='post__like-count'>{!!likes.length && likes.length}</span>
                     </button>
                     <button className='post__button'>
-                        <Chat />{' '}
+                        <Chat />
                         <span className='post__comment-count'>
                             {!!comments.length && comments.length}
                         </span>

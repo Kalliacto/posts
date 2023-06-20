@@ -9,7 +9,7 @@ const config = {
 };
 
 const onResponse = (data) => {
-    return data.ok ? data.json() : data.json().then((res) => Promise.reject(res.message));
+    return data.ok ? data.json() : data.json().then((error) => Promise.reject(error.message));
 };
 
 class UserApi {

@@ -40,7 +40,7 @@ const ChangingAvatar = ({ userInfo }) => {
                 <img
                     className='inputPost__preview'
                     src={previewAvatar}
-                    onError={(e) => (e.currentTarget.src = { defaultImage })}
+                    onError={(e) => (e.currentTarget.src = defaultImage)}
                     alt='avatar'
                 />
             </div>
