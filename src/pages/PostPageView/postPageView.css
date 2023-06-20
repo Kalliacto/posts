@@ -33,6 +33,7 @@
     position: absolute;
     top: 0;
     right: 0;
+    cursor: pointer;
 }
 
 .detailsPost__link {
@@ -69,6 +70,7 @@
 .detailsPost__tags {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .detailsPost__tag {
