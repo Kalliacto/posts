@@ -50,7 +50,7 @@ export const registration = createAsyncThunk(
         try {
             return await userApi.signUp(data);
         } catch (error) {
-            rejectWithValue(error);
+            return rejectWithValue(error);
         }
     }
 );
@@ -73,7 +73,7 @@ export const getNewToken = createAsyncThunk(
         try {
             return await userApi.getTokenByEmail(data);
         } catch (error) {
-            rejectWithValue(error);
+            return rejectWithValue(error);
         }
     }
 );
@@ -84,7 +84,7 @@ export const sendNewPassword = createAsyncThunk(
         try {
             return await userApi.setNewPassword(data);
         } catch (error) {
-            rejectWithValue(error);
+            return rejectWithValue(error);
         }
     }
 );
