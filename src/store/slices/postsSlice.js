@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, isPending } from '@reduxjs/toolkit';
 import { api } from '../../api/api';
 import { forErrors } from '../../utils/utils';
 import { updateProfileLike, updateProfilePosts } from './profileSlice';
+import { toast } from 'react-toastify';
 
 const initialState = {
     posts: [],
@@ -148,7 +149,7 @@ const postsSlice = createSlice({
         builder.addMatcher(
             (action) => forErrors(action, 'posts'),
             (state, { payload }) => {
-                alert(`${payload}`);
+                toast.error(payload);
             }
         );
     },

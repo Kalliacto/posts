@@ -18,9 +18,11 @@ const ResetPasswordForm = () => {
     } = useForm({ mode: 'onSubmit' });
 
     const resetPassword = (data) => {
-        dispatch(sendNewPassword(data)).then(() => {
-            navigate('/');
-            reset();
+        dispatch(sendNewPassword(data)).then((res) => {
+            if (res.type.endsWith('fulfilled')) {
+                navigate('/login');
+                reset();
+            }
         });
     };
     

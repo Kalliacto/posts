@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, isPending } from '@reduxjs/toolkit';
 import { forErrors } from '../../utils/utils';
 import { userApi } from '../../api/userApi';
+import { toast } from 'react-toastify';
 
 const initialState = {
     currentUser: {},
@@ -69,13 +70,15 @@ const profileSlice = createSlice({
             state.userPosts = allPosts.filter((e) => e.author._id === payload.user._id);
             state.userFavoritesPosts = allPosts.filter((e) => e.likes.includes(payload.user._id));
         });
+        
         builder.addMatcher(isPending(getUserInfoById), (state) => {
             state.isProfileLoading = true;
         });
+        
         builder.addMatcher(
             (action) => forErrors(action, 'profile'),
             (state, { payload }) => {
-                alert(`${payload}`);
+                toast.error(payload);
             }
         );
     },
