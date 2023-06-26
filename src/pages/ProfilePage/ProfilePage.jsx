@@ -1,8 +1,7 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './profilePage.css';
 import { useParams } from 'react-router-dom';
 import GoBackBtn from '../../components/GoBackBtn/GoBackBtn';
-import { Context } from '../../context/Context';
 import PostsList from '../../components/PostsList/PostsList';
 import ChangingAvatar from '../../components/Forms/ChangingAvatar/ChangingAvatar';
 import { PencilSquare, XLg } from 'react-bootstrap-icons';
@@ -11,21 +10,21 @@ import EditInfoUserInProfile from '../../components/Forms/EditInfoUserInProfile/
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserInfoById, setMyProfile } from '../../store/slices/profileSlice';
 import Loader from '../../components/Loader/Loader';
+import { activeModal } from '../../store/slices/postsSlice';
 
 const ProfilePage = () => {
-    const { activeModal, setActiveModal } = useContext(Context);
     const { user } = useSelector((s) => s.user);
     const { currentUser, userPosts, userFavoritesPosts, isProfileLoading, myProfile } = useSelector(
         (s) => s.profile
     );
-    const { isPostsLoading } = useSelector((s) => s.posts);
+    const { isPostsLoading, modal } = useSelector((s) => s.posts);
     const { name, about, email, avatar } = currentUser;
     const { userId } = useParams();
-
     const dispatch = useDispatch();
+
     useEffect(() => {
         if (!!Object.keys(user).length && !isPostsLoading) {
-            dispatch(setMyProfile(user._id === userId))
+            dispatch(setMyProfile(user._id === userId));
             dispatch(getUserInfoById(userId));
         }
     }, [dispatch, userId, isPostsLoading, user]);
@@ -43,21 +42,18 @@ const ProfilePage = () => {
                             {myProfile && (
                                 <PencilSquare
                                     className='editProfile'
-                                    onClick={() => setActiveModal('avatar')}
+                                    onClick={() => dispatch(activeModal('avatar'))}
                                 />
                             )}
-                            {activeModal === 'avatar' && (
-                                <Modal state={activeModal === 'avatar'} setState={setActiveModal}>
+                            {modal === 'avatar' && (
+                                <Modal>
                                     <ChangingAvatar userInfo={currentUser} />
                                 </Modal>
                             )}
                         </div>
                         <div className='profile__info-wrapper'>
-                            {activeModal === 'editUserInfoForm' ? (
-                                <EditInfoUserInProfile
-                                    userInfo={currentUser}
-                                    setActiveModal={setActiveModal}
-                                />
+                            {modal === 'editUserInfoForm' ? (
+                                <EditInfoUserInProfile userInfo={currentUser} />
                             ) : (
                                 <div className='profile__info'>
                                     <h2>Имя:</h2>
@@ -69,15 +65,15 @@ const ProfilePage = () => {
                                 </div>
                             )}
                             {myProfile &&
-                                (myProfile && !(activeModal === 'editUserInfoForm') ? (
+                                (myProfile && !(modal === 'editUserInfoForm') ? (
                                     <PencilSquare
                                         className='editProfile'
-                                        onClick={() => setActiveModal('editUserInfoForm')}
+                                        onClick={() => dispatch(activeModal('editUserInfoForm'))}
                                     />
                                 ) : (
                                     <XLg
                                         className='editProfile'
-                                        onClick={() => setActiveModal('')}
+                                        onClick={() => dispatch(activeModal(''))}
                                     />
                                 ))}
                         </div>

@@ -1,16 +1,15 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import '../inputPost.css';
-import { Context } from '../../../context/Context';
 import { avatarOptions } from '../formsOptions';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '../../../store/slices/userSlice';
 import defaultImage from '../../../images/defaultImage.jpg';
+import { activeModal } from '../../../store/slices/postsSlice';
 
 const ChangingAvatar = ({ userInfo }) => {
     const [previewAvatar, setPreviewAvatar] = useState(userInfo.avatar);
     const dispatch = useDispatch();
-    const { setActiveModal } = useContext(Context);
     const {
         register,
         handleSubmit,
@@ -20,7 +19,7 @@ const ChangingAvatar = ({ userInfo }) => {
 
     const sendEditDataAvatarInfo = (newAvatar) => {
         dispatch(updateUser(newAvatar)).then(() => {
-            setActiveModal('');
+            dispatch(activeModal(''));
             reset();
         });
     };

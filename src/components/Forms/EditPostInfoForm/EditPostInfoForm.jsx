@@ -6,8 +6,9 @@ import { splitTags } from '../../../utils/utils';
 import { useDispatch } from 'react-redux';
 import { sendUpdatedPostInfo } from '../../../store/slices/onePostSlice';
 import defaultImage from '../../../images/defaultImage.jpg';
+import { activeModal } from '../../../store/slices/postsSlice';
 
-const EditPostInfoForm = ({ setActiveModal, editablePost }) => {
+const EditPostInfoForm = ({ editablePost }) => {
     const dispatch = useDispatch();
     const [previewPostImage, setPreviewPostImage] = useState(editablePost.image);
     const {
@@ -28,7 +29,7 @@ const EditPostInfoForm = ({ setActiveModal, editablePost }) => {
         dispatch(
             sendUpdatedPostInfo({ editablePost, post: { ...post, tags: splitTags(post.tags) } })
         ).then(() => {
-            setActiveModal('');
+            dispatch(activeModal(''));
         });
     };
 

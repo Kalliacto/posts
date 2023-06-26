@@ -1,14 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import './postsListTitle.css';
 import SortPosts from '../SortPosts/SortPosts';
 import { Arrow90degDown } from 'react-bootstrap-icons';
 import ButtonAddPost from '../BattonAddPost/ButtonAddPost';
 import Modal from '../Modal/Modal';
 import AddPostForm from '../Forms/AddPostForm/AddPostForm';
-import { Context } from '../../context/Context';
+import { useDispatch, useSelector } from 'react-redux';
+import { activeModal } from '../../store/slices/postsSlice';
 
 const PostsListTitle = () => {
-    const { activeModal, setActiveModal } = useContext(Context);
+    const { modal } = useSelector((s) => s.posts);
+    const dispatch = useDispatch();
+
     return (
         <div className='posts__title'>
             <h1>Добро пожаловать к нам!</h1>
@@ -21,13 +24,13 @@ const PostsListTitle = () => {
                 <ButtonAddPost
                     title={'Создать новый пост'}
                     onClick={() => {
-                        setActiveModal('addPostForm');
+                        dispatch(activeModal('addPostForm'));
                     }}
                 />
             </div>
-            {activeModal === 'addPostForm' && (
-                <Modal state={activeModal === 'addPostForm'} setState={setActiveModal}>
-                    <AddPostForm setActiveModal={setActiveModal} />
+            {modal === 'addPostForm' && (
+                <Modal>
+                    <AddPostForm />
                 </Modal>
             )}
         </div>
