@@ -4,10 +4,10 @@ import { useForm } from 'react-hook-form';
 import { splitTags } from '../../../utils/utils';
 import { imageOptions, textOptions, titleOptions } from '../formsOptions';
 import defaultImage from '../../../images/defaultImage.jpg';
-import { sendNewPostInfo } from '../../../store/slices/postsSlice';
+import { activeModal, sendNewPostInfo } from '../../../store/slices/postsSlice';
 import { useDispatch } from 'react-redux';
 
-const AddPostForm = ({ setActiveModal }) => {
+const AddPostForm = () => {
     const dispatch = useDispatch();
     const [previewPostImage, setPreviewPostImage] = useState(defaultImage);
     const {
@@ -19,7 +19,7 @@ const AddPostForm = ({ setActiveModal }) => {
 
     const sendPost = (postInfo) => {
         dispatch(sendNewPostInfo({ ...postInfo, tags: splitTags(postInfo.tags) })).then(() => {
-            setActiveModal('');
+            dispatch(activeModal(''));
             reset();
         });
     };

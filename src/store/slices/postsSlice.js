@@ -9,6 +9,7 @@ const initialState = {
     isPostsLoading: true,
     total: 0,
     search: null,
+    modal: '',
 };
 
 export const getAllPostsData = createAsyncThunk(
@@ -115,6 +116,9 @@ const postsSlice = createSlice({
                 e._id === action.payload._id ? action.payload : e
             );
         },
+        activeModal(state, action) {
+            state.modal = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(getAllPostsData.fulfilled, (state, action) => {
@@ -155,5 +159,5 @@ const postsSlice = createSlice({
     },
 });
 
-export const { sortingPosts, setSearch, updatePostsState } = postsSlice.actions;
+export const { sortingPosts, setSearch, updatePostsState, activeModal } = postsSlice.actions;
 export default postsSlice.reducer;

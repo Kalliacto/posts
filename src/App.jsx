@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
-import { Context } from './context/Context';
 import Header from './components/Header/Header';
 import Main from './components/Main/Main';
 import Footer from './components/Footer/Footer';
@@ -8,31 +7,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUser, setAuth } from './store/slices/userSlice';
 import { getAllPostsData, searchPosts } from './store/slices/postsSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { pathsForNoAuth } from './utils/utils';
 
 function App() {
     const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
-    const [activeModal, setActiveModal] = useState('');
     const { search } = useSelector((s) => s.posts);
     const { isAuth } = useSelector((s) => s.user);
 
     useEffect(() => {
-        if (!!localStorage.getItem('postsToken2023')) {
+        if (JSON.parse(localStorage.getItem('postsToken2023'))?.token) {
             dispatch(setAuth(true));
         } else {
-            if (
-                location.pathname.includes('/registration') ||
-                location.pathname.includes('/login') ||
-                location.pathname.includes('/forgot-password') ||
-                location.pathname.includes('/password-reset')
-            ) {
-                return;
-            } else {
+            if (!pathsForNoAuth.includes(location.pathname)) {
                 navigate('/login');
             }
         }
-    }, [dispatch, isAuth, location, navigate]);
+    }, [dispatch, location, navigate]);
 
     useEffect(() => {
         if (!isAuth) return;
@@ -47,18 +39,11 @@ function App() {
         return () => clearTimeout(timer);
     }, [dispatch, search]);
 
-    const valueContext = {
-        activeModal,
-        setActiveModal,
-    };
-
     return (
         <div className='App'>
-            <Context.Provider value={valueContext}>
-                <Header />
-                <Main />
-                <Footer />
-            </Context.Provider>
+            <Header />
+            <Main />
+            <Footer />
         </div>
     );
 }
