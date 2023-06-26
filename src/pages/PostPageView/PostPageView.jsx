@@ -1,9 +1,8 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './postPageView.css';
 import { Link, useParams } from 'react-router-dom';
 import GoBackBtn from '../../components/GoBackBtn/GoBackBtn';
 import { Heart, HeartFill, PencilSquare, ZoomIn } from 'react-bootstrap-icons';
-import { Context } from '../../context/Context';
 import Comment from '../../components/Comment/Comment';
 import Modal from '../../components/Modal/Modal';
 import EditPostInfoForm from '../../components/Forms/EditPostInfoForm/EditPostInfoForm';
@@ -14,10 +13,11 @@ import {
     switchLikeOnPost,
 } from '../../store/slices/onePostSlice';
 import Loader from '../../components/Loader/Loader';
+import { activeModal } from '../../store/slices/postsSlice';
 
 const PostPageView = () => {
-    const { activeModal, setActiveModal } = useContext(Context);
     const { comments, post, isLoading } = useSelector((s) => s.onePost);
+    const { modal } = useSelector((s) => s.posts);
     const { id } = useParams();
     const { user } = useSelector((s) => s.user);
     const dispatch = useDispatch();
@@ -44,7 +44,7 @@ const PostPageView = () => {
                             <img src={post.image} alt='post' className='detailsPost__image' />
                             <ZoomIn
                                 className='detailsPost__zoom'
-                                onClick={() => setActiveModal('postImage')}
+                                onClick={() => dispatch(activeModal('postImage'))}
                             />
                         </div>
                         <div className='detailsPost__info-wrapper'>
@@ -52,7 +52,7 @@ const PostPageView = () => {
                                 <PencilSquare
                                     className='detailsPost__edit'
                                     onClick={() => {
-                                        setActiveModal('editPostOnPostPage');
+                                        dispatch(activeModal('editPostOnPostPage'));
                                     }}
                                 />
                             )}
@@ -105,8 +105,8 @@ const PostPageView = () => {
                     <div className='comments'>
                         <Comment postId={id} comments={comments} />
                     </div>
-                    {activeModal === 'postImage' && (
-                        <Modal state={activeModal === 'postImage'} setState={setActiveModal}>
+                    {modal === 'postImage' && (
+                        <Modal>
                             <div className='detailsPost__preview-wrap'>
                                 <img
                                     className='detailsPost__preview'
@@ -116,12 +116,9 @@ const PostPageView = () => {
                             </div>
                         </Modal>
                     )}
-                    {activeModal === 'editPostOnPostPage' && (
-                        <Modal
-                            state={activeModal === 'editPostOnPostPage'}
-                            setState={setActiveModal}
-                        >
-                            <EditPostInfoForm editablePost={post} setActiveModal={setActiveModal} />
+                    {modal === 'editPostOnPostPage' && (
+                        <Modal>
+                            <EditPostInfoForm editablePost={post} />
                         </Modal>
                     )}
                 </div>

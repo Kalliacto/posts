@@ -16,3 +16,5 @@ export const forErrors = (action, slice) => {
 export const refreshToken = () => {
     return localStorage.getItem('postsToken2023');
 };
+
+export const pathsForNoAuth = ['/registration', '/login', '/forgot-password', '/password-reset'];
