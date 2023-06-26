@@ -2,10 +2,11 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { forErrors } from '../../utils/utils';
 import { userApi } from '../../api/userApi';
 import { setNewUserData } from './profileSlice';
+import { toast } from 'react-toastify';
 
 const initialState = {
     user: {},
-    isLoading: false,
+    isLoading: true,
     isAuth: false,
 };
 
@@ -45,10 +46,11 @@ export const updateUser = createAsyncThunk(
 );
 
 export const registration = createAsyncThunk(
-    'user/authorization',
-    async function (data, { rejectWithValue }) {
+    'user/registration',
+    async function (data, { fulfillWithValue, rejectWithValue }) {
         try {
-            return await userApi.signUp(data);
+            const response = await userApi.signUp(data);
+            return fulfillWithValue(response);
         } catch (error) {
             return rejectWithValue(error);
         }
@@ -69,9 +71,10 @@ export const authorization = createAsyncThunk(
 
 export const getNewToken = createAsyncThunk(
     'user/getNewToken',
-    async function (data, { rejectWithValue }) {
+    async function (data, { fulfillWithValue, rejectWithValue }) {
         try {
-            return await userApi.getTokenByEmail(data);
+            const response = await userApi.getTokenByEmail(data);
+            return fulfillWithValue(response);
         } catch (error) {
             return rejectWithValue(error);
         }
@@ -106,30 +109,30 @@ const userSlice = createSlice({
         builder.addCase(updateUser.fulfilled, (state, action) => {
             state.isLoading = false;
             state.user = action.payload;
+            toast.success('Изменения сохранены');
         });
 
         builder.addCase(authorization.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isAuth = true;
+            toast(`Добро пожаловать ${action.payload.data.name}`);
             localStorage.setItem('postsToken2023', action.payload.token);
         });
 
         builder.addCase(getNewToken.fulfilled, (state, action) => {
             state.isLoading = false;
+            toast.success('Токен отправлен на почту');
         });
 
         builder.addCase(sendNewPassword.fulfilled, (state, action) => {
             state.isLoading = false;
+            toast.success('Ваш пароль успешно изменён');
         });
-
-        // builder.addMatcher(isLoadingData, (state) => {
-        //     state.isLoading = true;
-        // });
 
         builder.addMatcher(
             (action) => forErrors(action, 'user'),
             (state, { payload }) => {
-                alert(`${payload}`);
+                toast.error(payload);
             }
         );
     },

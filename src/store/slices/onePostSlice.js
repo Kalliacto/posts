@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, isPending } from '@reduxjs/toolkit';
 import { api } from '../../api/api';
 import { forErrors } from '../../utils/utils';
 import { updatePostsState } from './postsSlice';
+import { toast } from 'react-toastify';
 
 const initialState = {
     post: {},
@@ -96,15 +97,15 @@ const onePostSlice = createSlice({
 
         builder.addCase(getPostAllComments.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.comments = action.payload;
+            state.comments = action.payload.reverse();
         });
 
         builder.addCase(deleteComment.fulfilled, (state, action) => {
-            state.comments = action.payload.comments;
+            state.comments = action.payload.comments.slice().reverse();
         });
 
         builder.addCase(addComment.fulfilled, (state, action) => {
-            state.comments = action.payload.comments;
+            state.comments = action.payload.comments.slice().reverse();
         });
 
         builder.addCase(switchLikeOnPost.fulfilled, (state, action) => {
@@ -113,6 +114,7 @@ const onePostSlice = createSlice({
 
         builder.addCase(sendUpdatedPostInfo.fulfilled, (state, action) => {
             state.post = action.payload;
+            toast.success('Изменения сохранены');
         });
 
         builder.addMatcher(isPending(getInfoOnePost, getPostAllComments), (state) => {
@@ -122,7 +124,7 @@ const onePostSlice = createSlice({
         builder.addMatcher(
             (action) => forErrors(action, 'post/'),
             (state, { payload }) => {
-                alert(`${payload}`);
+                toast.error(payload);
             }
         );
     },

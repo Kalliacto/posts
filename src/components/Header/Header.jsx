@@ -24,7 +24,7 @@ const Header = () => {
                     </Link>
                     <Search />
                     <div className='header__btns'>
-                        <Link to={`/profile/${user._id}`}>
+                        <Link to={`/profile/${user?._id}`}>
                             <button className='button__profile'>Профиль</button>
                         </Link>
                         {isAuth ? (

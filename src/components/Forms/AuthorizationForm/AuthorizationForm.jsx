@@ -18,12 +18,14 @@ const AuthorizationForm = () => {
     } = useForm({ mode: 'onSubmit' });
 
     const logIn = (data) => {
-        dispatch(authorization(data)).then(() => {
-            navigate('/');
-            reset();
+        dispatch(authorization(data)).then((res) => {
+            if (res.type.endsWith('fulfilled')) {
+                navigate('/');
+                reset();
+            }
         });
     };
-    
+
     return (
         <div className='inputPost__wrapper'>
             <h3>Авторизация</h3>

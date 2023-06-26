@@ -18,9 +18,11 @@ const RegistrationForm = () => {
     } = useForm({ mode: 'onSubmit' });
 
     const sendRegistrationData = (data) => {
-        dispatch(registration(data)).then(() => {
-            navigate('/');
-            reset();
+        dispatch(registration(data)).then((res) => {
+            if (res.type.endsWith('fulfilled')) {
+                navigate('/login');
+                reset();
+            }
         });
     };
 
