@@ -1,4 +1,5 @@
 # Групповой проект про посты
+- https://silly-sprite-9de59f.netlify.app
 
 ## Стек
 
