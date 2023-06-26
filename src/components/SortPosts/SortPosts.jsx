@@ -1,19 +1,12 @@
 import { useDispatch } from 'react-redux';
 import './sortPosts.css';
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
 import { sortingPosts } from '../../store/slices/postsSlice';
+import { sortItem } from '../../utils/utils';
 
 const SortPosts = memo(() => {
     const dispatch = useDispatch();
-
-    const sortItem = useMemo(() => [
-        { id: 'alphabet', title: 'По алфавиту' },
-        { id: 'popular', title: 'Популярные' },
-        { id: 'new', title: 'Новые' },
-        { id: 'old', title: 'Древние' },
-        { id: 'comments', title: 'Наиболее обсуждаемые' },
-    ]);
-
+    
     return (
         <div className='sort__posts_wrapper'>
             <div className='sort__posts'>

@@ -14,7 +14,19 @@ export const forErrors = (action, slice) => {
 };
 
 export const refreshToken = () => {
-    return localStorage.getItem('postsToken2023');
+    return JSON.parse(localStorage.getItem('postsToken2023')).token;
 };
 
 export const pathsForNoAuth = ['/registration', '/login', '/forgot-password', '/password-reset'];
+
+export const sortItem = [
+    { id: 'alphabet', title: 'По алфавиту' },
+    { id: 'popular', title: 'Популярные' },
+    { id: 'new', title: 'Новые' },
+    { id: 'old', title: 'Древние' },
+    { id: 'comments', title: 'Наиболее обсуждаемые' },
+];
+
+export const refreshGroup = () => {
+    return JSON.parse(localStorage.getItem('postsToken2023')).group;
+};

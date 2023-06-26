@@ -116,7 +116,10 @@ const userSlice = createSlice({
             state.isLoading = false;
             state.isAuth = true;
             toast(`Добро пожаловать ${action.payload.data.name}`);
-            localStorage.setItem('postsToken2023', action.payload.token);
+            localStorage.setItem(
+                'postsToken2023',
+                JSON.stringify({ token: action.payload.token, group: action.payload.data.group })
+            );
         });
 
         builder.addCase(getNewToken.fulfilled, (state, action) => {

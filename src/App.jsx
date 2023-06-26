@@ -17,14 +17,14 @@ function App() {
     const { isAuth } = useSelector((s) => s.user);
 
     useEffect(() => {
-        if (!!localStorage.getItem('postsToken2023')) {
+        if (JSON.parse(localStorage.getItem('postsToken2023'))?.token) {
             dispatch(setAuth(true));
         } else {
             if (!pathsForNoAuth.includes(location.pathname)) {
                 navigate('/login');
             }
         }
-    }, [dispatch, isAuth, location, navigate]);
+    }, [dispatch, location, navigate]);
 
     useEffect(() => {
         if (!isAuth) return;
